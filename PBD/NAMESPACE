@@ -1,0 +1,7 @@
+import(ade4, ape, DDD)
+importFrom("phytools","read.simmap","plotSimmap")
+importFrom("deSolve", "ode")
+importFrom("graphics", "par", "plot")
+importFrom("stats", "integrate", "rgeom", "runif", "setNames", "uniroot")
+importFrom("utils", "flush.console")
+exportPattern("^[[:alpha:]]+")
