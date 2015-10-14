@@ -9,3 +9,6 @@ Author: Rampal S. Etienne
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
 Description: Conducts maximum likelihood analysis and simulation of the protracted speciation model.
 License: GPL-2
+NeedsCompilation: no
+Packaged: 2015-10-14 11:39:24 UTC; p223208
+Built: R 3.3.0; ; 2015-10-14 11:39:37 UTC; windows

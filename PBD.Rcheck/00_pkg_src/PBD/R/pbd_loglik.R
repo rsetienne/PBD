@@ -36,6 +36,9 @@ m = missnumspec
 
 probs = c(1,1,0,0)
 y = ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
+print(y)
+print(dim(y))
+print(length(brts))
 if(dim(y)[1] < length(brts) + 1) { return(-Inf) }
 #loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:S,2]) + log(1 - y[2:S,3])) - log(b[1]) + (soc == 2) * (log(y[S,2]) + log(1 - y[S,3])) - soc * (cond > 0) * (log(1 - y[S,3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[S,2]) + (S + m - soc) * log(1 - y[S,2]))
 
@@ -45,11 +48,8 @@ if(dim(y)[1] < length(brts) + 1) { return(-Inf) }
 #loglik = (btorph == 0) * lgamma(S) + (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) + (cond > 0) * soc * log(y[(length(brts) + 1),2]) + sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3])) - (cond == 2) * ((soc - 1) * log(S + m - 1) + soc * log(y[(length(brts) + 1),2]) + (S + m - soc) * log(1 - y[(length(brts) + 1),2]))
 loglik = (btorph == 0) * lgamma(S) + 
          (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) + 
-         (cond > 0) * soc * log(y[(length(brts) + 1),2])
-if(length(brts) > 1)
-{
-     loglik = loglik + sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3]))
-}
+         (cond > 0) * soc * log(y[(length(brts) + 1),2]) +
+         sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3]))
 if(cond == 2)
 {
      n_l = as.numeric(pars2[6])
