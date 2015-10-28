@@ -1,13 +1,3 @@
-# b_1 , the speciation-initiation rate of good species 
-# la_1, the speciation-completion rate 
-# b_2 , the speciation-initiation rate of incipient species 
-# mu_1, the extinction rate of good species 
-# mu_2, the extinction rate of incipient species 
-pbd_sim_with_named_variables = function(b_1,la_1,b_2,mu_1,mu_2,age,soc = 2,plotit = FALSE)
-{
-  return (pbd_sim(c(b_1,la_1,b_2,mu_1,mu_2),age,soc,plotit)
-}
-
 pbd_sim = function(pars,age,soc = 2,plotit = FALSE)
 {
 # la1 = b_1 , the speciation-initiation rate of good species 
