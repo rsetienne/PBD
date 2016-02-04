@@ -19,13 +19,15 @@ under the protracted speciation model.\cr \cr
    - Conditioning is also possible on a range of values of the number of species.\cr
    New in version 1.1\cr
    - Simulation of the protracted speciation tree has more features. \cr
+   New in version 1.2\cr   
+   - Optimization can make use of subplex (default) and simplex (older versions).\cr
 }
 \details{
 \tabular{ll}{
 Package: \tab PBD\cr
 Type: \tab Package\cr
 Version: \tab 1.2\cr
-Date: \tab 2015-9-16\cr
+Date: \tab 2016-2-5\cr
 License: \tab GPL-2\cr
 }
 pbd_loglik computes the likelihood of the protracted birth-death model of

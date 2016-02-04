@@ -10,7 +10,7 @@ pbd_loglik_choosepar = function(trparsopt,trparsfix,idparsopt,idparsfix,exteq,pa
    {
       trpars1[4] = trpars1[2]
    }
-   if(max(trpars1) > 1 || min(trpars1) < 0)
+   if(max(trpars1) > 1 || min(trpars1) < 0 || max(trpars1[c(1,2,4)]) == 1)
    {
       loglik = -Inf
    } else {

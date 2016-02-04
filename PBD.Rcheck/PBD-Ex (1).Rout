@@ -1,0 +1,658 @@
+
+R Under development (unstable) (2016-01-17 r69948) -- "Unsuffered Consequences"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "PBD"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> base::assign(".ExTimings", "PBD-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('PBD')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("PBD-package")
+> ### * PBD-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PBD-package
+> ### Title: Protracted birth-death model of diversification
+> ### Aliases: PBD-package PBD
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> pbd_ML(1:10)
+You are optimizing b mu_1 lambda_1 
+You are fixing nothing 
+Extinction rate of incipient species is exactly the same as for good species.
+The likelihood for the initial parameter values is -26.32483 
+Optimizing the likelihood - this may take a while. 
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+
+ Maximum likelihood parameter estimates: b: 4.070345, mu_1: 3.798543, lambda_1: 0.032403, mu_2: 3.798543 
+ Maximum loglikelihood: -25.584364 
+ The expected duration of speciation for these parameters is: 2.128344 
+ The median duration of speciation for these parameters is: 1.783374 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PBD-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_ML")
+> ### * pbd_ML
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_ML
+> ### Title: Maximization of loglikelihood under protracted birth-death model
+> ###   of diversification
+> ### Aliases: pbd_ML
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> pbd_ML(1:10,initparsopt = c(0.2,0.01,0.3), exteq = 1)
+You are optimizing b mu_1 lambda_1 
+You are fixing nothing 
+Extinction rate of incipient species is exactly the same as for good species.
+The likelihood for the initial parameter values is -25.70735 
+Optimizing the likelihood - this may take a while. 
+
+ Maximum likelihood parameter estimates: b: 4.639933, mu_1: 4.366205, lambda_1: 0.030525, mu_2: 4.366205 
+ Maximum loglikelihood: -25.584169 
+ The expected duration of speciation for these parameters is: 2.050922 
+ The median duration of speciation for these parameters is: 1.716649 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_ML", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_bootstrap")
+> ### * pbd_bootstrap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_bootstrap
+> ### Title: Bootstrap analysis under protracted birth-death model of
+> ###   diversification
+> ### Aliases: pbd_bootstrap
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> pbd_bootstrap(1:10,endmc = 2)
+Finding the maximum likelihood estimates ...
+
+You are optimizing b mu_1 lambda_1 
+You are fixing nothing 
+Extinction rate of incipient species is exactly the same as for good species.
+The likelihood for the initial parameter values is -11.22041 
+Optimizing the likelihood - this may take a while. 
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+
+ Maximum likelihood parameter estimates: b: 4.070345, mu_1: 3.798543, lambda_1: 0.032403, mu_2: 3.798543 
+ Maximum loglikelihood: -10.479951 
+ The expected duration of speciation for these parameters is: 2.128344 
+ The median duration of speciation for these parameters is: 1.783374 
+Bootstrapping ...
+
+Simulated data set 1 out of 2 
+You are optimizing b mu_1 lambda_1 
+You are fixing nothing 
+Extinction rate of incipient species is exactly the same as for good species.
+The likelihood for the initial parameter values is -7.378405 
+Optimizing the likelihood - this may take a while. 
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+
+ Maximum likelihood parameter estimates: b: 0.293044, mu_1: 0.208309, lambda_1: 0.163725, mu_2: 0.208309 
+ Maximum loglikelihood: -6.815954 
+ The expected duration of speciation for these parameters is: 2.893842 
+ The median duration of speciation for these parameters is: 2.230143 
+Simulated data set 2 out of 2 
+You are optimizing b mu_1 lambda_1 
+You are fixing nothing 
+Extinction rate of incipient species is exactly the same as for good species.
+The likelihood for the initial parameter values is -6.320037 
+Optimizing the likelihood - this may take a while. 
+There are parameter values used which cause numerical problems.
+There are parameter values used which cause numerical problems.
+
+ Maximum likelihood parameter estimates: b: 0.147389, mu_1: 0.000000, lambda_1: 0.111459, mu_2: 0.000000 
+ Maximum loglikelihood: -5.214266 
+ The expected duration of speciation for these parameters is: 5.716743 
+ The median duration of speciation for these parameters is: 4.638541 
+[[1]]
+  ntips        b     mu_1   lambda_1     mu_2    loglik df conv exp_durspec
+1    11 4.070345 3.798543 0.03240325 3.798543 -10.47995  3    0    2.128344
+  median_durspec
+1       1.783374
+
+[[2]]
+[[2]][[1]]
+
+Phylogenetic tree with 5 tips and 4 internal nodes.
+
+Tip labels:
+[1] "t1" "t2" "t4" "t3" "t5"
+
+Rooted; includes branch lengths.
+
+[[2]][[2]]
+
+Phylogenetic tree with 4 tips and 3 internal nodes.
+
+Tip labels:
+[1] "t3" "t2" "t1" "t4"
+
+Rooted; includes branch lengths.
+
+
+[[3]]
+  ntips         b         mu_1  lambda_1         mu_2    loglik df conv
+1     5 0.2930439 2.083088e-01 0.1637254 2.083088e-01 -6.815954  3    0
+2     4 0.1473893 3.077421e-08 0.1114587 3.077421e-08 -5.214266  3    0
+  exp_durspec median_durspec
+1    2.893842       2.230143
+2    5.716743       4.638541
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_bootstrap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_brts_density")
+> ### * pbd_brts_density
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_brts_density
+> ### Title: Node depth probbaility density for protracted birth-death model
+> ###   of diversification
+> ### Aliases: pbd_brts_density
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_brts_density(pars1 = c(0.2,0.1,1,0.1), methode = "lsoda",brts = 1:10) 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_brts_density", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_cumdensity")
+> ### * pbd_durspec_cumdensity
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_cumdensity
+> ### Title: Cumulative density of duration of speciation under protracted
+> ###   birth-death model of diversification
+> ### Aliases: pbd_durspec_cumdensity
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_cumdensity(pars = c(0.5,0.3,0.1),3) 
+[1] 0.8040746
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_cumdensity", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_density")
+> ### * pbd_durspec_density
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_density
+> ### Title: Probability density for duration of speciation under protracted
+> ###   birth-death model of diversification
+> ### Aliases: pbd_durspec_density
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_density(pars = c(0.5,0.3,0.1), tau = 1) 
+[1] 0.3235089
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_density", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_mean")
+> ### * pbd_durspec_mean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_mean
+> ### Title: Mean duration of speciation under protracted birth-death model
+> ###   of diversification
+> ### Aliases: pbd_durspec_mean
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_mean(pars = c(0.5,0.3,0.1)) 
+[1] 1.884522
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_mean", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_mode")
+> ### * pbd_durspec_mode
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_mode
+> ### Title: mode of the duration of speciation under protracted birth-death
+> ###   model of diversification
+> ### Aliases: pbd_durspec_mode
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_mode(pars = c(0.5,0.3,0.1)) 
+[1] 0.3296783
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_mode", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_moment")
+> ### * pbd_durspec_moment
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_moment
+> ### Title: Moments of duration of speciation under protracted birth-death
+> ###   model of diversification
+> ### Aliases: pbd_durspec_moment
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_moment(pars = c(0.5,0.3,0.1),2) 
+[1] 5.919051
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_moment", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_quantile")
+> ### * pbd_durspec_quantile
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_quantile
+> ### Title: Quantiles of duration of speciation under protracted birth-death
+> ###   model of diversification
+> ### Aliases: pbd_durspec_quantile
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_quantile(pars = c(0.5,0.3,0.1),0.5) 
+[1] 1.526205
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_quantile", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_durspec_var")
+> ### * pbd_durspec_var
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_durspec_var
+> ### Title: Variance in duration of speciation under protracted birth-death
+> ###   model of diversification
+> ### Aliases: pbd_durspec_var
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_durspec_var(pars = c(0.5,0.3,0.1)) 
+[1] 2.367629
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_durspec_var", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_loglik")
+> ### * pbd_loglik
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_loglik
+> ### Title: Loglikelihood for protracted birth-death model of
+> ###   diversification
+> ### Aliases: pbd_loglik
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_loglik(pars1 = c(0.2,0.1,1,0.1), pars2 = c(1,1,2,0,"lsoda"),brts = 1:10) 
+[1] -26.32483
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_loglik", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_sim")
+> ### * pbd_sim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_sim
+> ### Title: Function to simulate the protracted speciation process
+> ### Aliases: pbd_sim
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_sim(c(0.2,1,0.2,0.1,0.1),15) 
+$tree
+
+Phylogenetic tree with 32 tips and 31 internal nodes.
+
+Tip labels:
+	S14-14-13, S6-6-8, S18-18-20, S15-15-17, S11-11-11, S11-11-23, ...
+
+Rooted; includes branch lengths.
+
+$stree
+
+Phylogenetic tree with 26 tips and 25 internal nodes.
+
+Tip labels:
+	S14-14-13, S6-6-8, S18-18-20, S15-15-17, S11-11-23, S3-3-3, ...
+
+Rooted; includes branch lengths.
+
+$L
+      [,1] [,2]        [,3]       [,4]       [,5] [,6]
+ [1,]    1    0 15.00000000 15.0000000  4.7461991    1
+ [2,]    2    1 10.57964064 10.5194643  7.2207632    2
+ [3,]    3    2 10.42460760  8.9593054 -1.0000000    3
+ [4,]    4    3  8.54220796  7.4092572 -1.0000000    4
+ [5,]    5    3  8.22504463  6.1501175 -1.0000000    8
+ [6,]    6   -5  7.94861851  7.0687538  6.3645511    5
+ [7,]    7    1  7.62559831  6.2537743  4.3815917    7
+ [8,]    8   -7  6.62642768  6.5812571 -1.0000000    6
+ [9,]    9    4  6.30015418  5.5479343  1.0685283    9
+[10,]   10    4  6.17778738  5.3548295  1.4759492   10
+[11,]   11    8  5.31684808  5.0191637 -1.0000000   11
+[12,]   12   10  4.69071396 -1.0000000  4.3279954   10
+[13,]   13    7  4.40440503  2.4511160 -1.0000000   14
+[14,]   14    8  4.22830286  4.1690950  3.2810820   12
+[15,]   15    4  3.59983482  3.3141025 -1.0000000   13
+[16,]   16   11  3.06841854 -1.0000000  2.7602133   11
+[17,]   17    8  2.96789112  2.4313754 -1.0000000   15
+[18,]   18    9  2.32728928 -1.0000000 -1.0000000    9
+[19,]   19   15  1.88330915  1.4777307 -1.0000000   16
+[20,]   20    8  0.90076490  0.1687314 -1.0000000   18
+[21,]   21    3  0.80302944 -1.0000000 -1.0000000    3
+[22,]   22   19  0.29741123  0.2307144 -1.0000000   17
+[23,]   23   11  0.23234668 -1.0000000 -1.0000000   11
+[24,]   24    4  0.12489021  0.0905262 -1.0000000   19
+[25,]   25    5  0.02563147 -1.0000000 -1.0000000    8
+[26,]   26    1 15.00000000 14.7384329 -1.0000000   20
+[27,]   27   26 14.48684665 13.0249273 -1.0000000   21
+[28,]   28  -27 13.10934537 12.6775034  9.6336558   22
+[29,]   29   26 11.94787178 -1.0000000 10.6174296   20
+[30,]   30   28 11.32917046 10.6300000 -1.0000000   23
+[31,]   31  -30 10.67169114 10.0823885  6.0996347   24
+[32,]   32   27  8.50343516  8.4403062 -1.0000000   25
+[33,]   33   27  7.78550720  7.6527918 -1.0000000   26
+[34,]   34   27  7.18343404  6.8069438  5.0746470   27
+[35,]   35  -34  7.00679880  6.2129027 -1.0000000   28
+[36,]   36   26  5.85922363  5.4488034 -1.0000000   29
+[37,]   37   30  5.42066224  4.4431831 -1.0000000   30
+[38,]   38   35  4.54475221  3.6025318 -1.0000000   31
+[39,]   39   27  3.84422666  3.1755372 -1.0000000   32
+[40,]   40   38  1.98114301  1.3306183 -1.0000000   33
+[41,]   41   27  1.75183906  1.2741944 -1.0000000   34
+[42,]   42   27  1.54919938 -1.0000000  0.3669815   21
+[43,]   43   35  1.32746432 -1.0000000 -1.0000000   28
+[44,]   44  -43  0.79242384  0.3394496 -1.0000000   35
+[45,]   45   35  0.47837374 -1.0000000 -1.0000000   28
+[46,]   46   40  0.03822309 -1.0000000 -1.0000000   33
+
+$sL
+      [,1] [,2]        [,3]       [,4]       [,5] [,6]
+ [1,]    1    0 15.00000000 15.0000000  4.7461991    1
+ [2,]    2    1 10.57964064 10.5194643  7.2207632    2
+ [3,]    3    2 10.42460760  8.9593054 -1.0000000    3
+ [4,]    4    3  8.54220796  7.4092572 -1.0000000    4
+ [5,]    5    3  8.22504463  6.1501175  0.0000000    8
+ [6,]    6    5  7.94861851  7.0687538  6.3645511    5
+ [7,]    7    1  7.62559831  6.2537743  4.3815917    7
+ [8,]    8    7  6.62642768  6.5812571 -1.0000000    6
+ [9,]    9    4  6.30015418  5.5479343  1.0685283    9
+[10,]   10    4  6.17778738  5.3548295  1.4759492   10
+[11,]   11    8  5.31684808  5.0191637  0.0000000   11
+[12,]   12   10  4.69071396 -1.0000000  4.3279954   10
+[13,]   13    7  4.40440503  2.4511160 -1.0000000   14
+[14,]   14    8  4.22830286  4.1690950  3.2810820   12
+[15,]   15    4  3.59983482  3.3141025 -1.0000000   13
+[16,]   16   11  3.06841854 -1.0000000  2.7602133   11
+[17,]   17    8  2.96789112  2.4313754 -1.0000000   15
+[18,]   18    9  2.32728928 -1.0000000 -1.0000000    9
+[19,]   19   15  1.88330915  1.4777307 -1.0000000   16
+[20,]   20    8  0.90076490  0.1687314 -1.0000000   18
+[21,]   21    3  0.80302944 -1.0000000  0.0000000    3
+[22,]   22   19  0.29741123  0.2307144 -1.0000000   17
+[23,]   23   11  0.23234668 -1.0000000 -1.0000000   11
+[24,]   24    4  0.12489021  0.0905262 -1.0000000   19
+[25,]   25    5  0.02563147 -1.0000000 -1.0000000    8
+[26,]   26    1 15.00000000 14.7384329 -1.0000000   20
+[27,]   27   26 14.48684665 13.0249273 -1.0000000   21
+[28,]   28   27 13.10934537 12.6775034  9.6336558   22
+[29,]   29   26 11.94787178 -1.0000000 10.6174296   20
+[30,]   30   28 11.32917046 10.6300000 -1.0000000   23
+[31,]   31   30 10.67169114 10.0823885  6.0996347   24
+[32,]   32   27  8.50343516  8.4403062 -1.0000000   25
+[33,]   33   27  7.78550720  7.6527918 -1.0000000   26
+[34,]   34   27  7.18343404  6.8069438  5.0746470   27
+[35,]   35   34  7.00679880  6.2129027  0.0000000   28
+[36,]   36   26  5.85922363  5.4488034 -1.0000000   29
+[37,]   37   30  5.42066224  4.4431831 -1.0000000   30
+[38,]   38   35  4.54475221  3.6025318 -1.0000000   31
+[39,]   39   27  3.84422666  3.1755372 -1.0000000   32
+[40,]   40   38  1.98114301  1.3306183  0.0000000   33
+[41,]   41   27  1.75183906  1.2741944 -1.0000000   34
+[42,]   42   27  1.54919938 -1.0000000  0.3669815   21
+[43,]   43   35  1.32746432 -1.0000000 -1.0000000   28
+[44,]   44   43  0.79242384  0.3394496 -1.0000000   35
+[45,]   45   35  0.47837374 -1.0000000  0.0000000   28
+[46,]   46   40  0.03822309 -1.0000000 -1.0000000   33
+
+$igtree.extinct
+
+Phylogenetic tree with 46 tips and 45 internal nodes.
+
+Tip labels:
+	S1-1-1, S7-7-7, S14-14-13, S6-6-8, S18-18-20, S15-15-17, ...
+
+The tree includes a mapped, 2-state discrete character with states:
+	g, i
+
+Rooted; includes branch lengths.
+
+$igtree.extant
+
+Phylogenetic tree with 32 tips and 31 internal nodes.
+
+Tip labels:
+	S14-14-13, S6-6-8, S18-18-20, S15-15-17, S11-11-11, S11-11-23, ...
+
+The tree includes a mapped, 2-state discrete character with states:
+	g, i
+
+Rooted; includes branch lengths.
+
+$recontree
+
+Phylogenetic tree with 26 tips and 25 internal nodes.
+
+Tip labels:
+	S14-14-13, S6-6-8, S18-18-20, S15-15-17, S11-11-11, S3-3-3, ...
+
+Rooted; includes branch lengths.
+
+$reconL
+      [,1] [,2]       [,3]       [,4] [,5] [,6]
+ [1,]    3   13 10.5796406 10.5796406   -1    3
+ [2,]    4    3  8.5422080  8.5422080   -1    4
+ [3,]    5    3  8.2250446  8.2250446   -1    8
+ [4,]    8   13  6.6264277  6.6264277   -1    6
+ [5,]   11    8  5.3168481  5.3168481   -1   11
+ [6,]   13    0 15.0000000 15.0000000   -1   14
+ [7,]   15    4  3.5998348  3.5998348   -1   13
+ [8,]   17    8  2.9678911  2.9678911   -1   15
+ [9,]   18    4  6.3001542  6.3001542   -1    9
+[10,]   19   15  1.8833091  1.8833091   -1   16
+[11,]   20    8  0.9007649  0.9007649   -1   18
+[12,]   22   19  0.2974112  0.2974112   -1   17
+[13,]   24    4  0.1248902  0.1248902   -1   19
+[14,]   26   13 15.0000000 15.0000000   -1   20
+[15,]   27   26 14.4868467 14.4868467   -1   21
+[16,]   30   27 13.1093454 13.1093454   -1   23
+[17,]   32   27  8.5034352  8.5034352   -1   25
+[18,]   33   27  7.7855072  7.7855072   -1   26
+[19,]   35   27  7.1834340  7.1834340   -1   28
+[20,]   36   26  5.8592236  5.8592236   -1   29
+[21,]   37   30  5.4206622  5.4206622   -1   30
+[22,]   38   35  4.5447522  4.5447522   -1   31
+[23,]   39   27  3.8442267  3.8442267   -1   32
+[24,]   40   38  1.9811430  1.9811430   -1   33
+[25,]   41   27  1.7518391  1.7518391   -1   34
+[26,]   44   35  1.3274643  1.3274643   -1   35
+
+$L0
+      [,1] [,2]          [,3]       [,4]      [,5] [,6]
+ [1,]    1    0 -0.0000000001  0.0000000 10.253801    1
+ [2,]    2    1  4.4203593643  4.4805357  7.779237    2
+ [3,]    3    2  4.5753924022  6.0406946 -1.000000    3
+ [4,]    4    3  6.4577920397  7.5907428 -1.000000    4
+ [5,]    5    3  6.7749553651  8.8498825 -1.000000    8
+ [6,]    6   -5  7.0513814946  7.9312462  8.635449    5
+ [7,]    7    1  7.3744016946  8.7462257 10.618408    7
+ [8,]    8   -7  8.3735723181  8.4187429 -1.000000    6
+ [9,]    9    4  8.6998458183  9.4520657 13.931472    9
+[10,]   10    4  8.8222126233  9.6451705 13.524051   10
+[11,]   11    8  9.6831519233  9.9808363 -1.000000   11
+[12,]   12   10 10.3092860394 -1.0000000 10.672005   10
+[13,]   13    7 10.5955949719 12.5488840 -1.000000   14
+[14,]   14    8 10.7716971428 10.8309050 11.718918   12
+[15,]   15    4 11.4001651757 11.6858975 -1.000000   13
+[16,]   16   11 11.9315814571 -1.0000000 12.239787   11
+[17,]   17    8 12.0321088753 12.5686246 -1.000000   15
+[18,]   18    9 12.6727107238 -1.0000000 -1.000000    9
+[19,]   19   15 13.1166908544 13.5222693 -1.000000   16
+[20,]   20    8 14.0992350990 14.8312686 -1.000000   18
+[21,]   21    3 14.1969705624 -1.0000000 -1.000000    3
+[22,]   22   19 14.7025887667 14.7692856 -1.000000   17
+[23,]   23   11 14.7676533218 -1.0000000 -1.000000   11
+[24,]   24    4 14.8751097928 14.9094738 -1.000000   19
+[25,]   25    5 14.9743685323 -1.0000000 -1.000000    8
+[26,]   26    1  0.0000000000  0.2615671 -1.000000   20
+[27,]   27   26  0.5131533489  1.9750727 -1.000000   21
+[28,]   28  -27  1.8906546290  2.3224966  5.366344   22
+[29,]   29   26  3.0521282183 -1.0000000  4.382570   20
+[30,]   30   28  3.6708295416  4.3700000 -1.000000   23
+[31,]   31  -30  4.3283088611  4.9176115  8.900365   24
+[32,]   32   27  6.4965648393  6.5596938 -1.000000   25
+[33,]   33   27  7.2144928040  7.3472082 -1.000000   26
+[34,]   34   27  7.8165659587  8.1930562  9.925353   27
+[35,]   35  -34  7.9932011968  8.7870973 -1.000000   28
+[36,]   36   26  9.1407763735  9.5511966 -1.000000   29
+[37,]   37   30  9.5793377598 10.5568169 -1.000000   30
+[38,]   38   35 10.4552477923 11.3974682 -1.000000   31
+[39,]   39   27 11.1557733353 11.8244628 -1.000000   32
+[40,]   40   38 13.0188569906 13.6693817 -1.000000   33
+[41,]   41   27 13.2481609384 13.7258056 -1.000000   34
+[42,]   42   27 13.4508006249 -1.0000000 14.633019   21
+[43,]   43   35 13.6725356770 -1.0000000 -1.000000   28
+[44,]   44  -43 14.2075761587 14.6605504 -1.000000   35
+[45,]   45   35 14.5216262608 -1.0000000 -1.000000   28
+[46,]   46   40 14.9617769124 -1.0000000 -1.000000   33
+
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_sim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pbd_sim_cpp")
+> ### * pbd_sim_cpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pbd_sim_cpp
+> ### Title: Function to simulate the approximate protracted speciation
+> ###   process
+> ### Aliases: pbd_sim_cpp
+> ### Keywords: models
+> 
+> ### ** Examples
+>  pbd_sim_cpp(pars = c(0.2,1,0.2,0.1),age = 15) 
+[1] 15
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pbd_sim_cpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  17.67 0.13 17.84 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
