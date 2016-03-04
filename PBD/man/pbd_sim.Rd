@@ -28,7 +28,9 @@ provides also the conversion to the approximation as output.
 \value{
   \item{out}{ A list with the following elements: \cr \cr
    \code{tree} is the tree of extant species in phylo format \cr
-   \code{stree} is a tree with one sample per species in phylo format \cr
+   \code{stree_random} is a tree with one random sample per species in phylo format \cr
+   \code{stree_oldest} is a tree with the oldest sample per species in phylo format \cr
+   \code{stree_youngest} is a tree with the youngest sample per species in phylo format \cr   
    \code{L} is a matrix of all events in the simulation where \cr
    - the first column is the incipient-level label of a species \cr
    - the second column is the incipient-level label of the parent of the species \cr
@@ -38,12 +40,14 @@ provides also the conversion to the approximation as output.
    - the fifth column is the time of extinction of the species \cr
    If the fifth element equals -1, then the species is still extant.
    - The sixth column is the species-level label of the species \cr
-   \code{sL} is a matrix like L but for \code{stree} \cr
+   \code{sL_random} is a matrix like L but for \code{stree_random} \cr
+   \code{sL_oldest} is a matrix like L but for \code{stree_oldest} \cr   
+   \code{sL_youngest} is a matrix like L but for \code{stree_youngest} \cr   
    \code{igtree.extinct} is the tree in simmap format with incipient and good flags and including extinct species \cr
    \code{igtree.extant} is the tree in simmap format with incipient and good flags without extinct species \cr   
    \code{recontree} is the reconstructed tree in phylo format, reconstructed using the approximation in Lambert et al. 2014 \cr      
    \code{reconL} is the matrix corresponding to \code{recontree} \cr
-   \code{L0} is a matrix where the crown age is at 0; for internal use only \cr   
+   \code{L0} is a matrix where the crown age is at 0; for internal use only \cr     
   }
 }
 \author{ Rampal S. Etienne }

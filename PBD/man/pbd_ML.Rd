@@ -19,7 +19,7 @@ function(t,pars) {pars[3]}, function(t,pars) {pars[4]}),
    methode = "lsoda",
    n_low = 0,
    n_up = 0,
-   tol = c(1E-4, 1E-4, 1E-6),
+   tol = c(1E-6, 1E-6, 1E-6),
    maxiter = 1000 * round((1.25)^length(idparsopt)),
    optimmethod = 'subplex'
 )}

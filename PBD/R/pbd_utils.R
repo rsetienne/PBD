@@ -174,11 +174,22 @@ detphy = function(L, age, ig = F, dropextinct = T)
    return(linlist[7])
 }
 
-sampletree = function(L,age)
+sampletree = function(L,age,samplemethod = "random")
 {
    lenL = length(L[,1])
-   randomorder = sample2(1:lenL,replace = F)
-   L2 = L[randomorder,]
+   if(samplemethod == "random")
+   {
+      neworder = sample2(1:lenL, replace = F) 
+   }   
+   if(samplemethod == "youngest")
+   {
+      neworder = order(L[,3],decreasing = T)
+   }
+   if (samplemethod == "oldest")
+   {
+      neworder = order(L[,3],decreasing = F)
+   }     
+   L2 = L[neworder,]
    ss = NULL;
    for(i in 1:lenL)
    {
@@ -195,7 +206,7 @@ sampletree = function(L,age)
    L2 = L2[rev(order(L2[,3])),]   
    return(L2)
 }
-
+ 
 pbd_reconstruct = function(L)
 {
   L2 = L[order(L[,3]),]

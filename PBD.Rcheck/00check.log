@@ -1,9 +1,0 @@
-* using log directory 'd:/data/Ms/PBD/PBD.Rcheck'
-* using R Under development (unstable) (2016-01-17 r69948)
-* using platform: x86_64-w64-mingw32 (64-bit)
-* using session charset: ISO8859-1
-* using option '--as-cran'
-* checking for file 'PBD/DESCRIPTION' ... OK
-* checking extension type ... Package
-* this is package 'PBD' version '1.2'
-* checking CRAN incoming feasibility ...

@@ -121,8 +121,33 @@ trans = NULL
 igtree.extinct = phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = F))
 igtree.extant = phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = T))
 tree = as.phylo(read.tree(text = detphy(absL,age)))
-sL = sampletree(absL,age)
-stree = as.phylo(read.tree(text = detphy(sL,age)))
+
+# Random sampling
+sL_random = sampletree(absL, age, samplemethod = "random")
+stree_random = as.phylo(read.tree(text = detphy(sL_random, age)))
+# Sampling the oldest
+sL_oldest = sampletree(absL, age, samplemethod = "oldest")
+stree_oldest = as.phylo(read.tree(text = detphy(sL_oldest, age)))
+# Sampling the youngest
+sL_youngest = sampletree(absL, age, samplemethod = "youngest")
+stree_youngest = as.phylo(read.tree(text = detphy(sL_youngest, age)))
+
+sL_random[, 3:5][which(sL_random[, 3:5] == -1)] = age + 1
+sL_random[, 3:5] = age - sL_random[, 3:5]
+sL_random = sL_random[order(sL_random[, 1]), ]
+sL_oldest[, 3:5][which(sL_oldest[, 3:5] == -1)] = age + 1
+sL_oldest[, 3:5] = age - sL_oldest[, 3:5]
+sL_oldest = sL_oldest[order(sL_oldest[, 1]), ] 
+sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
+sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
+sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
+
+#sL = sampletree(absL,age)
+#stree = as.phylo(read.tree(text = detphy(sL,age)))
+#sL[,3:5][which(sL[,3:5] == -1)] = age + 1
+#sL[,3:5] = age - sL[,3:5]
+#sL = sL[order(sL[,1]),]
+
 #rbrts = sort(age - pbd_sim_step2a(L)[[1]])
 reconL = pbd_reconstruct(L0)
 recontree = as.phylo(read.tree(text = detphy(reconL,age)))
@@ -134,22 +159,22 @@ L = L[order(L[,1]),]
 reconL[,3:5][which(reconL[,3:5] == -1)] = age + 1
 reconL[,3:5] = age - reconL[,3:5]
 reconL = reconL[order(reconL[,1]),]
-sL[,3:5][which(sL[,3:5] == -1)] = age + 1
-sL[,3:5] = age - sL[,3:5]
-sL = sL[order(sL[,1]),]
+
 if(plotit == TRUE)
 {
-   par(mfrow = c(2,3))
+   par(mfrow = c(3,3))
    cols = setNames(c("gray","black"),c("i","g"))
    phytools::plotSimmap(igtree.extinct,colors = cols)
    phytools::plotSimmap(igtree.extant,colors = cols)
    plot(tree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
+   plot(stree_random, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
+   plot(stree_oldest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
+   plot(stree_youngest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
    plot(recontree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
-   plot(stree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
    par(mfrow = c(1,1))
 }
 
 
-Ltreeslist = list(tree = tree,stree = stree,L = L,sL = sL,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
+Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
 return(Ltreeslist)
 }
