@@ -1,0 +1,97 @@
+---
+title: "pbd_ML demo"
+author: "Richel Bilderbeek"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pbd_ML demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This document gives a demonstration how to use 
+the function to obtain a maximum-likelihood estimate
+of the protracted birth-death speciation model.
+
+First thing is to load the PBD package itself:
+
+
+```{r}
+library(PBD)
+```
+
+We will also need ape for `branching.times`:
+
+```{r}
+library(ape)
+```
+
+
+Here we simulate a tree with known parameters:
+
+```{r}
+set.seed(43)
+b_1 <- 0.3 # speciation-initiation rate of good species
+la_1 <- 0.2 # speciation-completion rate
+b_2 <- b_1 # the speciation-initiation rate of incipient species
+mu_1 <- 0.1 #  extinction rate of good species
+mu_2 <- mu_1 # extinction rate of incipient species 
+pars <- c(b_1, la_1, b_2, mu_1, mu_2)
+age <- 15 # the age for the simulation 
+phylogeny <- pbd_sim(pars = pars, age = age)$recontree
+plot(phylogeny)
+```
+
+Now we try to recover the parameters by maximum likelihood estimation:
+
+
+```{r}
+brts <- branching.times(phylogeny)  # branching times
+init_b <- 0.2  # speciation-initiation rate
+init_mu_1 <- 0.05  # extinction rate of good species
+init_la_1 <- 0.3 # speciation-completion rate
+init_mu_2 <- 0.05  # extinction rate of incipient species
+
+# The initial values of the parameters that must be optimized
+initparsopt <- c(init_b, init_mu_1, init_la_1)
+
+# Are the extinction rates equal between incipient and good species? 
+exteq <- TRUE 
+
+# The first element of the branching times is the crown age
+soc <- 2
+
+# Conditioning on (stem or) crown age and non-extinction of the phylogeny 
+cond <- 1 
+```
+
+Calling the `pbd_ML` function will give a lot of noise. 
+It cannot be turned off.
+Here goes:
+
+```{r}
+r <- pbd_ML(
+  brts = brts,
+  initparsopt = initparsopt, 
+  exteq = exteq,
+  soc = soc, 
+  cond = cond 
+)
+```
+
+The ML parameter estimates are:
+
+```
+print(r)
+```
+
+Comparing the known true value with the recovered values:
+
+```{r}
+df <- as.data.frame(r)
+df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
+row.names(df) <- c("ML", "true")
+knitr::kable(df)
+```
+
+Ideally, all parameter columns should have the same values.
