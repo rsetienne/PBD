@@ -1,33 +1,50 @@
+#' Likelihood maximization for protracted birth-death model of diversification
+#'
+#' @param brts branching times (positive, from present to past).
+#' @note 'max(brts)' equals the crown age and
+#'   'min(brts)' equals the most recent branching time
+#' @param initparsopt the initial parameter values:
+#'   initparsopt[1] = b (= la_1 in ER2012) = speciation initiation rate.
+#'   initparsopt[2] = mu_1 (= mu_g in ER2012) = extinction rate of good species.
+#'   initparsopt[3] = la_1 (= la_2 in ER2012) = speciation completion rate.
+#'   initparsopt[4] = mu_2 (= mu_i in ER2012) = extinction rate of incipient species.
+#' @param exteq incipient species have the same (1) or different (0) extinction rate as good species
+#' @param parsfunc functions of parameters
+#' @param res resolution of the method; res should be larger than the total number of species
+#' @param missnumspec number of missing species
+#' @param cond conditioning:
+#'   cond = 0 conditioning on stem or clade age.
+#'   cond = 1 conditioning on age and non-extinction of the phylogeny.
+#'   cond = 2 conditioning on age and on number of extant taxa
+#' @param btorph likelihood of branching times (0) or phylogeny (1), differ by a factor (S - 1)! where S is the number of extant species
+#' @param soc stem (1) or crown (2) age
+#' @param methode method of the numerical integration; see package deSolve for details
+#' @param n_low lower bound on number of species (cond = 2)
+#' @param n_up upper bound on number of species (cond = 2)
+#' @param tol tolerance in optimization:
+#    reltolx = relative tolerance of parameter values in optimization.
+#    reltolf = relative tolerance of function value in optimization.
+#    abstolx = absolute tolerance of parameter values in optimization
+#' @param maxiter the maximum number of iterations in the optimization
+#' @param optimmethod 'subplex' (current default) or 'simplex' (default of previous versions)
 #' @param verbose create output while performing algorithm
-pbd_ML = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initparsopt), idparsfix = NULL, parsfix = NULL, exteq = 1, parsfunc = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), missnumspec = 0, cond = 1, btorph = 1, soc = 2, methode = "lsoda", n_low = 0, n_up = 0, tol = c(1E-6, 1E-6, 1E-6), maxiter = 1000 * round((1.25)^length(idparsopt)), optimmethod = 'subplex', verbose = TRUE)
+#' @seealso bdd_loglik
+#' @return Logarithm of the maximum likelihood estimate
+#' @author Rampal S. Etienne
+#' @examples
+#'   pbd_ML(1:10,initparsopt = c(0.2,0.01,0.3), exteq = 1)
+#' @export
+pbd_ML = function(
+  brts,
+  initparsopt = c(0.2,0.1,1),
+  idparsopt = 1:length(initparsopt),
+  idparsfix = NULL,
+  parsfix = NULL,
+  exteq = 1,
+  parsfunc = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), missnumspec = 0, cond = 1, btorph = 1, soc = 2, methode = "lsoda", n_low = 0, n_up = 0, tol = c(1E-6, 1E-6, 1E-6), maxiter = 1000 * round((1.25)^length(idparsopt)),
+  optimmethod = 'subplex',
+  verbose = TRUE)
 {
-  # brts = branching times (positive, from present to past)
-  # - max(brts) = crown age
-  # - min(brts) = most recent branching time
-  # initparsopt contains initial parameter values
-  # - initparsopt[1] = b (= la_1 in ER2012) = speciation initiation rate
-  # - initparsopt[2] = mu_1 (= mu_g in ER2012) = extinction rate of good species
-  # - initparsopt[3] = la_1 (= la_2 in ER2012) = speciation completion rate
-  # - initparsopt[4] = mu_2 (= mu_i in ER2012) = extinction rate of incipient species
-  # exteq = incipient species have the same (1) or different (0) extinction rate as good species
-  # parsfunc = functions of parameters
-  # res = resolution of the method; res should be larger than the total number of species
-  # missnumspec = number of missing species
-  # cond = conditioning
-  # . cond = 0 conditioning on stem or clade age
-  # . cond = 1 conditioning on age and non-extinction of the phylogeny
-  # . cond = 2 conditioning on age and on number of extant taxa
-  # btorph = likelihood of branching times (0) or phylogeny (1), differ by a factor (S - 1)! where S is the number of extant species
-  # soc = stem (1) or crown (2) age
-  # methode = method of the numerical integration; see package deSolve for details
-  # n_low = lower bound on number of species (cond = 2)
-  # n_up = upper bound on number of species (cond = 2)
-  # tol = tolerance in optimization
-  # - reltolx = relative tolerance of parameter values in optimization
-  # - reltolf = relative tolerance of function value in optimization
-  # - abstolx = absolute tolerance of parameter values in optimization
-  # maxiter = the maximum number of iterations in the optimization
-  # optimmethod = 'subplex' (current default) or 'simplex' (default of previous versions)
 
   options(warn=-1)
   brts = sort(abs(as.numeric(brts)),decreasing = TRUE)

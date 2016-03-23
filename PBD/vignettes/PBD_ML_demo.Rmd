@@ -47,6 +47,13 @@ phylogeny <- pbd_sim(pars = pars, age = age)$recontree
 plot(phylogeny)
 ```
 
+Measure the number of taxa:
+
+```{r}
+n_taxa <- length(phylogeny$tip.label)
+print(paste("The phylogeny has", n_taxa, "taxa"))
+```
+
 ## Recover parameters by maximum-likelihood estimation
 
 Now we try to recover the parameters by maximum likelihood estimation.
@@ -191,21 +198,58 @@ ml_pars1 <- c(ml_b, ml_mu_1, ml_la_1, ml_mu_2)
 ml_pars2 <- c(cond, btorph, soc, 0, "lsoda")
 ```
 
-The function `pbd_loglik` will give the log-likelihood:
+The function `pbd_loglik` will give the log-likelihood of the phylogeny:
 
-```
-l <- pbd_loglik(
+```{r}
+my_loglik <- pbd_loglik(
   pars1 = ml_pars1,
   pars2 = ml_pars2,
   brts = brts
 )
-print(l)
+print(my_loglik)
 ```
 
-## Notes
+Sometimes we are not interested in the (log-)likelihood of the
+phylogeny, but in the likelihood of the branching times.
+
+```{r}
+ml_pars2_bt <- ml_pars2
+ml_pars2_bt[2] <- 0 # Set btorph to branching times
+
+my_loglik_bt <- pbd_loglik(
+  pars1 = ml_pars1,
+  pars2 = ml_pars2_bt,
+  brts = brts
+)
+print(my_loglik_bt)
+```
+
+There is a simple relationship between these two likelihoods,
+depending on the number of taxa (and thus branch combinations)
+a phylogeny has:
+
+```{r}
+loglik_factor <- factorial(n_taxa - 1)
+print(loglik_factor)
+```
+
+When taking the log of that factor, one can see that 
+the logarithm of the phylogeny likelihood (which is smallest)
+plus the logarithm of the factor results in the
+the logarithm of the branching times (which is bigger):
+
+```{r}
+log_loglik_factor <- log(loglik_factor)
+print(my_loglik + log_loglik_factor)
+print(my_loglik_bt)
+```
+
+
+## How to convert this vignette to PDF
+
+Just a note, which will be removed in the future.
 
 ```
-# Create .md, .html, and .pdf files
 setwd(paste(getwd(), "vignettes", sep = "/"))
 knit("PBD_ML_demo.Rmd")
 markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
