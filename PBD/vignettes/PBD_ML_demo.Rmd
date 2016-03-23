@@ -1,20 +1,23 @@
 ---
-title: "pbd_ML demo"
+title: "PBD demo"
 author: "Richel Bilderbeek"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{pbd_ML demo}
+  %\VignetteIndexEntry{PBD demo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# PBD demo
 
 This document gives a demonstration how to use 
 the function to obtain a maximum-likelihood estimate
 of the protracted birth-death speciation model.
 
-First thing is to load the PBD package itself:
+## Preparation
 
+First thing is to load the PBD package itself:
 
 ```{r}
 library(PBD)
@@ -26,6 +29,7 @@ We will also need ape for `branching.times`:
 library(ape)
 ```
 
+## Simulating a PBD tree
 
 Here we simulate a tree with known parameters:
 
@@ -43,8 +47,11 @@ phylogeny <- pbd_sim(pars = pars, age = age)$recontree
 plot(phylogeny)
 ```
 
-Now we try to recover the parameters by maximum likelihood estimation:
+## Recover parameters by maximum-likelihood estimation
 
+Now we try to recover the parameters by maximum likelihood estimation.
+
+First the correct parameters needs to be set:
 
 ```{r}
 brts <- branching.times(phylogeny)  # branching times
@@ -68,11 +75,14 @@ cond <- 1
 
 # Give the likelihood of the phylogeny (instead of the likelihood of the branching times)
 btorph <- 1
+
+reltolx <- 10^-6 # relative tolerance of parameter values in optimization
+reltolf <- 10^-6 # relative tolerance of function value in optimization
+abstolx <- 10^-6 # absolute tolerance of parameter values in optimization 
+tol <- c(reltolx, reltolf, abstolx)
 ```
 
-Calling the `pbd_ML` function will give a lot of noise. 
-It cannot be turned off.
-Here goes:
+With those parameters, we can call `pbd_ML`:
 
 ```{r}
 r <- pbd_ML(
@@ -81,7 +91,9 @@ r <- pbd_ML(
   exteq = exteq,
   soc = soc, 
   cond = cond,
-  btorph = btorph
+  btorph = btorph,
+  tol = tol,
+  verbose = FALSE
 )
 ```
 
@@ -94,13 +106,15 @@ print(r)
 Comparing the known true value with the recovered values:
 
 ```{r}
-df <- as.data.frame(r)
-df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
-row.names(df) <- c("ML", "true")
+df <- as.data.frame(x = list(b = b_1, mu_1 = mu_1, lambda_1 = la_1, mu_2 = mu_2,  loglik = NA, df = NA, conv = NA))
+df <- rbind(df, r)
+row.names(df) <- c("true", "ML")
 knitr::kable(df)
 ```
 
 Ideally, all parameter columns should have the same values.
+
+## Bootstrap 
 
 To test for the certainty of our ML estimate, we can do a bootstrap.
 
@@ -121,7 +135,8 @@ b <- pbd_bootstrap(
   btorph = btorph,
   plotltt = FALSE,
   endmc = endmc,
-  seed = seed
+  seed = seed,
+  tol = tol
 )
 ```
 
@@ -154,14 +169,18 @@ dg <- rbind(df,
   )
 )
 dg
-row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
+row.names(dg) <- c("true", "ML", "ML2", "BS1", "BS2", "BS3")
 knitr::kable(dg)
 ```
 
-We'd expect rows ML and ML2 to be identical. Their values are
-indeed very similar.
+We'd expect rows ML and ML2 to be identical and they are.
 
-We can calculate the log likelihood for 
+## Estimating the likelihood
+
+We have already seen the log-likelihood (`loglik`) of our ML 
+parameter estimates. Here, we calculate it ourselves.
+
+We use the parameter estimates obtained from the `ML2` row in the table:
 
 ```{r}
 ml_b <- b[[1]]$b
@@ -170,7 +189,11 @@ ml_la_1 <- b[[1]]$lambda_1
 ml_mu_2 <- b[[1]]$mu_2
 ml_pars1 <- c(ml_b, ml_mu_1, ml_la_1, ml_mu_2)
 ml_pars2 <- c(cond, btorph, soc, 0, "lsoda")
+```
 
+The function `pbd_loglik` will give the log-likelihood:
+
+```
 l <- pbd_loglik(
   pars1 = ml_pars1,
   pars2 = ml_pars2,
@@ -179,6 +202,7 @@ l <- pbd_loglik(
 print(l)
 ```
 
+## Notes
 
 ```
 # Create .md, .html, and .pdf files
