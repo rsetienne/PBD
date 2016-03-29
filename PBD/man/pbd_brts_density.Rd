@@ -1,6 +1,6 @@
 \name{pbd_brts_density}
 \alias{pbd_brts_density}
-\title{Node depth probbaility density for protracted birth-death model of diversification}
+\title{Node depth probability density for protracted birth-death model of diversification}
 \description{
 pbd_brts_density computes the probability density of node depths under the protracted speciation model given a set of parameters
 }
