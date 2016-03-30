@@ -1,3 +1,47 @@
+#' Simulating the protracted speciation process using the Doob-Gillespie algorithm. This function differs from pbd_sim_cpp that 1) it does not require that the speciation-initiation rate is the same for good and incipient species, and 2) that it simulates the exact protracted speciation process, and not the approximation made by the coalescent point process. This function provides also the conversion to the approximation as output.
+#' @usage
+#'  pbd_sim(
+#'   pars,
+#'   age,
+#'   soc = 2,
+#'   plotit = FALSE
+#' )
+#' @param pars Vector of parameters:
+#'   pars[1] corresponds to b_1, the speciation-initiation rate of good species
+#'   pars[2] corresponds to la_1, the speciation-completion rate
+#'   pars[3] corresponds to b_2, the speciation-initiation rate of incipient species
+#'   pars[4] corresponds to mu_1, the extinction rate of good species
+#'   pars[5] corresponds to mu_2, the extinction rate of incipient species
+#' @param age Sets the age for the simulation
+#' @param soc Sets whether this age is the stem (1) or crown (2) age
+#' @param plotit Sets whether the various trees produced by the function should be plotted or not
+#' @return A list with the following elements:
+#'   `tree` is the tree of extant species in phylo format.
+#'   `stree_random` is a tree with one random sample per species in phylo format.
+#'   `stree_oldest` is a tree with the oldest sample per species in phylo format.
+#'   `stree_youngest` is a tree with the youngest sample per species in phylo format.
+#'   `L` is a matrix of all events in the simulation where:
+#'   the first column is the incipient-level label of a species,
+#'   the second column is the incipient-level label of the parent of the species,
+#'   the third column is the time at which a species is born as incipient species,
+#'   the fourth column is the time of speciation-completion of the species,
+#'   If the fourth element equals -1, then the species is still incipient.
+#'   The fifth column is the time of extinction of the species.
+#'   If the fifth element equals -1, then the species is still extant.
+#'   The sixth column is the species-level label of the species
+#'   `sL_random` is a matrix like L but for stree_random
+#'   `sL_oldest` is a matrix like L but for stree_oldest
+#'   `sL_youngest` is a matrix like L but for stree_youngest
+#'   `igtree.extinct` is the tree in simmap format with incipient and good flags and including extinct species
+#'   `igtree.extant` is the tree in simmap format with incipient and good flags without extinct species
+#'   `recontree` is the reconstructed tree in phylo format, reconstructed using the approximation in Lambert et al. 2014
+#'   `reconL` is the matrix corresponding to recontree
+#'   `L0` is a matrix where the crown age is at 0; for internal use only
+#' @examples
+#'   pbd_sim(c(0.2,1,0.2,0.1,0.1),15)
+#' @author Rampal S. Etienne
+#' @seealso pbd_sim_cpp
+#' @export
 pbd_sim = function(pars,age,soc = 2,plotit = FALSE)
 {
 la1 = pars[1]
@@ -31,9 +75,9 @@ while(i <= soc)
    }
 
    Ng = length(sg)
-   Ni = length(si)  
-   probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)   
-   denom = sum(probs) 
+   Ni = length(si)
+   probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
+   denom = sum(probs)
    probs = probs/denom
    t = t - log(runif(1))/denom
 
@@ -60,7 +104,7 @@ while(i <= soc)
           tocomplete = abs(as.numeric(sample2(si,1)))
           L[tocomplete - id1,4] = t
           Sid = Sid + 1
-          L[tocomplete - id1,6] = Sid      
+          L[tocomplete - id1,6] = Sid
           sg = c(sg,tocomplete)
           si = si[-which(abs(si) == tocomplete)]
           Ng = Ng + 1
@@ -81,8 +125,8 @@ while(i <= soc)
           si = si[-which(abs(si) == todie)]
           Ni = Ni - 1
       }
-      probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)   
-      denom = sum(probs) 
+      probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
+      denom = sum(probs)
       probs = probs/denom
       t = t - log(runif(1))/denom
    }
@@ -96,18 +140,18 @@ while(i <= soc)
            Sid1 = Sid
            si1 = si
            sg1 = sg
-       }       
+       }
    } else {
    if(i == 2)
    {
        if(checkgood(L,si,sg) == 1)
        {
            i = i + 1
-           L2 = L   
+           L2 = L
            si2 = si
-           sg2 = sg                   
-       }       
-   }} 
+           sg2 = sg
+       }
+   }}
 }
 L = L1
 if(soc == 2)
@@ -137,7 +181,7 @@ sL_random[, 3:5] = age - sL_random[, 3:5]
 sL_random = sL_random[order(sL_random[, 1]), ]
 sL_oldest[, 3:5][which(sL_oldest[, 3:5] == -1)] = age + 1
 sL_oldest[, 3:5] = age - sL_oldest[, 3:5]
-sL_oldest = sL_oldest[order(sL_oldest[, 1]), ] 
+sL_oldest = sL_oldest[order(sL_oldest[, 1]), ]
 sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
 sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
 sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
@@ -167,9 +211,9 @@ if(plotit == TRUE)
    phytools::plotSimmap(igtree.extinct,colors = cols)
    phytools::plotSimmap(igtree.extant,colors = cols)
    plot(tree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
-   plot(stree_random, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
-   plot(stree_oldest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
-   plot(stree_youngest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)   
+   plot(stree_random, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
+   plot(stree_oldest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
+   plot(stree_youngest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    plot(recontree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    par(mfrow = c(1,1))
 }
