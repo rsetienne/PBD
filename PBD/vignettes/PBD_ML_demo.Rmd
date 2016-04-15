@@ -43,8 +43,9 @@ mu_1 <- 0.1 #  extinction rate of good species
 mu_2 <- mu_1 # extinction rate of incipient species 
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
-phylogeny <- pbd_sim(pars = pars, age = age)$recontree
-plot(phylogeny)
+results <- pbd_sim(pars = pars, age = age)
+plot(phylogeny$igtree.extant)
+plot(phylogeny$recontree)
 ```
 
 Measure the number of taxa:
