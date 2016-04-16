@@ -18,15 +18,9 @@ addons:
 
 before_script:
  - sudo Rscript install_r_packages.R
- - cd PBD
- # R wants all hidden files gone...
- - rm .gitignore
- - rm .travis.yml
- - rm -rf .git
- - rm -rf ..Rcheck
- - rm .Rprofile
 
 script: 
+ - cd PBD
  - R CMD check .
 
 after_succes:
