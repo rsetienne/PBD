@@ -44,8 +44,8 @@ mu_2 <- mu_1 # extinction rate of incipient species
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
 results <- pbd_sim(pars = pars, age = age)
-plot(phylogeny$igtree.extant)
-plot(phylogeny$recontree)
+phylogeny <- results$recontree
+plot(phylogeny)
 ```
 
 Measure the number of taxa:
@@ -252,7 +252,7 @@ Just a note, which will be removed in the future.
 
 ```
 setwd(paste(getwd(), "vignettes", sep = "/"))
-knit("PBD_ML_demo.Rmd")
-markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
+knitr::knit("PBD_ML_demo.Rmd")
+markdown::markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
 system("pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf")
 ```
