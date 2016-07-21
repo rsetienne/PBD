@@ -31,7 +31,7 @@ set.seed(seed)
 cat('Finding the maximum likelihood estimates ...\n\n')
 if(plotltt == 1)
 {
-    plot(c(-brts,0),c(soc:(length(brts)+soc-1),length(brts)+soc-1),log = 'y',type = 's',xlab = 'Time',ylab = 'Number of lineages')
+    graphics::plot(c(-brts,0),c(soc:(length(brts)+soc-1),length(brts)+soc-1),log = 'y',type = 's',xlab = 'Time',ylab = 'Number of lineages')
 }
 empout = pbd_ML(brts,initparsopt,idparsopt,idparsfix,parsfix,exteq,parsfunc,missnumspec,cond,btorph,soc,methode,n_low,n_up,tol,maxiter)
 MLpars = as.numeric(c(empout[1:4]))
@@ -43,9 +43,9 @@ trees = list()
 for(i in 1:endmc)
 {
    cat('Simulated data set',i,'out of',endmc,'\n')
-   flush.console()
+   utils::flush.console()
    simbrts = pbd_sim_cpp(pars = MLpars, age = max(abs(brts)), soc = soc, plotltt = plotltt, methode = methode)
-   trees[[i]] = brts2phylo(simbrts)
+   trees[[i]] = DDD::brts2phylo(simbrts)
 }
 return(list(empout,trees))
 }

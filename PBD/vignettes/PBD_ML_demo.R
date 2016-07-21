@@ -1,36 +1,11 @@
----
-title: "pbd_ML demo"
-author: "Richel Bilderbeek"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{pbd_ML demo}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-This document gives a demonstration how to use 
-the function to obtain a maximum-likelihood estimate
-of the protracted birth-death speciation model.
-
-First thing is to load the PBD package itself:
-
-
-```{r}
+## ------------------------------------------------------------------------
 rm(list = ls())
 library(PBD)
-```
 
-We will also need ape for `branching.times`:
-
-```{r}
+## ------------------------------------------------------------------------
 library(ape)
-```
 
-
-Here we simulate a tree with known parameters:
-
-```{r}
+## ------------------------------------------------------------------------
 seed <- 43
 set.seed(seed)
 b_1 <- 0.3 # speciation-initiation rate of good species
@@ -42,12 +17,8 @@ pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
 phylogeny <- pbd_sim(pars = pars, age = age)$recontree
 plot(phylogeny)
-```
 
-Now we try to recover the parameters by maximum likelihood estimation:
-
-
-```{r}
+## ------------------------------------------------------------------------
 brts <- branching.times(phylogeny)  # branching times
 init_b <- 0.2  # speciation-initiation rate
 init_mu_1 <- 0.05  # extinction rate of good species
@@ -69,13 +40,8 @@ cond <- 1
 
 # Give the likelihood of the phylogeny (instead of the likelihood of the branching times)
 btorph <- 1
-```
 
-Calling the `pbd_ML` function will give a lot of noise. 
-It can be turned off by setting verbose = FALSE.
-Here goes:
-
-```{r}
+## ------------------------------------------------------------------------
 r <- pbd_ML(
   brts = brts,
   initparsopt = initparsopt, 
@@ -84,32 +50,17 @@ r <- pbd_ML(
   cond = cond,
   btorph = btorph
 )
-```
 
-The ML parameter estimates are:
-
-```{r}
+## ------------------------------------------------------------------------
 print(r)
-```
 
-Comparing the known true value with the recovered values:
-
-```{r}
+## ------------------------------------------------------------------------
 df <- as.data.frame(r)
 df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
 row.names(df) <- c("ML", "true")
 knitr::kable(df)
-```
 
-Ideally, all parameter columns should have the same values.
-
-To test for the certainty of our ML estimate, we can do a bootstrap.
-
-The function `pbd_bootstrap` does:
- * First do a ML estimate
- * Run a simulation with those estimates, then recover these estimates by ML estimation
-
-```{r}
+## ------------------------------------------------------------------------
 
 endmc <- 3 # Sets the number of simulations for the bootstrap
 
@@ -124,16 +75,8 @@ b <- pbd_bootstrap(
   endmc = endmc,
   seed = seed
 )
-```
 
-From the bootstrap analysis, we get 
-
- * Again the ML estimate
- * The ML estimates for simulations run with those estimates
-
-Putting this in a table:
-
-```{r}
+## ------------------------------------------------------------------------
 dg <- rbind(df, 
   list(
     b = b[[1]]$b, 
@@ -157,14 +100,8 @@ dg <- rbind(df,
 dg
 row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
 knitr::kable(dg)
-```
 
-We'd expect rows ML and ML2 to be identical. Their values are
-indeed very similar.
-
-We can calculate the log likelihood for 
-
-```{r}
+## ------------------------------------------------------------------------
 ml_b <- b[[1]]$b
 ml_mu_1 <- b[[1]]$mu_1
 ml_la_1 <- b[[1]]$lambda_1
@@ -178,13 +115,4 @@ l <- pbd_loglik(
   brts = brts
 )
 print(l)
-```
 
-
-```
-# Create .md, .html, and .pdf files
-setwd(paste(getwd(), "vignettes", sep = "/"))
-knit("PBD_ML_demo.Rmd")
-markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
-system("pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf")
-```

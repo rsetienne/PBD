@@ -1,3 +1,5 @@
+#' @export
+
 pbd_brts_density = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), methode = "lsoda",brts)
 {
 # pbd_brts_density computes the density of node depth under the protracted speciation model
@@ -17,11 +19,11 @@ pars1 = c(pars1f,pars1)
 
 brts = sort(abs(brts))
 abstol = 1e-16
-reltol = 1e-10 
+reltol = 1e-10
 b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
 S = (length(brts) + 1)
 
 probs = c(1,1,0,0)
-y = ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
+y = deSolve::ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
 dens = b * y[2:S,2] * (1 - y[2:S,3])
 }

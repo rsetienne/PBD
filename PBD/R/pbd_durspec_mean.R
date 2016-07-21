@@ -1,3 +1,5 @@
+#' @export
+
 pbd_durspec_mean = function(pars)
 {
 la3 = pars[1]

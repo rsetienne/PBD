@@ -1,19 +1,3 @@
-roundn = function(x, digits = 0)
-{
-    fac = 10^digits
-    return(trunc(fac * x + 0.5)/fac)
-}
-
-sample2 = function(x,size,replace = FALSE,prob = NULL)
-{
-    if(length(x) == 1)
-    { 
-        x = c(x,x)
-        prob = c(prob,prob)
-    }
-    return(sample(x,size,replace,prob))
-}
-
 checkgood = function(L,si,sg,id1)
 {
     j = 1;
@@ -179,7 +163,7 @@ sampletree = function(L,age,samplemethod = "random")
    lenL = length(L[,1])
    if(samplemethod == "random")
    {
-      neworder = sample2(1:lenL, replace = F) 
+      neworder = DDD::sample2(1:lenL, replace = F) 
    }   
    if(samplemethod == "youngest")
    {
@@ -438,7 +422,7 @@ pbd_reconstruct = function(L)
   sls = c(sl[1],sls); ##
   dd2 = dd; ##
   pp2 = pp; ##
-  for(i in 1:length(tr[,1]))
+  for(i in length(tr[,1]):1)
   {
       dd2[which(dd2 == tr[i,1])] = tr[i,2]
       pp2[which(pp2 == tr[i,1])] = tr[i,2]
@@ -499,7 +483,7 @@ L2phylo2 = function(L,dropextinct = T)
       if(is.null(nrow(linlist))) { done = 1 }
    }
    linlist[4] = paste(linlist[4],":",linlist[5],";",sep = "")
-   phy = read.tree(text = linlist[4])
-   tree = as.phylo(phy)
+   phy = ape::read.tree(text = linlist[4])
+   tree = ape::as.phylo(phy)
    return(tree)
 }

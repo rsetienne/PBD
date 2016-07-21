@@ -1,6 +1,4 @@
 \name{PBD-internal}
-\alias{roundn}
-\alias{sample2}
 \alias{sampletree}
 \alias{checkgood}
 \alias{detphy}

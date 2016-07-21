@@ -1,3 +1,5 @@
+#' @export
+
 pbd_durspec_density = function(pars,tau)
 {
 la3 = pars[1]
