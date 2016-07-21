@@ -1,20 +1,23 @@
 ---
-title: "pbd_ML demo"
+title: "PBD demo"
 author: "Richel Bilderbeek"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{pbd_ML demo}
+  %\VignetteIndexEntry{PBD demo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# PBD demo
 
 This document gives a demonstration how to use 
 the function to obtain a maximum-likelihood estimate
 of the protracted birth-death speciation model.
 
-First thing is to load the PBD package itself:
+## Preparation
 
+First thing is to load the PBD package itself:
 
 ```{r}
 library(PBD)
@@ -26,6 +29,7 @@ We will also need ape for `branching.times`:
 library(ape)
 ```
 
+## Simulating a PBD tree
 
 Here we simulate a tree with known parameters:
 
@@ -39,12 +43,23 @@ mu_1 <- 0.1 #  extinction rate of good species
 mu_2 <- mu_1 # extinction rate of incipient species 
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
-phylogeny <- pbd_sim(pars = pars, age = age)$recontree
+results <- pbd_sim(pars = pars, age = age)
+phylogeny <- results$recontree
 plot(phylogeny)
 ```
 
-Now we try to recover the parameters by maximum likelihood estimation:
+Measure the number of taxa:
 
+```{r}
+n_taxa <- length(phylogeny$tip.label)
+print(paste("The phylogeny has", n_taxa, "taxa"))
+```
+
+## Recover parameters by maximum-likelihood estimation
+
+Now we try to recover the parameters by maximum likelihood estimation.
+
+First the correct parameters needs to be set:
 
 ```{r}
 brts <- branching.times(phylogeny)  # branching times
@@ -68,11 +83,14 @@ cond <- 1
 
 # Give the likelihood of the phylogeny (instead of the likelihood of the branching times)
 btorph <- 1
+
+reltolx <- 10^-6 # relative tolerance of parameter values in optimization
+reltolf <- 10^-6 # relative tolerance of function value in optimization
+abstolx <- 10^-6 # absolute tolerance of parameter values in optimization 
+tol <- c(reltolx, reltolf, abstolx)
 ```
 
-Calling the `pbd_ML` function will give a lot of noise. 
-It cannot be turned off.
-Here goes:
+With those parameters, we can call `pbd_ML`:
 
 ```{r}
 r <- pbd_ML(
@@ -81,7 +99,9 @@ r <- pbd_ML(
   exteq = exteq,
   soc = soc, 
   cond = cond,
-  btorph = btorph
+  btorph = btorph,
+  tol = tol,
+  verbose = FALSE
 )
 ```
 
@@ -94,13 +114,15 @@ print(r)
 Comparing the known true value with the recovered values:
 
 ```{r}
-df <- as.data.frame(r)
-df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
-row.names(df) <- c("ML", "true")
+df <- as.data.frame(x = list(b = b_1, mu_1 = mu_1, lambda_1 = la_1, mu_2 = mu_2,  loglik = NA, df = NA, conv = NA))
+df <- rbind(df, r)
+row.names(df) <- c("true", "ML")
 knitr::kable(df)
 ```
 
 Ideally, all parameter columns should have the same values.
+
+## Bootstrap 
 
 To test for the certainty of our ML estimate, we can do a bootstrap.
 
@@ -121,7 +143,9 @@ b <- pbd_bootstrap(
   btorph = btorph,
   plotltt = FALSE,
   endmc = endmc,
-  seed = seed
+  seed = seed,
+  tol = tol,
+  verbose = FALSE
 )
 ```
 
@@ -153,15 +177,18 @@ dg <- rbind(df,
     conv = b[[3]]$conv
   )
 )
-dg
-row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
+row.names(dg) <- c("true", "ML", "ML2", "BS1", "BS2", "BS3")
 knitr::kable(dg)
 ```
 
-We'd expect rows ML and ML2 to be identical. Their values are
-indeed very similar.
+We'd expect rows ML and ML2 to be identical and they are.
 
-We can calculate the log likelihood for 
+## Estimating the likelihood
+
+We have already seen the log-likelihood (`loglik`) of our ML 
+parameter estimates. Here, we calculate it ourselves.
+
+We use the parameter estimates obtained from the `ML2` row in the table:
 
 ```{r}
 ml_b <- b[[1]]$b
@@ -170,20 +197,62 @@ ml_la_1 <- b[[1]]$lambda_1
 ml_mu_2 <- b[[1]]$mu_2
 ml_pars1 <- c(ml_b, ml_mu_1, ml_la_1, ml_mu_2)
 ml_pars2 <- c(cond, btorph, soc, 0, "lsoda")
+```
 
-l <- pbd_loglik(
+The function `pbd_loglik` will give the log-likelihood of the phylogeny:
+
+```{r}
+my_loglik <- pbd_loglik(
   pars1 = ml_pars1,
   pars2 = ml_pars2,
   brts = brts
 )
-print(l)
+print(my_loglik)
+```
+
+Sometimes we are not interested in the (log-)likelihood of the
+phylogeny, but in the likelihood of the branching times.
+
+```{r}
+ml_pars2_bt <- ml_pars2
+ml_pars2_bt[2] <- 0 # Set btorph to branching times
+
+my_loglik_bt <- pbd_loglik(
+  pars1 = ml_pars1,
+  pars2 = ml_pars2_bt,
+  brts = brts
+)
+print(my_loglik_bt)
+```
+
+There is a simple relationship between these two likelihoods,
+depending on the number of taxa (and thus branch combinations)
+a phylogeny has:
+
+```{r}
+loglik_factor <- factorial(n_taxa - 1)
+print(loglik_factor)
+```
+
+When taking the log of that factor, one can see that 
+the logarithm of the phylogeny likelihood (which is smallest)
+plus the logarithm of the factor results in the
+the logarithm of the branching times (which is bigger):
+
+```{r}
+log_loglik_factor <- log(loglik_factor)
+print(my_loglik + log_loglik_factor)
+print(my_loglik_bt)
 ```
 
 
+## How to convert this vignette to PDF
+
+Just a note, which will be removed in the future.
+
 ```
-# Create .md, .html, and .pdf files
 setwd(paste(getwd(), "vignettes", sep = "/"))
-knit("PBD_ML_demo.Rmd")
-markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
+knitr::knit("PBD_ML_demo.Rmd")
+markdown::markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
 system("pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf")
 ```
