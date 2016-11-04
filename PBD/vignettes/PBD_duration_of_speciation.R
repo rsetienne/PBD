@@ -1,5 +1,4 @@
 ## ------------------------------------------------------------------------
-rm(list = ls())
 library(PBD)
 
 ## ------------------------------------------------------------------------
@@ -15,8 +14,16 @@ mu_1 <- 0.1 #  extinction rate of good species
 mu_2 <- mu_1 # extinction rate of incipient species 
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
-phylogeny <- pbd_sim(pars = pars, age = age)$recontree
+pbd_sim_result <- pbd_sim(pars = pars, age = age, plotit = TRUE)
+phylogeny <- pbd_sim_result$recontree
 plot(phylogeny)
+plot(pbd_sim_result$igtree.extant)
+plot(pbd_sim_result$tree)
+names(pbd_sim_result)
+
+## ------------------------------------------------------------------------
+n_taxa <- length(phylogeny$tip.label)
+print(paste("The phylogeny has", n_taxa, "taxa"))
 
 ## ------------------------------------------------------------------------
 brts <- branching.times(phylogeny)  # branching times
@@ -41,6 +48,11 @@ cond <- 1
 # Give the likelihood of the phylogeny (instead of the likelihood of the branching times)
 btorph <- 1
 
+reltolx <- 10^-6 # relative tolerance of parameter values in optimization
+reltolf <- 10^-6 # relative tolerance of function value in optimization
+abstolx <- 10^-6 # absolute tolerance of parameter values in optimization 
+tol <- c(reltolx, reltolf, abstolx)
+
 ## ------------------------------------------------------------------------
 r <- pbd_ML(
   brts = brts,
@@ -48,71 +60,17 @@ r <- pbd_ML(
   exteq = exteq,
   soc = soc, 
   cond = cond,
-  btorph = btorph
+  btorph = btorph,
+  tol = tol,
+  verbose = FALSE
 )
 
 ## ------------------------------------------------------------------------
 print(r)
 
 ## ------------------------------------------------------------------------
-df <- as.data.frame(r)
-df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
-row.names(df) <- c("ML", "true")
+df <- as.data.frame(x = list(b = b_1, mu_1 = mu_1, lambda_1 = la_1, mu_2 = mu_2,  loglik = NA, df = NA, conv = NA))
+df <- rbind(df, r)
+row.names(df) <- c("true", "ML")
 knitr::kable(df)
-
-## ------------------------------------------------------------------------
-
-endmc <- 3 # Sets the number of simulations for the bootstrap
-
-b <- pbd_bootstrap(
-  brts = brts,
-  initparsopt = initparsopt, 
-  exteq = exteq,
-  soc = soc, 
-  cond = cond,
-  btorph = btorph,
-  plotltt = FALSE,
-  endmc = endmc,
-  seed = seed
-)
-
-## ------------------------------------------------------------------------
-dg <- rbind(df, 
-  list(
-    b = b[[1]]$b, 
-    mu_1 = b[[1]]$mu_1, 
-    lambda_1 = b[[1]]$lambda_1, 
-    mu_2 = b[[1]]$mu_2,
-    loglik = b[[1]]$loglik,
-    df = b[[1]]$df,
-    conv = b[[1]]$conv
-  ),
-  list(
-    b = b[[3]]$b, 
-    mu_1 = b[[3]]$mu_1, 
-    lambda_1 = b[[3]]$lambda_1, 
-    mu_2 = b[[3]]$mu_2,
-    loglik = b[[3]]$loglik,
-    df = b[[3]]$df,
-    conv = b[[3]]$conv
-  )
-)
-dg
-row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
-knitr::kable(dg)
-
-## ------------------------------------------------------------------------
-ml_b <- b[[1]]$b
-ml_mu_1 <- b[[1]]$mu_1
-ml_la_1 <- b[[1]]$lambda_1
-ml_mu_2 <- b[[1]]$mu_2
-ml_pars1 <- c(ml_b, ml_mu_1, ml_la_1, ml_mu_2)
-ml_pars2 <- c(cond, btorph, soc, 0, "lsoda")
-
-l <- pbd_loglik(
-  pars1 = ml_pars1,
-  pars2 = ml_pars2,
-  brts = brts
-)
-print(l)
 
