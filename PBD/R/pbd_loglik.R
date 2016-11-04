@@ -1,3 +1,5 @@
+#' @export
+
 pbd_loglik = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), pars2 = c(1,1,2,1,"lsoda",0,0),brts,missnumspec = 0)
 {
 # pbd_loglik computes the loglikelihood of the protracted speciation model given a set of branching times and data
@@ -25,7 +27,7 @@ pars1 = c(pars1f,pars1)
 
 brts = sort(abs(brts))
 abstol = 1e-16
-reltol = 1e-10 
+reltol = 1e-10
 b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
 methode = pars2[5]
 cond = as.numeric(pars2[1])
@@ -35,16 +37,11 @@ S = length(brts) + (soc - 1)
 m = missnumspec
 
 probs = c(1,1,0,0)
-y = ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
+y = deSolve::ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
 if(dim(y)[1] < length(brts) + 1) { return(-Inf) }
-#loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:S,2]) + log(1 - y[2:S,3])) - log(b[1]) + (soc == 2) * (log(y[S,2]) + log(1 - y[S,3])) - soc * (cond > 0) * (log(1 - y[S,3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[S,2]) + (S + m - soc) * log(1 - y[S,2]))
 
-#loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:(length(brts) + 1),2]) + log(1 - y[2:(length(brts) + 1),3])) - log(b[length(b)]) + (soc == 2) * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) + (cond > 0) * soc * (-log(y[length(brts) + 1,2]) - log(1 - y[length(brts) + 1,3]) + log(y[(length(brts) + 1),2])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[(length(brts) + 1),2]) + (S + m - soc) * log(1 - y[(length(brts) + 1),2]))
-
-#loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:(length(brts) + 1),2]) + log(1 - y[2:(length(brts) + 1),3])) - log(b[length(b)]) + (soc == 2) * (log(y[(length(brts) + 1),2]) + log(1 - y[(length(brts) + 1),3])) - soc * (cond > 0) * (log(1 - y[(length(brts) + 1),3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[(length(brts) + 1),2]) + (S + m - soc) * log(1 - y[(length(brts) + 1),2]))
-#loglik = (btorph == 0) * lgamma(S) + (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) + (cond > 0) * soc * log(y[(length(brts) + 1),2]) + sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3])) - (cond == 2) * ((soc - 1) * log(S + m - 1) + soc * log(y[(length(brts) + 1),2]) + (S + m - soc) * log(1 - y[(length(brts) + 1),2]))
-loglik = (btorph == 0) * lgamma(S) + 
-         (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) + 
+loglik = (btorph == 0) * lgamma(S) +
+         (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) +
          (cond > 0) * soc * log(y[(length(brts) + 1),2])
 if(length(brts) > 1)
 {
@@ -58,7 +55,7 @@ if(cond == 2)
      {
          n_l = S + m
          n_u = S + m
-     }     
+     }
      if(as.numeric(pars2[7]) == Inf)
      {
          n_u = n_l - 1
@@ -96,7 +93,7 @@ if(m > 0)
    for(j in 1:S)
    {
        #x = convolve(x,rev((1:(m + 1)) * (y2[j]^(0:m))),type = 'open')[1:(m + 1)]
-       x = conv(x,(1:(m + 1)) * (y2[j]^(0:m)))[1:(m+1)]
+       x = DDD::conv(x,(1:(m + 1)) * (y2[j]^(0:m)))[1:(m+1)]
    }
    loglik = loglik + lgamma(S + 1) + lgamma(m + 1) - lgamma(S + m + 1) + log(x[m + 1])
 }
@@ -110,7 +107,7 @@ if(as.numeric(pars2[4]) == 1)
     }
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(pastetxt,s2,"\n",sep = "")
-    flush.console()
+    utils::flush.console()
 }
 
 return(as.numeric(loglik))

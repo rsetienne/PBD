@@ -26,8 +26,8 @@ under the protracted speciation model.\cr \cr
 \tabular{ll}{
 Package: \tab PBD\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2016-3-4\cr
+Version: \tab 1.3\cr
+Date: \tab 2016-7-20\cr
 License: \tab GPL-2\cr
 }
 pbd_loglik computes the likelihood of the protracted birth-death model of

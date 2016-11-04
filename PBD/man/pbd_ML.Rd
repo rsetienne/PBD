@@ -21,7 +21,8 @@ function(t,pars) {pars[3]}, function(t,pars) {pars[4]}),
    n_up = 0,
    tol = c(1E-6, 1E-6, 1E-6),
    maxiter = 1000 * round((1.25)^length(idparsopt)),
-   optimmethod = 'subplex'
+   optimmethod = 'subplex',
+   verbose = TRUE
 )}
 \arguments{
   \item{brts}{A set of branching times of a phylogeny, all positive }
@@ -63,6 +64,7 @@ See package deSolve for details.}
 }
   \item{maxiter}{Sets the maximum number of iterations in the optimization}
   \item{optimmethod}{ Method used in optimization of the likelihood. Current default is 'subplex'. Alternative is 'simplex' (default of previous versions)}  
+  \item{verbose}{ if TRUE, explanatory text will be shown}  
 }
 \value{
 \item{b}{ gives the maximum likelihood estimate of b}
@@ -80,6 +82,6 @@ Rampal S. Etienne
  \code{\link{pbd_loglik}}
 }
 \examples{
-pbd_ML(1:10,initparsopt = c(0.2,0.01,0.3), exteq = 1)
+pbd_ML(brts = 1:10,initparsopt = c(0.2,0.01,0.3), exteq = 1)
 }
 \keyword{ models }

@@ -1,3 +1,5 @@
+#' @export
+
 pbd_durspec_quantile = function(pars,p)
 {
    expdurspec = pbd_durspec_mean(pars)
@@ -16,7 +18,7 @@ pbd_durspec_quantile = function(pars,p)
               uptau = 10*uptau
           }
       }
-      q = uniroot(function(x) pbd_durspec_cumdensity(pars,x) - p,c(0,uptau))$root
+      q = stats::uniroot(function(x) pbd_durspec_cumdensity(pars,x) - p,c(0,uptau))$root
    }
    return(q)
 }

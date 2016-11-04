@@ -1,4 +1,5 @@
-#' @param verbose create output while performing algorithm
+#' @export
+
 pbd_ML = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initparsopt), idparsfix = NULL, parsfix = NULL, exteq = 1, parsfunc = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), missnumspec = 0, cond = 1, btorph = 1, soc = 2, methode = "lsoda", n_low = 0, n_up = 0, tol = c(1E-6, 1E-6, 1E-6), maxiter = 1000 * round((1.25)^length(idparsopt)), optimmethod = 'subplex', verbose = TRUE)
 {
   # brts = branching times (positive, from present to past)
@@ -28,6 +29,7 @@ pbd_ML = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initpar
   # - abstolx = absolute tolerance of parameter values in optimization
   # maxiter = the maximum number of iterations in the optimization
   # optimmethod = 'subplex' (current default) or 'simplex' (default of previous versions)
+  # verbose = whether intermediate output should be shown
 
   options(warn=-1)
   brts = sort(abs(as.numeric(brts)),decreasing = TRUE)
@@ -54,20 +56,20 @@ pbd_ML = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initpar
       trparsfix = parsfix/(1 + parsfix)
       trparsfix[parsfix == Inf] = 1
       pars2 = c(cond,btorph,soc,0,methode,n_low,n_up)
-      flush.console()
+      utils::flush.console()
       initloglik = pbd_loglik_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq,parsfunc = parsfunc,pars2 = pars2,brts = brts,missnumspec = missnumspec)
       if (verbose) { cat("The likelihood for the initial parameter values is",initloglik,"\n") }
-      flush.console()
+      utils::flush.console()
       if(initloglik == -Inf)
       {
         cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
         out2 = data.frame(b = -1, mu_1 = -1, lambda_1 = -1,mu_2 = -1, loglik = -1, df = -1, conv = -1)
       } else {
         if (verbose) { cat("Optimizing the likelihood - this may take a while.","\n") }
-        flush.console()
+        utils::flush.console()
         optimpars = c(tol,maxiter)
         #out = pbd_simplex(trparsopt,idparsopt,trparsfix,idparsfix,exteq,parsfunc,pars2,brts,missnumspec)
-        out = optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = pbd_loglik_choosepar,trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq, parsfunc = parsfunc, pars2 = pars2,brts = brts, missnumspec = missnumspec)
+        out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = pbd_loglik_choosepar,trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq, parsfunc = parsfunc, pars2 = pars2,brts = brts, missnumspec = missnumspec)
         if(out$conv > 0)
         {
           cat("Optimization has not converged. Try again with different initial values.\n")
@@ -88,7 +90,7 @@ pbd_ML = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initpar
           s4 = sprintf('The median duration of speciation for these parameters is: %f',pbd_durspec_quantile(c(MLpars1[1],MLpars1[3],MLpars1[4]),0.5))
           if (verbose) {
             cat("\n",s1,"\n",s2,"\n",s3,"\n",s4,"\n")
-            flush.console()
+            utils::flush.console()
           }
         }
       }

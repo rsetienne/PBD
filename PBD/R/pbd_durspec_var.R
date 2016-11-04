@@ -1,3 +1,5 @@
+#' @export
+
 pbd_durspec_var = function(pars)
 {
 la3 = pars[1]
