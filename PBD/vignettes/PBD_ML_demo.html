@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Richel Bilderbeek" />
+
+<meta name="date" content="2016-07-21" />
+
+<title>pbd_ML demo</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">pbd_ML demo</h1>
+<h4 class="author"><em>Richel Bilderbeek</em></h4>
+<h4 class="date"><em>2016-07-21</em></h4>
+
+
+
+<p>This document gives a demonstration how to use the function to obtain a maximum-likelihood estimate of the protracted birth-death speciation model.</p>
+<p>First thing is to load the PBD package itself:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+<span class="kw">library</span>(PBD)</code></pre></div>
+<p>We will also need ape for <code>branching.times</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ape)</code></pre></div>
+<p>Here we simulate a tree with known parameters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">seed &lt;-<span class="st"> </span><span class="dv">43</span>
+<span class="kw">set.seed</span>(seed)
+b_1 &lt;-<span class="st"> </span><span class="fl">0.3</span> <span class="co"># speciation-initiation rate of good species</span>
+la_1 &lt;-<span class="st"> </span><span class="fl">0.2</span> <span class="co"># speciation-completion rate</span>
+b_2 &lt;-<span class="st"> </span>b_1 <span class="co"># the speciation-initiation rate of incipient species</span>
+mu_1 &lt;-<span class="st"> </span><span class="fl">0.1</span> <span class="co">#  extinction rate of good species</span>
+mu_2 &lt;-<span class="st"> </span>mu_1 <span class="co"># extinction rate of incipient species </span>
+pars &lt;-<span class="st"> </span><span class="kw">c</span>(b_1, la_1, b_2, mu_1, mu_2)
+age &lt;-<span class="st"> </span><span class="dv">15</span> <span class="co"># the age for the simulation </span>
+phylogeny &lt;-<span class="st"> </span><span class="kw">pbd_sim</span>(<span class="dt">pars =</span> pars, <span class="dt">age =</span> age)$recontree
+<span class="kw">plot</span>(phylogeny)</code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAABqlBMVEUAAAAAAA0AABcAACAAACEAACoAADEAADIAADoAAEkAAFgAAGYADQAAFwAAF2YAICEAIHsAISAAKAAAKDoAKIEAKpAAMVEAMZAAMpAAOioAOkkAOmYAOnsAOnwAOpAAOp0ASUkASbYAWGYAWLYAZoEAZpwAZp0AZrYNAAANUbwXAAAXADoXZtsgIQAge9shADohfNsoAAAogf8qAAAqOgAqkNsxAAAxUTIyAAAyAA0yADoyUTE6AAA6ABc6ACA6ADo6Zlg6e3w6fHs6kLw6kNs6nP86nf9JAABJSQBJtv9YAABYZjpYtv9mAABmFwBmZjpmgWZmkJBmnJBmtrZmtttmtv97IAB7OgB7fDp72/98OgB82/+BKACBZgCQKACQMQCQOgCQkGaQnWaQvJCQ27aQ2/+cOgCcZgCckDqc//+dOgCdZgCd//+2ZgC2tma225C2/7a2/9u2//+8kDrbZhfbeyDbkCjbkCrbkDLbkDrbkGbbtmbb25Db/7bb/9vb////gSj/nTr/tkn/tlj/tmb/vFH/22b/25D//4H//5z//53//7b//9v///+ntTfiAAAACXBIWXMAAA7DAAAOwwHHb6hkAAANpUlEQVR4nO2djbvcRBXGI4rc9gIqSLV+rFaFxVqVirZVV9vKVbB0qxWL+IUXtajUCFz8WgQrJbJgNv+zc2aSzEwyyZtJcnd37nPeh4funJvdnfyezJyZOWdmo4zVqmjTFdh2MSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEFBQgOJI6EZeSCa36f+GpdGczqNomuXmPb/vDAjQap/uPcnvcDmjfxOBIdm5qS9ymcmWzqfKnM79CAUEaHlR3vFi94AKM3pC1N3GU32NyxxLsLsHq/1p+f7OCg+QfDIWUUT/KNNCtipSg1n+SQB6nVpdEjSgqFmiiZXdirjbRf5YZPkT0mImqaaXFQ3Vo0aD72lUtVZHEIrK1iQbkHyaZPfSbk6iskNamD3W0BqtX6g6ceGFVvt7mXocBDZNosEs3phziW2fN7xGa1Z7daSbV3e6nP2Ymgo58Cj6YXmF2yyLRO5/s8jCNrhGPdXSkyA1f2j8sOw97kRfpFKy8zjdMXUti2j3ZXHjavzjMlPp3bOfybJ3Tn/wptUgu9xLfwyH8aEt71yc+BY9O8tzsgf+Gw0EV/vnJ7fT+eVZ2Wwc5uXsKYL0nd2D9MmdP22HFzsUQOn8A7+k/3+W2tg/VVNbRFPR37xxseh3neZYPkTndw9UP7QN46BDAZStrpUzjcWxJ89Tk1o9HxGLotE0mKnr+slsT3VMUfSN0WrUWwMAtfVOdTevbt70S25z6eYNf9+1Rv1uZAMfKlVx8+lcPDCJgaLBrN28ftFRgQEqb3Ape2DVn1hzMae5mJ6ZLzoqHEDifuU46Ky8wWT3L+IpiafUsTwwXZZu3mmmVY7TRx7Q4lO/oJt9KzojSycuiBuNPyeHOKf0RXWzGDuKxvbO6cfU07W8eFSbWOHmT1L7Wf1GdsJJ9JCYUzxYOm6nOb53mrv5fNDopXAAZcvHpZuXM9F/5FMOajxTPbJxmlcvyreJUtXlddF6AA2Ye2g371jukNIPRYOZ5LvK0XwvY6gOaJSPdY2DqiObBrP3KkepkABltXGQshn33mD2X+UoFRQga7njp8VUQjrufGKhPJUMbaTz88Xlq/2+z09IgCrLHbu/jvTIhgY8H1bjILWiv0fmL39PjYPSeX8+AQGylzsWHxIOSY9sFsUslhj+91EqLL/7VYUlnfvN322FA8ha7lg9f/cL4t9iZJPsvCAfEtnQBCxx5XJ2KfdbvrOv8auOP9TjW1rcvF7uEAPjM/JhUSMb8SQp907dEfn6+8gseywKGcq3932Ktg9Q85+0mxcg9HJPpZTlvl6urXoPnH3qM+KHjgMoK9w84dCTTruUWb6+Ej3soaAAFW4+nrymHX6llJWhDXn9R44MIN3XNEi7+WLtVC1nvGmVjNCGnF386qNDbqRb1Uf40C6A0KWmmxee3Qgs2yUd2qALZ18a4sLa6jPqh44ByHTzyeTfRq9sl4rQxt+jx8TVJy70nWOg+oz6oWMAMt187sFz2aUitJG8j6zL2ZED1DgO0m7e9uB1fx7rPKBk0CixW9VH+FAPQO2KzUfFzv/RJenm85GRZ5iwb72GfmjUYc2s42friUMjINms8sFQ7JmrUNOakhfwF8GKWFENWlN9yopa6JJK2SwiZAO7oDWlv4wBSEc1VvuXRF/9VvR9abdL9Px8W4yNpnlHNHScGBAgI6qhPPh9eeuxS1n86Z9NaV2IuufBXXRIgIyoxvKb5MGLp8MulVN6anjD+WwRINiJ66iGnaTZlrI5StXXoA6AOqgcB9lJmm0pm8MVEqBML3eYSZotKZsjKChAZVSDPPmPoqvymVK6XkwpKKBRmIt2prdoxPmE36vqa9AYgOyoRra8cPwgH/lQ9yN6ZVl6Y6aGP3tGr1Ru0ZALIJ5Dx3AA6eWOV8UYUNA4o+yrZ48fZMWKojB/LcsDHcUkQ2/RkCbP9I5wABnLHYvdP8rIhdTyAm1TUU/LQrSlj6lAh57Gl1s0FEXP+X04gIzljtWzUXQyb0Cr/UcK56aSF/4QqfUyuyURQjVsPAKA4HIHKTadvFaDWSYv9FoA2UpAzX+qJS9UnpQGs0xe6LcAEhSg+l6N7K/a1Gx+W7p5AS+VqYu+VV+DxgDk3KuxuiZzFmoBDct8R6CSwcXLlYzG/pUZW2MAcuzVoBD0V6yLXOb3ZscOZMuKH6AB04NHtYm59mpk/3n/z81rnOb4rh9kmV4AeW4rAXVfUs0a6+TYq5G9ZM4o3OYizCiT76Od33lO9NcDyO+L3AEOl5tvCGg48hbyHMUt2avh80XuIU/TW1w5irWARt1s5ChuxV4Nny9y2FtjiNZeDaVqQKNmNnMUt2Irgs8XdQbk2quRqenX5yt7NSpmylF0rYIMqvfo8gFUaWpKjr0aokHRMsc57ZdcZspR1NPX5dmPb+e++cFPkGuvxuIuGgKqARLJaRaNUp1YITMazx33C7WGA8i5V+Mlu8W4zKnOUaQmenpb9833AdQU1Sg3ZaTz6zNjfwowZ/VJbP96j64egKpyHE0RyfiX8VC0mbM+yR4hAcpq46CF2mhQPZqiwdznAQoLkF7uoI6FNoDJlhN/YV7kQZOnyv9W38raK1soHEDmcsdydklMztUeQnJdtClj58+ZnJIKjx5PbsnjlIzhUb750D+XIRxA5nLHYvLa5LZ4LOSNL889dLvc7zy5Lf5Ldl+e3XAMqn1H0W31Hl2DAZnLHfEjojNZXqRlMGGRa4QymkN9TExp5Zcv/n5udkHqdZ9kj3AAmcsdyd0ztfuA+ps9um/FgIBR6b2ZNTwqnpw+2UJbCQhHNeztuW2lw6r36PIA1CLl5u2jJ9pKw7U+QE3y+IzCzdPQmGbryloriSZY5Jv1GPhU6z3w/YPVuQKGm4/lnvgXj6kTpqol8mhfL5viVm6HOpQKGG4+Jk+WzvNtGJUSHbMQnVVNbDG8NwoHkOHmk+iUcVJAtfR0JDMY6HW+U3Mt9Tssda+AdvNqBaN4NuySDKreL/mUOzXXU79DklWBxp7cdvP2bL1p7l7bqTm8fptQ1FhwSbl5e7beMHev7dQcoX6bkB8gFdXIJ/GFp7JKWTEtkwusnocFofptQp0BGVENieTte+VsPVJnLpRz94TmqgdJ2TKLlbKyE9/KJM4uFUCjRiOqkcjNlo/eUPmZd+jgv2LuLs/gnPwrT9sslzfKMOt2HLDUqwJR1l4bI6qhTus4lfc86ZXjB0UeOYUvVvsP52mbrxYdk4pqmC/867cpdQZkRjXSK1F0z80iP/NOGcOQB26n8yfytM1X5je02XrRo36bkg2ozc03nUClB4nIbP3dt36bUlR70ShnEmflcClk9t6BGBKgzJndYR0uhcxm9odn/TYlH0COJM7V/s5vjVYDzOnc+xiYcAA5kzjTuUwZqyZxNpiLYEiv+m1KnVfOXEmc6ZxOHTfaUqu5DIZ41c/n4kMVqokriTPeec5y3O3mMhgyZrXWJ1iTehKnkbiRYbMRDBmzWmuTWROw3EFqcNzt5h4Bjy0F1HRR3c3bjrvV3CvgERigehKn3ee2mh3ncPtVa7NCgBqSOBOaktaTOC1zvmdVolld8zuTKhxArgO36cXklhHacZqT6OnJm7T4QYDiYitnj2ptVpUeuSZXEif1LieNftdppj2JU2pf1P0Ij3/Vr1r97uaQ5ayVK4kzS+f3GKEdp3n1+jOU06AOq4g+sa2Z9l7qvtxhhXYazCS1+NEjELStgFxWxzjIfQhn3awWP/oEgkIClDl+X8x5CGc94iMXP3oFgoICZCdxTsvQTlr8TKgc8FBPc9WacuWbWXoFgsIBVE3ifGU+zSddkUzivD/P1kyiZypnc+YHbhdXhzpQtOSolrncEdO6RZ66Gk9uTcofflzIAQ91RTqh1Tpw2zvPNRxA9oHbamST6ZizLFH4UP2EKJ3Tlcv+UYDg1qTdcrp548BtGRnbU6/y36HLT33Jz6P65BU7+SNf/PA/FW9LATllunl786lRqv+y6DCFBCizTuK0N5+WJcd5VIMUGCCDhD2i0SVqUteHHnGrFQ6guDzOPitelKsc1dLgE1y1wgGkZ1n2D4XZJTmUHiFvqlQ4gDYkBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSAgBgTEgIAYEBADAmJAQAwIiAEBMSCg/wO2AT/MJN7UzgAAAABJRU5ErkJggg==" /><!-- --></p>
+<p>Now we try to recover the parameters by maximum likelihood estimation:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brts &lt;-<span class="st"> </span><span class="kw">branching.times</span>(phylogeny)  <span class="co"># branching times</span>
+init_b &lt;-<span class="st"> </span><span class="fl">0.2</span>  <span class="co"># speciation-initiation rate</span>
+init_mu_1 &lt;-<span class="st"> </span><span class="fl">0.05</span>  <span class="co"># extinction rate of good species</span>
+init_la_1 &lt;-<span class="st"> </span><span class="fl">0.3</span> <span class="co"># speciation-completion rate</span>
+<span class="co">#init_mu_2 &lt;- 0.05  # extinction rate of incipient species  # not used</span>
+
+<span class="co"># The initial values of the parameters that must be optimized</span>
+initparsopt &lt;-<span class="st"> </span><span class="kw">c</span>(init_b, init_mu_1, init_la_1)
+
+<span class="co"># The extinction rates between incipient and good species are equal</span>
+exteq &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+
+<span class="co"># The first element of the branching times is the crown age (and not the stem age)</span>
+soc &lt;-<span class="st"> </span><span class="dv">2</span>
+
+<span class="co"># Conditioning on non-extinction of the phylogeny</span>
+<span class="co"># as I actively selected for a nice phylogeny</span>
+cond &lt;-<span class="st"> </span><span class="dv">1</span>
+
+<span class="co"># Give the likelihood of the phylogeny (instead of the likelihood of the branching times)</span>
+btorph &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
+<p>Calling the <code>pbd_ML</code> function will give a lot of noise. It can be turned off by setting verbose = FALSE. Here goes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">pbd_ML</span>(
+  <span class="dt">brts =</span> brts,
+  <span class="dt">initparsopt =</span> initparsopt, 
+  <span class="dt">exteq =</span> exteq,
+  <span class="dt">soc =</span> soc, 
+  <span class="dt">cond =</span> cond,
+  <span class="dt">btorph =</span> btorph
+)</code></pre></div>
+<pre><code>## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -37.25841 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.281717, mu_1: 0.100335, lambda_1: 0.206350, mu_2: 0.100335 
+##  Maximum loglikelihood: -37.122103 
+##  The expected duration of speciation for these parameters is: 2.807356 
+##  The median duration of speciation for these parameters is: 2.206213</code></pre>
+<p>The ML parameter estimates are:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(r)</code></pre></div>
+<pre><code>##           b      mu_1 lambda_1      mu_2   loglik df conv
+## 1 0.2817166 0.1003351  0.20635 0.1003351 -37.1221  3    0</code></pre>
+<p>Comparing the known true value with the recovered values:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(r)
+df &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, <span class="kw">c</span>(b_1, mu_1, la_1, mu_2, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="ot">NA</span>))
+<span class="kw">row.names</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>)
+knitr::<span class="kw">kable</span>(df)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ML</td>
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.20635</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.1221</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>true</td>
+<td align="right">0.3000000</td>
+<td align="right">0.1000000</td>
+<td align="right">0.20000</td>
+<td align="right">0.1000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Ideally, all parameter columns should have the same values.</p>
+<p>To test for the certainty of our ML estimate, we can do a bootstrap.</p>
+<p>The function <code>pbd_bootstrap</code> does: * First do a ML estimate * Run a simulation with those estimates, then recover these estimates by ML estimation</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">endmc &lt;-<span class="st"> </span><span class="dv">3</span> <span class="co"># Sets the number of simulations for the bootstrap</span>
+
+b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
+  <span class="dt">brts =</span> brts,
+  <span class="dt">initparsopt =</span> initparsopt, 
+  <span class="dt">exteq =</span> exteq,
+  <span class="dt">soc =</span> soc, 
+  <span class="dt">cond =</span> cond,
+  <span class="dt">btorph =</span> btorph,
+  <span class="dt">plotltt =</span> <span class="ot">FALSE</span>,
+  <span class="dt">endmc =</span> endmc,
+  <span class="dt">seed =</span> seed
+)</code></pre></div>
+<pre><code>## Finding the maximum likelihood estimates ...
+## 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -37.25841 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.281715, mu_1: 0.100335, lambda_1: 0.206352, mu_2: 0.100335 
+##  Maximum loglikelihood: -37.122103 
+##  The expected duration of speciation for these parameters is: 2.807343 
+##  The median duration of speciation for these parameters is: 2.206200 
+## Bootstrapping ...
+## 
+## Simulated data set 1 out of 3 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -22.03909 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.375753, mu_1: 0.311977, lambda_1: 0.230678, mu_2: 0.311977 
+##  Maximum loglikelihood: -21.596081 
+##  The expected duration of speciation for these parameters is: 2.030928 
+##  The median duration of speciation for these parameters is: 1.543204 
+## Simulated data set 2 out of 3 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -57.99061 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.312123, mu_1: 0.081059, lambda_1: 0.190419, mu_2: 0.081059 
+##  Maximum loglikelihood: -57.720450 
+##  The expected duration of speciation for these parameters is: 2.943368 
+##  The median duration of speciation for these parameters is: 2.365253 
+## Simulated data set 3 out of 3 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -115.261 
+## Optimizing the likelihood - this may take a while. 
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## There are parameter values used which cause numerical problems.
+## 
+##  Maximum likelihood parameter estimates: b: 751.298215, mu_1: 751.000348, lambda_1: 0.004574, mu_2: 751.000348 
+##  Maximum loglikelihood: -111.629201 
+##  The expected duration of speciation for these parameters is: 0.386462 
+##  The median duration of speciation for these parameters is: 0.310353</code></pre>
+<p>From the bootstrap analysis, we get</p>
+<ul>
+<li>Again the ML estimate</li>
+<li>The ML estimates for simulations run with those estimates</li>
+</ul>
+<p>Putting this in a table:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dg &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, 
+  <span class="kw">list</span>(
+    <span class="dt">b =</span> b[[<span class="dv">1</span>]]$b, 
+    <span class="dt">mu_1 =</span> b[[<span class="dv">1</span>]]$mu_1, 
+    <span class="dt">lambda_1 =</span> b[[<span class="dv">1</span>]]$lambda_1, 
+    <span class="dt">mu_2 =</span> b[[<span class="dv">1</span>]]$mu_2,
+    <span class="dt">loglik =</span> b[[<span class="dv">1</span>]]$loglik,
+    <span class="dt">df =</span> b[[<span class="dv">1</span>]]$df,
+    <span class="dt">conv =</span> b[[<span class="dv">1</span>]]$conv
+  ),
+  <span class="kw">list</span>(
+    <span class="dt">b =</span> b[[<span class="dv">3</span>]]$b, 
+    <span class="dt">mu_1 =</span> b[[<span class="dv">3</span>]]$mu_1, 
+    <span class="dt">lambda_1 =</span> b[[<span class="dv">3</span>]]$lambda_1, 
+    <span class="dt">mu_2 =</span> b[[<span class="dv">3</span>]]$mu_2,
+    <span class="dt">loglik =</span> b[[<span class="dv">3</span>]]$loglik,
+    <span class="dt">df =</span> b[[<span class="dv">3</span>]]$df,
+    <span class="dt">conv =</span> b[[<span class="dv">3</span>]]$conv
+  )
+)
+dg</code></pre></div>
+<pre><code>##                b         mu_1    lambda_1         mu_2     loglik df conv
+## ML     0.2817166   0.10033506 0.206350020   0.10033506  -37.12210  3    0
+## true   0.3000000   0.10000000 0.200000000   0.10000000         NA NA   NA
+## 3      0.2817148   0.10033509 0.206351748   0.10033509  -37.12210  3    0
+## 4      0.3757529   0.31197727 0.230678073   0.31197727  -21.59608  3    0
+## 5      0.3121229   0.08105904 0.190419381   0.08105904  -57.72045  3    0
+## 6    751.2982150 751.00034756 0.004573677 751.00034756 -111.62920  3    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">row.names</span>(dg) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>, <span class="st">&quot;ML2&quot;</span>, <span class="st">&quot;BS1&quot;</span>, <span class="st">&quot;BS2&quot;</span>, <span class="st">&quot;BS3&quot;</span>)
+knitr::<span class="kw">kable</span>(dg)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ML</td>
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.2063500</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.12210</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>true</td>
+<td align="right">0.3000000</td>
+<td align="right">0.1000000</td>
+<td align="right">0.2000000</td>
+<td align="right">0.1000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>ML2</td>
+<td align="right">0.2817148</td>
+<td align="right">0.1003351</td>
+<td align="right">0.2063517</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.12210</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS1</td>
+<td align="right">0.3757529</td>
+<td align="right">0.3119773</td>
+<td align="right">0.2306781</td>
+<td align="right">0.3119773</td>
+<td align="right">-21.59608</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS2</td>
+<td align="right">0.3121229</td>
+<td align="right">0.0810590</td>
+<td align="right">0.1904194</td>
+<td align="right">0.0810590</td>
+<td align="right">-57.72045</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS3</td>
+<td align="right">751.2982150</td>
+<td align="right">751.0003476</td>
+<td align="right">0.0045737</td>
+<td align="right">751.0003476</td>
+<td align="right">-111.62920</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>We’d expect rows ML and ML2 to be identical. Their values are indeed very similar.</p>
+<p>We can calculate the log likelihood for</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ml_b &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$b
+ml_mu_1 &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$mu_1
+ml_la_1 &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$lambda_1
+ml_mu_2 &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$mu_2
+ml_pars1 &lt;-<span class="st"> </span><span class="kw">c</span>(ml_b, ml_mu_1, ml_la_1, ml_mu_2)
+ml_pars2 &lt;-<span class="st"> </span><span class="kw">c</span>(cond, btorph, soc, <span class="dv">0</span>, <span class="st">&quot;lsoda&quot;</span>)
+
+l &lt;-<span class="st"> </span><span class="kw">pbd_loglik</span>(
+  <span class="dt">pars1 =</span> ml_pars1,
+  <span class="dt">pars2 =</span> ml_pars2,
+  <span class="dt">brts =</span> brts
+)
+<span class="kw">print</span>(l)</code></pre></div>
+<pre><code>## [1] -37.1221</code></pre>
+<pre><code># Create .md, .html, and .pdf files
+setwd(paste(getwd(), &quot;vignettes&quot;, sep = &quot;/&quot;))
+knit(&quot;PBD_ML_demo.Rmd&quot;)
+markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c(&quot;use_xhml&quot;))
+system(&quot;pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf&quot;)</code></pre>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
