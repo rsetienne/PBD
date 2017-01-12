@@ -2,6 +2,11 @@
 
 pbd_sim = function(pars,age,soc = 2,plotit = FALSE)
 {
+# la1 = b_1 , the speciation-initiation rate of good species 
+# la2 = la_1, the speciation-completion rate 
+# la3 = b_2 , the speciation-initiation rate of incipient species 
+# mu1 = mu_1, the extinction rate of good species 
+# mu2 = mu_2, the extinction rate of incipient species 
 la1 = pars[1]
 la2 = pars[2]
 la3 = pars[3]
@@ -111,7 +116,7 @@ while(i <= soc)
    }}
 }
 L = L1
-if(soc == 2)
+if(soc == 2) # soc == 2: crown age
 {
     L = rbind(L1,L2)
 }
