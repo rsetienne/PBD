@@ -1,3 +1,4 @@
+
 \name{pbd_ML}
 \alias{pbd_ML}
 \title{Maximization of loglikelihood under protracted birth-death model of diversification}
@@ -21,7 +22,8 @@ function(t,pars) {pars[3]}, function(t,pars) {pars[4]}),
    n_up = 0,
    tol = c(1E-6, 1E-6, 1E-6),
    maxiter = 1000 * round((1.25)^length(idparsopt)),
-   optimmethod = 'subplex'
+   optimmethod = 'subplex',
+   verbose = TRUE
 )}
 \arguments{
   \item{brts}{A set of branching times of a phylogeny, all positive }
@@ -55,16 +57,17 @@ The number of species that are in the clade but missing in the phylogeny }
   \item{methode}{Sets which method should be used in the ode-solver. Default is 'lsoda'.
 See package deSolve for details.}
   \item{n_low}{Sets the lower bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}
-  \item{n_up}{Sets the upper bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}  
+  \item{n_up}{Sets the upper bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}
   \item{tol}{Sets the tolerances in the optimization. Consists of: \cr
    reltolx = relative tolerance of parameter values in optimization \cr
    reltolf = relative tolerance of function value in optimization \cr
    abstolx = absolute tolerance of parameter values in optimization
 }
   \item{maxiter}{Sets the maximum number of iterations in the optimization}
-  \item{optimmethod}{ Method used in optimization of the likelihood. Current default is 'subplex'. Alternative is 'simplex' (default of previous versions)}  
+  \item{optimmethod}{ Method used in optimization of the likelihood. Current default is 'subplex'. Alternative is 'simplex' (default of previous versions)}
+  \item{verbose}{ if TRUE, explanatory text will be shown}
 }
-\value{
+\value{A data frame with the following components:\cr
 \item{b}{ gives the maximum likelihood estimate of b}
  \item{mu_1}{ gives the maximum likelihood estimate of mu_1}
  \item{la_1}{ gives the maximum likelihood estimate of la_1}

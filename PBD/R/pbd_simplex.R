@@ -1,3 +1,5 @@
+#' @export
+
 pbd_simplex = function(trparsopt,idparsopt,trparsfix,idparsfix,exteq,parsfunc,pars2,brts,missnumspec)
 {
 numpar = length(trparsopt)
@@ -31,7 +33,7 @@ for(i in 1:numpar)
 }
 string = paste(string, -fv[1], how, "\n", sep = " ")
 cat(string)
-flush.console()
+utils::flush.console()
 
 tmp = order(fv)
 if(numpar == 1)
@@ -55,7 +57,7 @@ si = 0.5
 v2 = t(matrix(rep(v[,1],each = numpar + 1),nrow = numpar + 1))
 
 while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv[1])) - reltolf * abs(fv[1]) > 0) ) + ( (max(abs(v - v2)) - reltolx * abs(v2) > 0) | (max(abs(v - v2)) - abstolx > 0) ) ) )
-{ 
+{
    ## Calculate reflection point
 
    if(numpar == 1)
@@ -66,7 +68,7 @@ while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv
    }
    xr = (1 + rh) * xbar - rh * v[,numpar + 1]
    fxr = -pbd_loglik_choosepar(xr,trparsfix,idparsopt,idparsfix,exteq,parsfunc,pars2,brts,missnumspec)
- 
+
    if(fxr < fv[1])
    {
        ## Calculate expansion point
@@ -84,7 +86,7 @@ while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv
        }
    } else {
        if(fxr < fv[numpar])
-       {      
+       {
            v[,numpar + 1] = xr
            fv[numpar + 1] = fxr
            how = "reflect"
@@ -97,7 +99,7 @@ while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv
               if(fxco <= fxr)
               {
                  v[,numpar + 1] = xco
-                 fv[numpar + 1] = fxco            
+                 fv[numpar + 1] = fxco
                  how = "contract outside"
               } else {
                  how = "shrink"
@@ -107,7 +109,7 @@ while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv
               xci = (1 - ps) * xbar + ps * v[,numpar + 1]
               fxci = -pbd_loglik_choosepar(xci,trparsfix,idparsopt,idparsfix,exteq,parsfunc,pars2,brts,missnumspec)
               if(fxci < fv[numpar + 1])
-              {  
+              {
                  v[,numpar + 1] = xci
                  fv[numpar + 1] = fxci
                  how = "contract inside"
@@ -142,7 +144,7 @@ while(itercount <= maxiter & ( ( is.nan(max(abs(fv - fv[1]))) | (max(abs(fv - fv
    }
    string = paste(string, -fv[1], how, "\n", sep = " ")
    cat(string)
-   flush.console()
+   utils::flush.console()
    v2 = t(matrix(rep(v[,1],each = numpar + 1),nrow = numpar + 1))
 }
 if(itercount < maxiter)

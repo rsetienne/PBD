@@ -22,84 +22,58 @@ pbd_incipient = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,
 
 # Example: pbd_incipient(pars1 = c(0.1,0.05,1,0.05), brts = 1:10, missnumspec = 4)
 
-pars1 = c(pars1f,pars1)
-
-brts = sort(abs(brts))
-abstol = 1e-16
-reltol = 1e-10 
-b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
-methode = pars2[5]
-cond = as.numeric(pars2[1])
-btorph = as.numeric(pars2[2])
-soc = as.numeric(pars2[3])
-res = as.numeric(pars2[6])
-S = length(brts) + (soc - 1)
-m = missnumspec
-
-
-probs = c(1,1,0,0,1,1,1,1,0)
-y = ode(probs,c(0,brts),pbd_incipient_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
-#loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:S,2]) + log(1 - y[2:S,3])) - log(b[1]) + (soc == 2) * (log(y[S,2]) + log(1 - y[S,3])) - soc * (cond > 0) * (log(1 - y[S,3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[S,2]) + (S + m - soc) * log(1 - y[S,2]))
-print(y)
-A = y[2:S,10]/(1 - y[2:S,9])
-print(A)
-B = y[2:S,7]
-print(B)
-betapar = 1 - y[2:S,4] - y[2:S,6]
-gammapar = 1 - y[2:S,3]
-#print(betapar/gammapar)
-PN = rep(res + 1,0)
-PN[1] = 1
-for(j in 1:(S - 1))
-{
-    print(j)
-    PLj = c(betapar[j]/gammapar[j],(1 - betapar[j]/gammapar[j]) * A[j] * (1 - A[j])^((1:res) - 1))
-    #print(PLj[1:10])
-    #print(sum(PLj[2:length(PLj)]))
-    PRj = B[j] * (1 - B[j])^(0:res)
-    #print(PLj[1:10])
-    #print(sum(PRj))
-    PNj = conv(PLj,PRj)[1:(res + 1)]
-    #print(PNj[1:10])
-    #print(sum(PNj))
-    PN = conv(PN,PNj)[1:(res + 1)]
-    print(PN[1:10])
-}
-PN = conv(PN,PNj)[1:(res + 1)]
-print(PN[1:10])
-expinc = t(PN) %*% (0:res)
-
-#if(m > 0)
-#{
-#   if(soc == 1)
-#   {
-#      y2 = as.numeric(c(1-y[2:S,2]))
-#   }
-#   if(soc == 2)
-#   {
-#      y2 = as.numeric(c(1-y[2:S,2],1-y[S,2]))
-#   }
-#   x = rep(0,m + 1)
-#   x[1] = 1
-#   for(j in 1:S)
-#   {
-#       #x = convolve(x,rev((1:(m + 1)) * (y2[j]^(0:m))),type = 'open')[1:(m + 1)]
-#       x = conv(x,(1:(m + 1)) * (y2[j]^(0:m)))[1:(m+1)]
-#   }
-#   loglik = loglik + lgamma(S + 1) + lgamma(m + 1) - lgamma(S + m + 1) + log(x[m + 1])
-#}
-
-if(as.numeric(pars2[4]) == 1)
-{
-    pastetxt = paste('Parameters:',pars1[[5]][1],sep = ' ')
-    for(i in 6:length(pars1))
-    {
-        pastetxt = paste(pastetxt,pars1[[i]][1],sep = ', ')
-    }
-    s2 = sprintf(', Expected number of incipient speces: %f',expinc)
-    cat(pastetxt,s2,"\n",sep = "")
-    flush.console()
-}
-
-return(as.numeric(PN))
+  pars1 = c(pars1f,pars1)
+  
+  brts = sort(abs(brts))
+  abstol = 1e-16
+  reltol = 1e-10 
+  b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
+  methode = pars2[5]
+  cond = as.numeric(pars2[1])
+  btorph = as.numeric(pars2[2])
+  soc = as.numeric(pars2[3])
+  res = as.numeric(pars2[6])
+  S = length(brts) + (soc - 1)
+  m = missnumspec
+  
+  
+  probs = c(1,1,0,0,1,1,1,1,0)
+  y = deSolve::ode(probs,c(0,brts),pbd_incipient_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
+  #loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:S,2]) + log(1 - y[2:S,3])) - log(b[1]) + (soc == 2) * (log(y[S,2]) + log(1 - y[S,3])) - soc * (cond > 0) * (log(1 - y[S,3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[S,2]) + (S + m - soc) * log(1 - y[S,2]))
+  print(y)
+  A = y[2:S,10]/(1 - y[2:S,9])
+  print(A)
+  B = y[2:S,7]
+  print(B)
+  betapar = 1 - y[2:S,4] - y[2:S,6]
+  gammapar = 1 - y[2:S,3]
+  #print(betapar/gammapar)
+  PN = rep(res + 1,0)
+  PN[1] = 1
+  for(j in 1:(S - 1))
+  {
+      print(j)
+      PLj = c(betapar[j]/gammapar[j],(1 - betapar[j]/gammapar[j]) * A[j] * (1 - A[j])^((1:res) - 1))
+      PRj = B[j] * (1 - B[j])^(0:res)
+      PNj = DDD::conv(PLj,PRj)[1:(res + 1)]
+      PN = DDD::conv(PN,PNj)[1:(res + 1)]
+      print(PN[1:10])
+  }
+  PN = DDD::conv(PN,PNj)[1:(res + 1)]
+  #print(PN[1:10])
+  expinc = t(PN) %*% (0:res)
+  
+  if(as.numeric(pars2[4]) == 1)
+  {
+      pastetxt = paste('Parameters:',pars1[[5]][1],sep = ' ')
+      for(i in 6:length(pars1))
+      {
+          pastetxt = paste(pastetxt,pars1[[i]][1],sep = ', ')
+      }
+      s2 = sprintf(', Expected number of incipient speces: %f',expinc)
+      cat(pastetxt,s2,"\n",sep = "")
+      utils::flush.console()
+  }
+  
+  return(as.numeric(PN))
 }
