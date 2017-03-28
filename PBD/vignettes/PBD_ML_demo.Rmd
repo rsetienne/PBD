@@ -71,8 +71,6 @@ cond <- 1
 btorph <- 1
 ```
 
-Calling the `pbd_ML` function will give a lot of noise. 
-It can be turned off by setting verbose = FALSE.
 Here goes:
 
 ```{r}
@@ -82,21 +80,23 @@ r <- pbd_ML(
   exteq = exteq,
   soc = soc, 
   cond = cond,
-  btorph = btorph
+  btorph = btorph,
+  verbose = FALSE
 )
 ```
 
 The ML parameter estimates are:
 
 ```{r}
-print(r)
+knitr::kable(r)
 ```
 
 Comparing the known true value with the recovered values:
 
 ```{r}
+loglik_true <- PBD::pbd_loglik(pars, brts = brts)
 df <- as.data.frame(r)
-df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
+df <- rbind(df, c(b_1, mu_1, la_1, mu_2, loglik_true, NA, NA))
 row.names(df) <- c("ML", "true")
 knitr::kable(df)
 ```
@@ -106,12 +106,13 @@ Ideally, all parameter columns should have the same values.
 To test for the certainty of our ML estimate, we can do a bootstrap.
 
 The function `pbd_bootstrap` does:
+
  * First do a ML estimate
  * Run a simulation with those estimates, then recover these estimates by ML estimation
 
 ```{r}
 
-endmc <- 3 # Sets the number of simulations for the bootstrap
+endmc <- 20 # Sets the number of simulations for the bootstrap
 
 b <- pbd_bootstrap(
   brts = brts,
@@ -124,6 +125,7 @@ b <- pbd_bootstrap(
   endmc = endmc,
   seed = seed
 )
+knitr::kable(b[[3]])
 ```
 
 From the bootstrap analysis, we get 
@@ -155,7 +157,8 @@ dg <- rbind(df,
   )
 )
 dg
-row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
+
+row.names(dg) <- c("ML", "true", "ML2", paste("BS", 1:endmc, sep = ""))
 knitr::kable(dg)
 ```
 
