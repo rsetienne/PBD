@@ -102,13 +102,14 @@ pbd_ML = function(
           if(MLpars1[3] > 10^7){MLpars1[3] = Inf}
           ML = as.numeric(unlist(out$fvalues))
           out2 = data.frame(b = MLpars1[1],mu_1 = MLpars1[2],lambda_1 = MLpars1[3], mu_2 = MLpars1[4], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-          s1 = sprintf('Maximum likelihood parameter estimates: b: %f, mu_1: %f, lambda_1: %f, mu_2: %f',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4])
-          s2 = sprintf('Maximum loglikelihood: %f',ML)
-          s3 = sprintf('The expected duration of speciation for these parameters is: %f',pbd_durspec_mean(c(MLpars1[1],MLpars1[3],MLpars1[4])))
-          s4 = sprintf('The median duration of speciation for these parameters is: %f',pbd_durspec_quantile(c(MLpars1[1],MLpars1[3],MLpars1[4]),0.5))
-          if (verbose) {
-            cat("\n",s1,"\n",s2,"\n",s3,"\n",s4,"\n")
-            utils::flush.console()
+          if(verbose)
+          {
+             s1 = sprintf('Maximum likelihood parameter estimates: b: %f, mu_1: %f, lambda_1: %f, mu_2: %f',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4])
+             s2 = sprintf('Maximum loglikelihood: %f',ML)
+             s3 = sprintf('The expected duration of speciation for these parameters is: %f',pbd_durspec_mean(c(MLpars1[1],MLpars1[3],MLpars1[4])))
+             s4 = sprintf('The median duration of speciation for these parameters is: %f',pbd_durspec_quantile(c(MLpars1[1],MLpars1[3],MLpars1[4]),0.5))
+             cat("\n",s1,"\n",s2,"\n",s3,"\n",s4,"\n")
+             utils::flush.console()
           }
         }
       }

@@ -10,9 +10,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Richel Bilderbeek" />
+<meta name="author" content="Richel Bilderbeek &amp; Rampal S. Etienne" />
 
-<meta name="date" content="2016-11-04" />
+<meta name="date" content="2017-04-28" />
 
 <title>pbd_ML demo</title>
 
@@ -69,12 +69,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">pbd_ML demo</h1>
-<h4 class="author"><em>Richel Bilderbeek</em></h4>
-<h4 class="date"><em>2016-11-04</em></h4>
+<h4 class="author"><em>Richel Bilderbeek &amp; Rampal S. Etienne</em></h4>
+<h4 class="date"><em>2017-04-28</em></h4>
 
 
 
-<p>This document gives a demonstration how to use the function to obtain a maximum-likelihood estimate of the protracted birth-death speciation model.</p>
+<p>This document gives a demonstration how to use the package to obtain a maximum-likelihood estimate of the protracted birth-death speciation model.</p>
 <p>First thing is to load the PBD package itself:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
 <span class="kw">library</span>(PBD)</code></pre></div>
@@ -90,11 +90,23 @@ mu_1 &lt;-<span class="st"> </span><span class="fl">0.1</span> <span class="co">
 mu_2 &lt;-<span class="st"> </span>mu_1 <span class="co"># extinction rate of incipient species </span>
 pars &lt;-<span class="st"> </span><span class="kw">c</span>(b_1, la_1, b_2, mu_1, mu_2)
 age &lt;-<span class="st"> </span><span class="dv">15</span> <span class="co"># the age for the simulation </span>
-phylogeny &lt;-<span class="st"> </span><span class="kw">pbd_sim</span>(<span class="dt">pars =</span> pars, <span class="dt">age =</span> age)$recontree
-<span class="kw">plot</span>(phylogeny)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+phylogenies &lt;-<span class="st"> </span><span class="kw">pbd_sim</span>(<span class="dt">pars =</span> pars, <span class="dt">age =</span> age)
+<span class="kw">plot</span>(phylogenies$recontree)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(phylogenies$igtree.extant)</code></pre></div>
+<pre><code>## no colors provided. using the following legend:
+##       g       i 
+## &quot;black&quot;   &quot;red&quot;</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(phylogenies$tree)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(phylogenies)</code></pre></div>
+<pre><code>##  [1] &quot;tree&quot;           &quot;stree_random&quot;   &quot;stree_oldest&quot;   &quot;stree_youngest&quot;
+##  [5] &quot;L&quot;              &quot;sL_random&quot;      &quot;sL_oldest&quot;      &quot;sL_youngest&quot;   
+##  [9] &quot;igtree.extinct&quot; &quot;igtree.extant&quot;  &quot;recontree&quot;      &quot;reconL&quot;        
+## [13] &quot;L0&quot;</code></pre>
 <p>Now we try to recover the parameters by maximum likelihood estimation:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brts &lt;-<span class="st"> </span><span class="kw">branching.times</span>(phylogeny)  <span class="co"># branching times</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brts &lt;-<span class="st"> </span><span class="kw">branching.times</span>(phylogenies$recontree)  <span class="co"># branching times</span>
 init_b &lt;-<span class="st"> </span><span class="fl">0.2</span>  <span class="co"># speciation-initiation rate</span>
 init_mu_1 &lt;-<span class="st"> </span><span class="fl">0.05</span>  <span class="co"># extinction rate of good species</span>
 init_la_1 &lt;-<span class="st"> </span><span class="fl">0.3</span> <span class="co"># speciation-completion rate</span>
@@ -115,32 +127,47 @@ cond &lt;-<span class="st"> </span><span class="dv">1</span>
 
 <span class="co"># Give the likelihood of the phylogeny (instead of the likelihood of the branching times)</span>
 btorph &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
-<p>Calling the <code>pbd_ML</code> function will give a lot of noise. It can be turned off by setting verbose = FALSE. Here goes:</p>
+<p>Maximum likelihood estimation can now be performed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">pbd_ML</span>(
   <span class="dt">brts =</span> brts,
   <span class="dt">initparsopt =</span> initparsopt, 
   <span class="dt">exteq =</span> exteq,
   <span class="dt">soc =</span> soc, 
   <span class="dt">cond =</span> cond,
-  <span class="dt">btorph =</span> btorph
+  <span class="dt">btorph =</span> btorph,
+  <span class="dt">verbose =</span> <span class="ot">FALSE</span>
 )</code></pre></div>
-<pre><code>## You are optimizing b mu_1 lambda_1 
-## You are fixing nothing 
-## Extinction rate of incipient species is exactly the same as for good species.
-## The likelihood for the initial parameter values is -37.25841 
-## Optimizing the likelihood - this may take a while. 
-## 
-##  Maximum likelihood parameter estimates: b: 0.281717, mu_1: 0.100335, lambda_1: 0.206350, mu_2: 0.100335 
-##  Maximum loglikelihood: -37.122103 
-##  The expected duration of speciation for these parameters is: 2.807356 
-##  The median duration of speciation for these parameters is: 2.206213</code></pre>
 <p>The ML parameter estimates are:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(r)</code></pre></div>
-<pre><code>##           b      mu_1 lambda_1      mu_2   loglik df conv
-## 1 0.2817166 0.1003351  0.20635 0.1003351 -37.1221  3    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(r)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.20635</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.1221</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 <p>Comparing the known true value with the recovered values:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loglik_true &lt;-<span class="st"> </span>PBD::<span class="kw">pbd_loglik</span>(pars, <span class="dt">brts =</span> brts)</code></pre></div>
+<pre><code>## Parameters: 0.3, 0.2, 0.3, 0.1, 0.1, Loglikelihood: -37.324677</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(r)
-df &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, <span class="kw">c</span>(b_1, mu_1, la_1, mu_2, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="ot">NA</span>))
+df &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, <span class="kw">c</span>(b_1, mu_1, la_1, mu_2, loglik_true, <span class="ot">NA</span>, <span class="ot">NA</span>))
 <span class="kw">row.names</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>)
 knitr::<span class="kw">kable</span>(df)</code></pre></div>
 <table>
@@ -163,7 +190,7 @@ knitr::<span class="kw">kable</span>(df)</code></pre></div>
 <td align="right">0.1003351</td>
 <td align="right">0.20635</td>
 <td align="right">0.1003351</td>
-<td align="right">-37.1221</td>
+<td align="right">-37.12210</td>
 <td align="right">3</td>
 <td align="right">0</td>
 </tr>
@@ -173,16 +200,22 @@ knitr::<span class="kw">kable</span>(df)</code></pre></div>
 <td align="right">0.1000000</td>
 <td align="right">0.20000</td>
 <td align="right">0.1000000</td>
-<td align="right">NA</td>
+<td align="right">-37.32468</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 </tbody>
 </table>
 <p>Ideally, all parameter columns should have the same values.</p>
-<p>To test for the certainty of our ML estimate, we can do a bootstrap.</p>
-<p>The function <code>pbd_bootstrap</code> does: * First do a ML estimate * Run a simulation with those estimates, then recover these estimates by ML estimation</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">endmc &lt;-<span class="st"> </span><span class="dv">3</span> <span class="co"># Sets the number of simulations for the bootstrap</span>
+<p>To test for the uncertainty of our ML estimate, we can do a parametric bootstrap.</p>
+<p>The function <code>pbd_bootstrap</code> consists of a few steps:</p>
+<ol style="list-style-type: decimal">
+<li>Do a ML estimate</li>
+<li>Run a simulation with those estimates</li>
+<li>Perform ML estimation on the simulated data</li>
+<li>Go to 2 depending on the setting of endmc.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">endmc &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># Sets the number of simulations for the bootstrap</span>
 
 b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
   <span class="dt">brts =</span> brts,
@@ -209,7 +242,7 @@ b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
 ##  The median duration of speciation for these parameters is: 2.206200 
 ## Bootstrapping ...
 ## 
-## Simulated data set 1 out of 3 
+## Simulated data set 1 out of 10 
 ## You are optimizing b mu_1 lambda_1 
 ## You are fixing nothing 
 ## Extinction rate of incipient species is exactly the same as for good species.
@@ -220,7 +253,7 @@ b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
 ##  Maximum loglikelihood: -21.596081 
 ##  The expected duration of speciation for these parameters is: 2.030928 
 ##  The median duration of speciation for these parameters is: 1.543204 
-## Simulated data set 2 out of 3 
+## Simulated data set 2 out of 10 
 ## You are optimizing b mu_1 lambda_1 
 ## You are fixing nothing 
 ## Extinction rate of incipient species is exactly the same as for good species.
@@ -231,25 +264,241 @@ b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
 ##  Maximum loglikelihood: -57.720450 
 ##  The expected duration of speciation for these parameters is: 2.943368 
 ##  The median duration of speciation for these parameters is: 2.365253 
-## Simulated data set 3 out of 3 
+## Simulated data set 3 out of 10 
 ## You are optimizing b mu_1 lambda_1 
 ## You are fixing nothing 
 ## Extinction rate of incipient species is exactly the same as for good species.
 ## The likelihood for the initial parameter values is -115.261 
 ## Optimizing the likelihood - this may take a while. 
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
-## There are parameter values used which cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
 ## 
 ##  Maximum likelihood parameter estimates: b: 751.298215, mu_1: 751.000348, lambda_1: 0.004574, mu_2: 751.000348 
 ##  Maximum loglikelihood: -111.629201 
 ##  The expected duration of speciation for these parameters is: 0.386462 
-##  The median duration of speciation for these parameters is: 0.310353</code></pre>
+##  The median duration of speciation for these parameters is: 0.310353 
+## Simulated data set 4 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -107.9402 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.271860, mu_1: 0.000000, lambda_1: 0.126555, mu_2: 0.000000 
+##  Maximum loglikelihood: -106.870092 
+##  The expected duration of speciation for these parameters is: 4.218409 
+##  The median duration of speciation for these parameters is: 3.570808 
+## Simulated data set 5 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -47.84195 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.709877, mu_1: 0.574456, lambda_1: 0.225125, mu_2: 0.574456 
+##  Maximum loglikelihood: -46.601652 
+##  The expected duration of speciation for these parameters is: 1.643556 
+##  The median duration of speciation for these parameters is: 1.279479 
+## Simulated data set 6 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -187.144 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 13.979806, mu_1: 13.679004, lambda_1: 0.020678, mu_2: 13.679004 
+##  Maximum loglikelihood: -183.432908 
+##  The expected duration of speciation for these parameters is: 1.413933 
+##  The median duration of speciation for these parameters is: 1.171087 
+## Simulated data set 7 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -41.38109 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.492110, mu_1: 0.309936, lambda_1: 0.059444, mu_2: 0.309936 
+##  Maximum loglikelihood: -40.448749 
+##  The expected duration of speciation for these parameters is: 4.546741 
+##  The median duration of speciation for these parameters is: 3.828187 
+## Simulated data set 8 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -87.55681 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.300024, mu_1: 0.000001, lambda_1: 0.153513, mu_2: 0.000001 
+##  Maximum loglikelihood: -86.151794 
+##  The expected duration of speciation for these parameters is: 3.610683 
+##  The median duration of speciation for these parameters is: 3.031341 
+## Simulated data set 9 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -100.522 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.209810, mu_1: 0.000000, lambda_1: 0.393479, mu_2: 0.000000 
+##  Maximum loglikelihood: -99.916686 
+##  The expected duration of speciation for these parameters is: 2.036930 
+##  The median duration of speciation for these parameters is: 1.540704 
+## Simulated data set 10 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -61.11511 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.173103, mu_1: 0.000000, lambda_1: 0.890545, mu_2: 0.000000 
+##  Maximum loglikelihood: -60.368468 
+##  The expected duration of speciation for these parameters is: 1.026129 
+##  The median duration of speciation for these parameters is: 0.738873</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(b[[<span class="dv">3</span>]])</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ntips</th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+<th align="right">exp_durspec</th>
+<th align="right">median_durspec</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.3757529</td>
+<td align="right">0.3119773</td>
+<td align="right">0.2306781</td>
+<td align="right">0.3119773</td>
+<td align="right">-21.59608</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.0309277</td>
+<td align="right">1.5432035</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="right">0.3121229</td>
+<td align="right">0.0810590</td>
+<td align="right">0.1904194</td>
+<td align="right">0.0810590</td>
+<td align="right">-57.72045</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.9433681</td>
+<td align="right">2.3652530</td>
+</tr>
+<tr class="odd">
+<td align="right">40</td>
+<td align="right">751.2982150</td>
+<td align="right">751.0003476</td>
+<td align="right">0.0045737</td>
+<td align="right">751.0003476</td>
+<td align="right">-111.62920</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0.3864617</td>
+<td align="right">0.3103533</td>
+</tr>
+<tr class="even">
+<td align="right">41</td>
+<td align="right">0.2718601</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1265550</td>
+<td align="right">0.0000000</td>
+<td align="right">-106.87009</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">4.2184093</td>
+<td align="right">3.5708078</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0.7098773</td>
+<td align="right">0.5744562</td>
+<td align="right">0.2251248</td>
+<td align="right">0.5744562</td>
+<td align="right">-46.60165</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.6435563</td>
+<td align="right">1.2794793</td>
+</tr>
+<tr class="even">
+<td align="right">69</td>
+<td align="right">13.9798056</td>
+<td align="right">13.6790037</td>
+<td align="right">0.0206780</td>
+<td align="right">13.6790037</td>
+<td align="right">-183.43291</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.4139334</td>
+<td align="right">1.1710870</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">0.4921098</td>
+<td align="right">0.3099361</td>
+<td align="right">0.0594435</td>
+<td align="right">0.3099361</td>
+<td align="right">-40.44875</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">4.5467409</td>
+<td align="right">3.8281874</td>
+</tr>
+<tr class="even">
+<td align="right">35</td>
+<td align="right">0.3000241</td>
+<td align="right">0.0000011</td>
+<td align="right">0.1535128</td>
+<td align="right">0.0000011</td>
+<td align="right">-86.15179</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">3.6106829</td>
+<td align="right">3.0313409</td>
+</tr>
+<tr class="odd">
+<td align="right">38</td>
+<td align="right">0.2098101</td>
+<td align="right">0.0000000</td>
+<td align="right">0.3934793</td>
+<td align="right">0.0000000</td>
+<td align="right">-99.91669</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.0369305</td>
+<td align="right">1.5407041</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="right">0.1731033</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8905452</td>
+<td align="right">0.0000000</td>
+<td align="right">-60.36847</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.0261295</td>
+<td align="right">0.7388728</td>
+</tr>
+</tbody>
+</table>
 <p>From the bootstrap analysis, we get</p>
 <ul>
 <li>Again the ML estimate</li>
@@ -278,13 +527,20 @@ b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
 )
 dg</code></pre></div>
 <pre><code>##                b         mu_1    lambda_1         mu_2     loglik df conv
-## ML     0.2817166   0.10033506 0.206350020   0.10033506  -37.12210  3    0
-## true   0.3000000   0.10000000 0.200000000   0.10000000         NA NA   NA
-## 3      0.2817148   0.10033509 0.206351748   0.10033509  -37.12210  3    0
-## 4      0.3757529   0.31197727 0.230678073   0.31197727  -21.59608  3    0
-## 5      0.3121229   0.08105904 0.190419381   0.08105904  -57.72045  3    0
-## 6    751.2982150 751.00034756 0.004573677 751.00034756 -111.62920  3    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">row.names</span>(dg) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>, <span class="st">&quot;ML2&quot;</span>, <span class="st">&quot;BS1&quot;</span>, <span class="st">&quot;BS2&quot;</span>, <span class="st">&quot;BS3&quot;</span>)
+## ML     0.2817166 1.003351e-01 0.206350020 1.003351e-01  -37.12210  3    0
+## true   0.3000000 1.000000e-01 0.200000000 1.000000e-01  -37.32468 NA   NA
+## 3      0.2817148 1.003351e-01 0.206351748 1.003351e-01  -37.12210  3    0
+## 4      0.3757529 3.119773e-01 0.230678073 3.119773e-01  -21.59608  3    0
+## 5      0.3121229 8.105904e-02 0.190419381 8.105904e-02  -57.72045  3    0
+## 6    751.2982150 7.510003e+02 0.004573677 7.510003e+02 -111.62920  3    0
+## 7      0.2718601 3.331886e-08 0.126555041 3.331886e-08 -106.87009  3    0
+## 8      0.7098773 5.744562e-01 0.225124828 5.744562e-01  -46.60165  3    0
+## 9     13.9798056 1.367900e+01 0.020678046 1.367900e+01 -183.43291  3    0
+## 10     0.4921098 3.099361e-01 0.059443526 3.099361e-01  -40.44875  3    0
+## 11     0.3000241 1.094309e-06 0.153512850 1.094309e-06  -86.15179  3    0
+## 12     0.2098101 4.833861e-08 0.393479254 4.833861e-08  -99.91669  3    0
+## 13     0.1731033 9.079251e-10 0.890545200 9.079251e-10  -60.36847  3    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">row.names</span>(dg) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>, <span class="st">&quot;ML2&quot;</span>, <span class="kw">paste</span>(<span class="st">&quot;BS&quot;</span>, <span class="dv">1</span>:endmc, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))
 knitr::<span class="kw">kable</span>(dg)</code></pre></div>
 <table>
 <thead>
@@ -316,7 +572,7 @@ knitr::<span class="kw">kable</span>(dg)</code></pre></div>
 <td align="right">0.1000000</td>
 <td align="right">0.2000000</td>
 <td align="right">0.1000000</td>
-<td align="right">NA</td>
+<td align="right">-37.32468</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -360,10 +616,80 @@ knitr::<span class="kw">kable</span>(dg)</code></pre></div>
 <td align="right">3</td>
 <td align="right">0</td>
 </tr>
+<tr class="odd">
+<td>BS4</td>
+<td align="right">0.2718601</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1265550</td>
+<td align="right">0.0000000</td>
+<td align="right">-106.87009</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS5</td>
+<td align="right">0.7098773</td>
+<td align="right">0.5744562</td>
+<td align="right">0.2251248</td>
+<td align="right">0.5744562</td>
+<td align="right">-46.60165</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS6</td>
+<td align="right">13.9798056</td>
+<td align="right">13.6790037</td>
+<td align="right">0.0206780</td>
+<td align="right">13.6790037</td>
+<td align="right">-183.43291</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS7</td>
+<td align="right">0.4921098</td>
+<td align="right">0.3099361</td>
+<td align="right">0.0594435</td>
+<td align="right">0.3099361</td>
+<td align="right">-40.44875</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS8</td>
+<td align="right">0.3000241</td>
+<td align="right">0.0000011</td>
+<td align="right">0.1535128</td>
+<td align="right">0.0000011</td>
+<td align="right">-86.15179</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS9</td>
+<td align="right">0.2098101</td>
+<td align="right">0.0000000</td>
+<td align="right">0.3934793</td>
+<td align="right">0.0000000</td>
+<td align="right">-99.91669</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS10</td>
+<td align="right">0.1731033</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8905452</td>
+<td align="right">0.0000000</td>
+<td align="right">-60.36847</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
 </tbody>
 </table>
-<p>We’d expect rows ML and ML2 to be identical. Their values are indeed very similar.</p>
-<p>We can calculate the log likelihood for</p>
+<p>We expect rows ML and ML2 to be identical. Their values are indeed very similar.</p>
+<p>We can calculate the loglikelihood for</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ml_b &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$b
 ml_mu_1 &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$mu_1
 ml_la_1 &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]$lambda_1
@@ -381,7 +707,7 @@ l &lt;-<span class="st"> </span><span class="kw">pbd_loglik</span>(
 <pre><code># Create .md, .html, and .pdf files
 setwd(paste(getwd(), &quot;vignettes&quot;, sep = &quot;/&quot;))
 knit(&quot;PBD_ML_demo.Rmd&quot;)
-markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c(&quot;use_xhml&quot;))
+markdown::markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c(&quot;use_xhml&quot;))
 system(&quot;pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf&quot;)</code></pre>
 
 
