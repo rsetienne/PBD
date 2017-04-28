@@ -58,7 +58,7 @@ pbd_ML = function(
   } else {
     if(exteq == 1){ idexteq = 4 } else { idexteq = NULL }
     idpars = sort(c(idparsopt,idparsfix,idexteq))
-    if((sum(idpars == (1:4)) != 4) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
+    if((prod(idpars == (1:4)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
     {
       cat("The arguments should be coherent.\n")
       out2 = data.frame(b = -1, mu_1 = -1, lambda_1 = -1,mu_2 = -1, loglik = -1, df = -1, conv = -1)
