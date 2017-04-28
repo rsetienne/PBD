@@ -83,6 +83,6 @@ Rampal S. Etienne
  \code{\link{pbd_loglik}}
 }
 \examples{
-pbd_ML(1:10,initparsopt = c(0.2,0.01,0.3), exteq = 1)
+pbd_ML(1:10,initparsopt = c(4.640321,4.366528,0.030521), exteq = 1)
 }
 \keyword{ models }

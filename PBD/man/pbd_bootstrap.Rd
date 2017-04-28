@@ -59,7 +59,7 @@ The number of species that are in the clade but missing in the phylogeny }
   \item{methode}{Sets which method should be used in the ode-solver. Default is 'lsoda'.
 See package deSolve for details.}
   \item{n_low}{Sets the lower bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}
-  \item{n_up}{Sets the upper bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}  
+  \item{n_up}{Sets the upper bound of the number of species on which conditioning should be done when cond = 2. Set this to 0 when conditioning should be done on precisely the number of species (default)}
   \item{tol}{Sets the tolerances in the optimization. Consists of: \cr
    reltolx = relative tolerance of parameter values in optimization \cr
    reltolf = relative tolerance of function value in optimization \cr
@@ -86,8 +86,5 @@ Rampal S. Etienne
 }
 \seealso{
  \code{\link{pbd_ML}}
-}
-\examples{
-pbd_bootstrap(1:10,endmc = 2)
 }
 \keyword{ models }
