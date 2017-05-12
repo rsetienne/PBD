@@ -86,7 +86,6 @@ pbd_ML = function(
         if (verbose) { cat("Optimizing the likelihood - this may take a while.","\n") }
         utils::flush.console()
         optimpars = c(tol,maxiter)
-        #out = pbd_simplex(trparsopt,idparsopt,trparsfix,idparsfix,exteq,parsfunc,pars2,brts,missnumspec)
         out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = pbd_loglik_choosepar,trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq, parsfunc = parsfunc, pars2 = pars2,brts = brts, missnumspec = missnumspec)
         if(out$conv > 0)
         {

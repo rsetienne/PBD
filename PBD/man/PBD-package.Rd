@@ -25,15 +25,12 @@ under the protracted speciation model.\cr \cr
    - Contains a function to carry out a bootstrap likelihood ratio test.\cr
    - Vignette and test added.\cr
    - Reports an error if exteq = TRUE and initparsopt contains 4 parameters.\cr
+   - Option to limit a simulation to a certain maximum number of species; if exceeded, the simulation is ignored.\cr
+   New in version 1.4:\cr
+   - Includes all special cases in pbd_durspec_mean\cr
+   - Fixes a bug in conditioning on a range of values of the number of species\cr
 }
 \details{
-\tabular{ll}{
-Package: \tab PBD\cr
-Type: \tab Package\cr
-Version: \tab 1.3\cr
-Date: \tab 2017-4-28\cr
-License: \tab GPL-2\cr
-}
 pbd_loglik computes the likelihood of the protracted birth-death model of
 diversification, given a set of parameters and a data set of phylogenetic branching times.
 

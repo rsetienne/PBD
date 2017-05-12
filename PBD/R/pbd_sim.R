@@ -1,6 +1,6 @@
 #' @export
 
-pbd_sim = function(pars,age,soc = 2,plotit = FALSE)
+pbd_sim = function(pars,age,soc = 2,plotit = FALSE, limitsize = Inf)
 {
 la1 = pars[1]
 la2 = pars[2]
@@ -81,6 +81,11 @@ while(i <= soc)
           L[todie - id1,5] = t
           si = si[-which(abs(si) == todie)]
           Ni = Ni - 1
+      }
+      if(Ng + Ni > limitsize)
+      {
+        Ni = 0
+        Ng = 0
       }
       probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
       denom = sum(probs)

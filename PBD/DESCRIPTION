@@ -1,8 +1,8 @@
 Package: PBD
 Type: Package
 Title: Protracted Birth-Death Model of Diversification
-Version: 1.3
-Date: 2017-4-28
+Version: 1.5
+Date: 2017-5-10
 Depends:
     R (>= 3.0)
 Imports:
@@ -17,7 +17,10 @@ Imports:
 Author: Rampal S. Etienne
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
 Description: Conducts maximum likelihood analysis and simulation of the
-    protracted speciation model.
+    protracted birth-death model of diversification. See
+    Etienne, R.S. & J. Rosindell 2012 <doi:10.1093/sysbio/syr091>;
+    Lambert, A., H. Morlon & R.S. Etienne 2014, <doi:10.1007/s00285-014-0767-x>;
+    Etienne, R.S., H. Morlon & A. Lambert 2014, <doi:10.1111/evo.12433>.
 License: GPL-2
 Suggests:
     knitr,

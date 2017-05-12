@@ -1,3 +1,17 @@
+logcondfun = function(nn,socsoc,yy)
+{
+  if(socsoc == 1)
+  {
+    nfac = 0
+  } else
+  {
+    nfac = log(nn - 1)
+  }
+  pnc = nfac + (nn - socsoc) * log(1 - yy)
+  return(pnc)
+}
+
+
 #' @export
 
 pbd_loglik = function(
@@ -28,92 +42,93 @@ pbd_loglik = function(
 
 # Example: pbd_loglik(pars1 = c(0.1,0.05,1,0.05), brts = 1:10, missnumspec = 4)
 
-pars1 = c(pars1f,pars1)
+  pars1 = c(pars1f,pars1)
 
-brts = sort(abs(brts))
-abstol = 1e-16
-reltol = 1e-10
-b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
-methode = pars2[5]
-cond = as.numeric(pars2[1])
-btorph = as.numeric(pars2[2])
-soc = as.numeric(pars2[3])
-S = length(brts) + (soc - 1)
-m = missnumspec
+  brts = sort(abs(brts))
+  abstol = 1e-16
+  reltol = 1e-10
+  b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
+  methode = pars2[5]
+  cond = as.numeric(pars2[1])
+  btorph = as.numeric(pars2[2])
+  soc = as.numeric(pars2[3])
+  S = length(brts) + (soc - 1)
+  m = missnumspec
 
-probs = c(1,1,0,0)
-y = deSolve::ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
-if(dim(y)[1] < length(brts) + 1) { return(-Inf) }
+  probs = c(1,1,0,0)
+  y = deSolve::ode(probs,c(0,brts),pbd_loglik_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
+  if(dim(y)[1] < length(brts) + 1) { return(-Inf) }
 
-loglik = (btorph == 0) * lgamma(S) +
-         (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) +
-         (cond > 0) * soc * log(y[(length(brts) + 1),2])
-if(length(brts) > 1)
-{
-     loglik = loglik + sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3]))
-}
-if(cond == 2)
-{
-     n_l = as.numeric(pars2[6])
-     n_u = as.numeric(pars2[7])
-     if(n_l == 0 & n_u == 0)
-     {
-         n_l = S + m
-         n_u = S + m
-     }
-     if(as.numeric(pars2[7]) == Inf)
-     {
-         n_u = n_l - 1
-         n_l = soc
-     }
-     if(n_u < n_l)
-     {
-         logcond = 1
-     } else {
-         one = 1
-         if(n_l == 1 & n_u == 1)
-         {
-             one = 0
-         }
-         logcond = ((soc - 1) * log((n_l:n_u) - one) + soc * log(y[(length(brts) + 1),2]) + ((n_l:n_u) - soc) * log(1 - y[(length(brts) + 1),2]))
-     }
-     if(as.numeric(pars2[7]) == Inf)
-     {
-         logcond = 1 - logcond
-     }
-     loglik = loglik - logcond
-}
-if(m > 0)
-{
-   if(soc == 1)
-   {
-      y2 = as.numeric(c(1-y[2:(length(brts) + 1),2]))
-   }
-   if(soc == 2)
-   {
-      y2 = as.numeric(c(1-y[2:(length(brts) + 1),2],1-y[length(brts) + 1,2]))
-   }
-   x = rep(0,m + 1)
-   x[1] = 1
-   for(j in 1:S)
-   {
-       #x = convolve(x,rev((1:(m + 1)) * (y2[j]^(0:m))),type = 'open')[1:(m + 1)]
-       x = DDD::conv(x,(1:(m + 1)) * (y2[j]^(0:m)))[1:(m+1)]
-   }
-   loglik = loglik + lgamma(S + 1) + lgamma(m + 1) - lgamma(S + m + 1) + log(x[m + 1])
-}
+  loglik = (btorph == 0) * lgamma(S) +
+    (cond == 0) * soc * (log(y[length(brts) + 1,2]) + log(1 - y[length(brts) + 1,3])) +
+    (cond == 1) * soc * log(y[length(brts) + 1,2])
+  if(length(brts) > 1)
+  {
+    loglik = loglik + sum(log(b) + log(y[2:length(brts),2]) + log(1 - y[2:length(brts),3]))
+  }
+  if(cond == 2)
+  {
+    n_l = as.numeric(pars2[6])
+    n_u = as.numeric(pars2[7])
+    if(n_l == 0 & n_u == 0)
+    {
+      n_l = S + m
+      n_u = S + m
+    } else if(n_l > (S + m) | n_u < (S + m) | n_u < n_l)
+    {
+      cat('Lower or upper boundary not possible.\n')
+      return(-Inf)
+    }
+    if(n_l == soc & n_u == Inf)
+    {
+      logcond = -soc * log(y[length(brts) + 1,2])
+    } else if(n_u == Inf)
+    {
+      n_u = n_l - 1
+      n_l = soc
+      logcond = log(y[length(brts) + 1,2]^(-2) - sum(exp(logcondfun(n_l:n_u,soc,y[(length(brts) + 1),2]))))
+      if(logcond == -Inf)
+      {
+        cat('Catastrophic cancellation encountered. Trying now with 10000 as upper bound.\n')
+        logcond = log(sum(exp(logcondfun((n_u + 1):10000,soc,y[(length(brts) + 1),2]))))
+      }
+    } else
+    {
+      logcond = log(sum(exp(logcondfun(n_l:n_u,soc,y[(length(brts) + 1),2]))))
+    }
+    loglik = loglik - logcond
+  }
+  if(m > 0)
+  {
+    if(soc == 1)
+    {
+      y2 = as.numeric(c(1 - y[2:(length(brts) + 1),2]))
+    }
+    if(soc == 2)
+    {
+      y2 = as.numeric(c(1 - y[2:(length(brts) + 1),2],1 - y[length(brts) + 1,2]))
+    }
+    x = rep(0,m + 1)
+    x[1] = 1
+    for(j in 1:S)
+    {
+      #x = convolve(x,rev((1:(m + 1)) * (y2[j]^(0:m))),type = 'open')[1:(m + 1)]
+      x = DDD::conv(x,(1:(m + 1)) * (y2[j]^(0:m)))[1:(m+1)]
+    }
+    loglik = loglik + lgamma(S + 1) + lgamma(m + 1) - lgamma(S + m + 1) + log(x[m + 1])
+  }
 
-if(as.numeric(pars2[4]) == 1)
-{
+  if(as.numeric(pars2[4]) == 1)
+  {
     pastetxt = paste('Parameters:',pars1[[5]][1],sep = ' ')
     for(i in 6:length(pars1))
     {
-        pastetxt = paste(pastetxt,pars1[[i]][1],sep = ', ')
+      pastetxt = paste(pastetxt,pars1[[i]][1],sep = ', ')
     }
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(pastetxt,s2,"\n",sep = "")
     utils::flush.console()
-}
+  }
 
-return(as.numeric(loglik))
+  return(as.numeric(loglik))
 }
