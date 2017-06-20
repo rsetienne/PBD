@@ -47,15 +47,15 @@ pbd_durspec_mean = function(pars)
 #' @seealso pbd_durspec_mean
 #' @export
 pbd_mean_durspec = function(lambda_2, lambda_3, mu_2) {
-  if (lambda_2 < 0.0) {
-    stop("lambda_2 (speciation completion rate) cannot be negative")
+  if (is.na(lambda_2) || lambda_2 < 0.0) {
+    stop("lambda_2 (speciation completion rate) must be zero or positive")
   }
-  if (lambda_3 < 0.0) {
-    stop("lambda_3 (speciation initiation rate of incipient species) cannot",
-      "be negative")
+  if (is.na(lambda_3) || lambda_3 < 0.0) {
+    stop("lambda_3 (speciation initiation rate of incipient species) must",
+      "be zero or positive")
   }
-  if (mu_2 < 0.0) {
-    stop("mu_2 (incipient species extinction rate) cannot be negative")
+  if (is.na(mu_2) || mu_2 < 0.0) {
+    stop("mu_2 (incipient species extinction rate) must be zero or positive")
   }
   pbd_durspec_mean(c(lambda_3, lambda_2, mu_2))
 }
