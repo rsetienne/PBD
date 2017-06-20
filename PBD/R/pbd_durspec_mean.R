@@ -1,5 +1,6 @@
+#' Calculate the mean duration of speciation
+#' @param pars
 #' @export
-
 pbd_durspec_mean = function(pars)
 {
   la3 = pars[1]
@@ -24,3 +25,7 @@ pbd_durspec_mean = function(pars)
   }
   return(rho_mean)
 }
+
+#' Calculate the mean duration of speciation
+#' @export
+pbd_mean_durspec = function(pars)
