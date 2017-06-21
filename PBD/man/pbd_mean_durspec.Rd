@@ -3,20 +3,20 @@
 \name{pbd_mean_durspec}
 \alias{pbd_mean_durspec}
 \title{Calculate the mean duration of speciation
-(equations 19 and 20 of reference article)}
+(equations 19 and 20 of reference article), non-vectorized}
 \usage{
 pbd_mean_durspec(eri, scr, siri)
 }
 \arguments{
-\item{eri}{extinction rate of the incipient species,
+\item{eri}{one single extinction rate of the incipient species,
 or mu_2 in article,
 in probability per time unit}
 
-\item{scr}{speciation completion rate,
+\item{scr}{one single speciation completion rate,
 or lambda_2 in article,
 in probability per time unit}
 
-\item{siri}{speciation initiation rate of incipient species, or
+\item{siri}{one single speciation initiation rate of incipient species, or
 lambda_3 in article,
 in probability per time unit}
 }
@@ -25,7 +25,7 @@ the means duration of speciation, in time units
 }
 \description{
 Calculate the mean duration of speciation
-(equations 19 and 20 of reference article)
+(equations 19 and 20 of reference article), non-vectorized
 }
 \examples{
   eri <- 0.1 # extinction rate of incipient species
