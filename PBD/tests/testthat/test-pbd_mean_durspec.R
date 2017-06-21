@@ -22,7 +22,13 @@ test_that("siri (lambda_3) is zero, equation 21a", {
   scr <- 0.2 # speciation completion rate
   siri <- 0.0 # speciation initiation rate of incipient species
   mean_durspec <- PBD::pbd_mean_durspec(eri = eri, scr = scr, siri = siri)
-  expected_mean_durspec <- 1.0 / (eri + scr)
+
+  # Calculate by hand
+  mu_2 <- eri
+  lambda_2 <- scr
+  lambda_3 <- siri
+  expected_mean_durspec <- 1.0 / (lambda_2 + mu_2)
+
   expected_mean_durspec_too <- 3.333333
   testthat::expect_equal(mean_durspec, expected_mean_durspec,
     tolerance = 0.000001)
@@ -41,7 +47,13 @@ test_that("eri (mu_2) is zero, equation 21b", {
   scr <- 0.2 # speciation completion rate
   siri <- 0.3 # speciation initiation rate of incipient species
   mean_durspec <- PBD::pbd_mean_durspec(eri = eri, scr = scr, siri = siri)
-  expected_mean_durspec <- (1.0 / siri) * log(1.0 + (siri / scr))
+
+  # Calculate by hand
+  mu_2 <- eri
+  lambda_2 <- scr
+  lambda_3 <- siri
+  expected_mean_durspec <- (1.0 / lambda_3) * log(1.0 + (lambda_3 / lambda_2))
+
   expected_mean_durspec_too <- 3.054302
   testthat::expect_equal(mean_durspec, expected_mean_durspec,
     tolerance = 0.000001)
