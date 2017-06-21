@@ -1,27 +1,30 @@
+#' Calculate the mean duration of speciation
+#' (equations 19 and 20 of reference article),
+#' unwraps its arguments without checking for input
+#' @param pars numeric vector with three elements:
+#'   [1] speciation initiation rate of incipient species (lambda_3),
+#'   [2] speciation completion rate (lamba_2) and
+#'   [3] extinction rate of the incipient species (mu_2)
+#' @return the means duration of speciation, in time units
+#' @examples
+#'   eri <- 0.1 # extinction rate of incipient species
+#'   scr <- 0.2 # speciation completion rate
+#'   siri <- 0.3 # speciation initiation rate of incipient species
+#'   mean_durspec <- pbd_durspec_mean(c(siri, scr, eri))
+#'   expected_mean_durspec <- 2.829762
+#'   testthat::expect_equal(mean_durspec, expected_mean_durspec,
+#'     tolerance = 0.000001)
+#' @author Rampal S. Etienne, Richel J.C. Bilderbeek
+#' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
+#'   counteracts the pull of the present: protracted speciation can explain
+#'   observed slowdowns in diversification." Systematic
+#'   Biology 61.2 (2012): 204-213.
+#' @seealso pbd_mean_durspec
+#' @note future releases may check if user input is valid
 #' @export
 pbd_durspec_mean = function(pars)
 {
-  la3 = pars[1]
-  la2 = pars[2]
-  mu2 = pars[3]
-  if(la2 == Inf)
-  {
-    rho_mean = 0
-  } else if(la2 == 0)
-  {
-    rho_mean = Inf
-  } else if(la3 == 0)
-  {
-    rho_mean = 1/(la2 + mu2)
-  } else if(mu2 == 0)
-  {
-    rho_mean = 1/la3 * log(1 + la3/la2)
-  } else
-  {
-    D = sqrt((la2 + la3)^2 + 2*(la2 - la3) * mu2 + mu2^2)
-    rho_mean = 2/(D - la2 + la3 - mu2) * log(2 / (1 + (la2 - la3 + mu2)/D))
-  }
-  return(rho_mean)
+  pbd_durspec_mean_impl(la2 = pars[2], la3 = pars[1], mu2 = pars[3])
 }
 
 #' Calculate the mean duration of speciation
@@ -44,6 +47,7 @@ pbd_durspec_mean = function(pars)
 #'   expected_mean_durspec <- 2.829762
 #'   testthat::expect_equal(mean_durspec, expected_mean_durspec,
 #'     tolerance = 0.000001)
+#' @author Richel J.C. Bilderbeek
 #' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
@@ -62,4 +66,36 @@ pbd_mean_durspec = function(eri, scr, siri) {
       "be zero or positive")
   }
   pbd_durspec_mean(c(siri, scr, eri))
+}
+
+
+#' Actual calculation of the mean duration of speciation
+#' (equations 19 and 20 of reference article)
+#' assuming all inputs are correct
+#' @author Rampal S. Etienne
+#' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
+#'   counteracts the pull of the present: protracted speciation can explain
+#'   observed slowdowns in diversification." Systematic
+#'   Biology 61.2 (2012): 204-213.
+#' @seealso pbd_durspec_mean
+pbd_durspec_mean_impl = function(la2, la3, mu2)
+{
+  if(la2 == Inf)
+  {
+    rho_mean = 0
+  } else if(la2 == 0)
+  {
+    rho_mean = Inf
+  } else if(la3 == 0)
+  {
+    rho_mean = 1/(la2 + mu2)
+  } else if(mu2 == 0)
+  {
+    rho_mean = 1/la3 * log(1 + la3/la2)
+  } else
+  {
+    D = sqrt((la2 + la3)^2 + 2*(la2 - la3) * mu2 + mu2^2)
+    rho_mean = 2/(D - la2 + la3 - mu2) * log(2 / (1 + (la2 - la3 + mu2)/D))
+  }
+  return(rho_mean)
 }

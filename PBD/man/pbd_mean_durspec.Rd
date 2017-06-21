@@ -45,3 +45,6 @@ Etienne, Rampal S., and James Rosindell. "Prolonging the past
 \seealso{
 pbd_durspec_mean
 }
+\author{
+Richel J.C. Bilderbeek
+}
