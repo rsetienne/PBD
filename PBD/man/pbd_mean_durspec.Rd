@@ -42,9 +42,6 @@ Etienne, Rampal S., and James Rosindell. "Prolonging the past
   observed slowdowns in diversification." Systematic
   Biology 61.2 (2012): 204-213.
 }
-\seealso{
-pbd_durspec_mean
-}
 \author{
 Richel J.C. Bilderbeek
 }

@@ -52,7 +52,6 @@ pbd_durspec_mean = function(pars)
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
 #'   Biology 61.2 (2012): 204-213.
-#' @seealso pbd_durspec_mean
 #' @export
 pbd_mean_durspec = function(eri, scr, siri) {
   if (is.na(eri) || eri < 0.0) {
@@ -65,7 +64,7 @@ pbd_mean_durspec = function(eri, scr, siri) {
     stop("speciation initiation rate of incipient species must ",
       "be zero or positive")
   }
-  pbd_durspec_mean(c(siri, scr, eri))
+  pbd_durspec_mean_impl(la2 = scr, la3 = siri, mu2 = eri)
 }
 
 
