@@ -10,13 +10,9 @@ r_github_packages:
   - jimhester/covr
   - MangoTheCat/goodpractice
 
-# PBD is in the PBD folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-195038334
-install:
-  - Rscript -e 'devtools::install_deps("PBD")'
-
-# PBD is in the PBD folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-195038334
-script:
-  - Rscript -e 'devtools::check("PBD")'
+# Go into folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-202411532
+before_install:
+ - cd PBD
 
 after_success:
   - Rscript -e 'lintr::lint_package()'
