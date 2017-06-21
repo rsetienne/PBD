@@ -8,6 +8,16 @@ assuming all inputs are correct}
 \usage{
 pbd_durspec_mean_impl(la2, la3, mu2)
 }
+\arguments{
+\item{la2}{lambda_2, the speciation completion rate,
+in probability per time unit}
+
+\item{la3}{lambda_3, speciation initiation rate of incipient species,
+in probability per time unit}
+
+\item{mu2}{mu_2 extinction rate of the incipient species,
+in probability per time unit}
+}
 \description{
 Actual calculation of the mean duration of speciation
 (equations 19 and 20 of reference article)
@@ -20,7 +30,7 @@ Etienne, Rampal S., and James Rosindell. "Prolonging the past
   Biology 61.2 (2012): 204-213.
 }
 \seealso{
-pbd_durspec_mean
+pbd_mean_durspec
 }
 \author{
 Rampal S. Etienne

@@ -72,12 +72,18 @@ pbd_mean_durspec = function(eri, scr, siri) {
 #' Actual calculation of the mean duration of speciation
 #' (equations 19 and 20 of reference article)
 #' assuming all inputs are correct
+#' @param la2 lambda_2, the speciation completion rate,
+#'   in probability per time unit
+#' @param la3 lambda_3, speciation initiation rate of incipient species,
+#'   in probability per time unit
+#' @param mu2 mu_2 extinction rate of the incipient species,
+#'   in probability per time unit
 #' @author Rampal S. Etienne
 #' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
 #'   Biology 61.2 (2012): 204-213.
-#' @seealso pbd_durspec_mean
+#' @seealso pbd_mean_durspec
 pbd_durspec_mean_impl = function(la2, la3, mu2)
 {
   if(la2 == Inf)
