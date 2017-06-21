@@ -1,5 +1,4 @@
 #' @export
-
 pbd_durspec_mean = function(pars)
 {
   la3 = pars[1]
@@ -23,4 +22,40 @@ pbd_durspec_mean = function(pars)
     rho_mean = 2/(D - la2 + la3 - mu2) * log(2 / (1 + (la2 - la3 + mu2)/D))
   }
   return(rho_mean)
+}
+
+#' Calculate the mean duration of speciation
+#' @param lambda_2 speciation completion rate, in probability per time unit
+#' @param lambda_3 speciation initiation rate of incipient species, in
+#'   probability per time unit
+#' @param mu_2 incipient species extinction rate, in probability per time unit
+#' @return the means duration of speciation, in time units
+#' @examples
+#'   lambda_2 <- 0.1 # speciation completion rate
+#'   lambda_3 <- 0.2 # speciation initiation rate of incipient species
+#'   mu_2 <- 0.3 # incipient species extinction rate
+#'   mean_durspec <- pbd_mean_durspec(lambda_2, lambda_3, mu_2)
+#'   expected_mean_durspec <- 3.242955
+#'   tolerance <- 0.0000001
+#'   if (abs(mean_durspec - expected_mean_durspec) > tolerance) {
+#'     stop("Duration of speciation must match expectation")
+#'   }
+#' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
+#'   counteracts the pull of the present: protracted speciation can explain
+#'   observed slowdowns in diversification." Systematic
+#'   Biology 61.2 (2012): 204-213.
+#' @seealso pbd_durspec_mean
+#' @export
+pbd_mean_durspec = function(lambda_2, lambda_3, mu_2) {
+  if (is.na(lambda_2) || lambda_2 < 0.0) {
+    stop("lambda_2 (speciation completion rate) must be zero or positive")
+  }
+  if (is.na(lambda_3) || lambda_3 < 0.0) {
+    stop("lambda_3 (speciation initiation rate of incipient species) must",
+      "be zero or positive")
+  }
+  if (is.na(mu_2) || mu_2 < 0.0) {
+    stop("mu_2 (incipient species extinction rate) must be zero or positive")
+  }
+  pbd_durspec_mean(c(lambda_3, lambda_2, mu_2))
 }
