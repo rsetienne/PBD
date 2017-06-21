@@ -33,15 +33,13 @@ pbd_durspec_mean = function(pars)
 #'   in probability per time unit
 #' @return the means duration of speciation, in time units
 #' @examples
-#'   scr <- 0.1 # speciation completion rate
-#'   siri <- 0.2 # speciation initiation rate of incipient species
-#'   eri <- 0.3 # incipient species extinction rate
+#'   eri <- 0.1 # incipient species extinction rate
+#'   scr <- 0.2 # speciation completion rate
+#'   siri <- 0.3 # speciation initiation rate of incipient species
 #'   mean_durspec <- pbd_mean_durspec(eri, scr, siri)
-#'   expected_mean_durspec <- 3.242955
-#'   tolerance <- 0.0000001
-#'   if (abs(mean_durspec - expected_mean_durspec) > tolerance) {
-#'     stop("Duration of speciation must match expectation")
-#'   }
+#'   expected_mean_durspec <- 2.829762
+#'   testthat::expect_equal(mean_durspec, expected_mean_durspec,
+#'     tolerance = 0.000001)
 #' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
