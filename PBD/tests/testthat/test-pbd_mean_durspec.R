@@ -183,13 +183,13 @@ test_that("vectorized usage with invalid arguments", {
   testthat::expect_true(is.na(v[2]))
 
   v <- PBD::pbd_mean_durspecs(
-    eris = c(-0.1, 0.2),
+    eris = c(0.1, NA), # Invalid second eri
     scrs = c(0.3, 0.4),
     siris = c(NA, 0.6) # Invalid first siri
   )
 
   testthat::expect_true(is.na(v[1]))
-  testthat::expect_true(!is.na(v[2]))
+  testthat::expect_true(is.na(v[2]))
 
 })
 
