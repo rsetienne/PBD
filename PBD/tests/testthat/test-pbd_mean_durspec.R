@@ -124,3 +124,28 @@ test_that("abuse", {
     "speciation initiation rate of incipient species must be zero or positive"
   )
 })
+
+test_that("basic vectorized usage", {
+
+  eri_1 <- 0.1 # incipient species extinction rate
+  scr_1 <- 0.2 # speciation completion rate
+  siri_1 <- 0.3 # speciation initiation rate of incipient species
+  eri_2 <- 0.4 # incipient species extinction rate
+  scr_2 <- 0.5 # speciation completion rate
+  siri_2 <- 0.6 # speciation initiation rate of incipient species
+
+  mean_durspec_1 <- PBD::pbd_mean_durspec(eri = eri_1, scr = scr_1, siri = siri_1)
+  mean_durspec_2 <- PBD::pbd_mean_durspec(eri = eri_2, scr = scr_2, siri = siri_2)
+  mean_durspecs_expected <- c(mean_durspec_1, mean_durspec_2)
+
+  eris <- c(eri_1, eri_2)
+  scrs <- c(scr_1, scr_2)
+  siris <- c(siri_1, siri_2)
+
+  mean_durspecs <- PBD::pbd_mean_durspec(eri = eris, scr = scrs, siri = siris)
+
+  testthat::expect_equal(mean_durspecs, mean_durspecs_expected,
+    tolerance = 0.000001)
+})
+
+

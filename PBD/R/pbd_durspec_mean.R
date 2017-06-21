@@ -29,14 +29,53 @@ pbd_durspec_mean = function(pars)
 }
 
 #' Calculate the mean duration of speciation
-#' (equations 19 and 20 of reference article)
-#' @param scr speciation completion rate,
+#' (equations 19 and 20 of reference article), non-vectorized
+#' @param scr speciation completion rates,
 #'   or lambda_2 in article,
 #'   in probability per time unit
-#' @param siri speciation initiation rate of incipient species, or
+#' @param siri speciation initiation rates of incipient species, or
 #'   lambda_3 in article,
 #'   in probability per time unit
-#' @param eri extinction rate of the incipient species,
+#' @param eri extinction rates of the incipient species,
+#'   or mu_2 in article,
+#'   in probability per time unit
+#' @return the means durations of speciation, in time units
+#' @examples
+#'   eri <- 0.1 # extinction rate of incipient species
+#'   scr <- 0.2 # speciation completion rate
+#'   siri <- 0.3 # speciation initiation rate of incipient species
+#'   mean_durspec <- pbd_mean_durspec(eri, scr, siri)
+#'   expected_mean_durspec <- 2.829762
+#'   testthat::expect_equal(mean_durspec, expected_mean_durspec,
+#'     tolerance = 0.000001)
+#' @author Richel J.C. Bilderbeek
+#' @references Etienne, Rampal S., and James Rosindell. "Prolonging the past
+#'   counteracts the pull of the present: protracted speciation can explain
+#'   observed slowdowns in diversification." Systematic
+#'   Biology 61.2 (2012): 204-213.
+#' @export
+pbd_mean_durspec = function(eri, scr, siri) {
+
+  if (length(eri) != length(scr)) {
+    stop("Extinction rates and speciation completion rates ",
+      "must have equal length")
+  }
+  if (length(eri) != length(siri)) {
+    stop("Extinction rates and speciation initiation rates ",
+      "must have equal length")
+  }
+  mapply(pbd_mean_durspec_single, eri, scr, siri)
+}
+
+#' Calculate the mean duration of speciation
+#' (equations 19 and 20 of reference article), non-vectorized
+#' @param scr one single speciation completion rate,
+#'   or lambda_2 in article,
+#'   in probability per time unit
+#' @param siri one single speciation initiation rate of incipient species, or
+#'   lambda_3 in article,
+#'   in probability per time unit
+#' @param eri one single extinction rate of the incipient species,
 #'   or mu_2 in article,
 #'   in probability per time unit
 #' @return the means duration of speciation, in time units
@@ -54,7 +93,7 @@ pbd_durspec_mean = function(pars)
 #'   observed slowdowns in diversification." Systematic
 #'   Biology 61.2 (2012): 204-213.
 #' @export
-pbd_mean_durspec = function(eri, scr, siri) {
+pbd_mean_durspec_single = function(eri, scr, siri) {
   if (is.na(eri) || eri < 0.0) {
     stop("extinction rate of incipient species must be zero or positive")
   }
