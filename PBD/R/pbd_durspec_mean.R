@@ -57,6 +57,8 @@ pbd_durspec_mean = function(pars)
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
 #'   Biology 61.2 (2012): 204-213.
+#' @note Maybe a future version will return a vector that has NAs
+#'   for each invalid triplet of rates
 #' @seealso pbd_mean_durspec
 #' @export
 pbd_mean_durspecs = function(eris, scrs, siris) {

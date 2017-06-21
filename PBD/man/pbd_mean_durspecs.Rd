@@ -31,6 +31,10 @@ the means durations of speciation, in time units. Will fail if
 Calculate the mean duration of speciation
 (equations 19 and 20 of reference article), non-vectorized
 }
+\note{
+Maybe a future version will return a vector that has NAs
+  for each invalid triplet of rates
+}
 \examples{
   eris <- c(0.1, 0.2) # extinction rates of incipient species
   scrs <- c(0.2, 0.3)  # speciation completion rates
