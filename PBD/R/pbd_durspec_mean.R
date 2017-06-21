@@ -37,7 +37,7 @@ pbd_durspec_mean = function(pars)
 #'   in probability per time unit
 #' @return the means duration of speciation, in time units
 #' @examples
-#'   eri <- 0.1 # incipient species extinction rate
+#'   eri <- 0.1 # extinction rate of incipient species
 #'   scr <- 0.2 # speciation completion rate
 #'   siri <- 0.3 # speciation initiation rate of incipient species
 #'   mean_durspec <- pbd_mean_durspec(eri, scr, siri)
