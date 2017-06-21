@@ -2,34 +2,39 @@
 % Please edit documentation in R/pbd_durspec_mean.R
 \name{pbd_mean_durspec}
 \alias{pbd_mean_durspec}
-\title{Calculate the mean duration of speciation}
+\title{Calculate the mean duration of speciation
+(equations 19 and 20 of reference article)}
 \usage{
-pbd_mean_durspec(lambda_2, lambda_3, mu_2)
+pbd_mean_durspec(eri, scr, siri)
 }
 \arguments{
-\item{lambda_2}{speciation completion rate, in probability per time unit}
+\item{eri}{extinction rate of the incipient species,
+or mu_2 in article,
+in probability per time unit}
 
-\item{lambda_3}{speciation initiation rate of incipient species, in
-probability per time unit}
+\item{scr}{speciation completion rate,
+or lambda_2 in article,
+in probability per time unit}
 
-\item{mu_2}{incipient species extinction rate, in probability per time unit}
+\item{siri}{speciation initiation rate of incipient species, or
+lambda_3 in article,
+in probability per time unit}
 }
 \value{
 the means duration of speciation, in time units
 }
 \description{
 Calculate the mean duration of speciation
+(equations 19 and 20 of reference article)
 }
 \examples{
-  lambda_2 <- 0.1 # speciation completion rate
-  lambda_3 <- 0.2 # speciation initiation rate of incipient species
-  mu_2 <- 0.3 # incipient species extinction rate
-  mean_durspec <- pbd_mean_durspec(lambda_2, lambda_3, mu_2)
-  expected_mean_durspec <- 3.242955
-  tolerance <- 0.0000001
-  if (abs(mean_durspec - expected_mean_durspec) > tolerance) {
-    stop("Duration of speciation must match expectation")
-  }
+  eri <- 0.1 # extinction rate of incipient species
+  scr <- 0.2 # speciation completion rate
+  siri <- 0.3 # speciation initiation rate of incipient species
+  mean_durspec <- pbd_mean_durspec(eri, scr, siri)
+  expected_mean_durspec <- 2.829762
+  testthat::expect_equal(mean_durspec, expected_mean_durspec,
+    tolerance = 0.000001)
 }
 \references{
 Etienne, Rampal S., and James Rosindell. "Prolonging the past
