@@ -51,15 +51,15 @@ pbd_durspec_mean = function(pars)
 #' @seealso pbd_durspec_mean
 #' @export
 pbd_mean_durspec = function(eri, scr, siri) {
+  if (is.na(eri) || eri < 0.0) {
+    stop("extinction rate of incipient species must be zero or positive")
+  }
   if (is.na(scr) || scr < 0.0) {
     stop("speciation completion rate must be zero or positive")
   }
   if (is.na(siri) || siri < 0.0) {
-    stop("speciation initiation rate of incipient species must",
+    stop("speciation initiation rate of incipient species must ",
       "be zero or positive")
-  }
-  if (is.na(eri) || eri < 0.0) {
-    stop("extinction rate of incipient species must be zero or positive")
   }
   pbd_durspec_mean(c(siri, scr, eri))
 }

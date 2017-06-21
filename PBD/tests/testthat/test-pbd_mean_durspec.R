@@ -91,3 +91,36 @@ test_that("complete calculation", {
 })
 
 
+test_that("abuse", {
+
+  eri <- 0.2  # extinction rate of incipient species, mu_2
+  scr <- 0.3  # speciation completion rate, lambda_2
+  siri <- 0.5 # speciation initiation rate of incipient species, lambda_3
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = -1.2, scr = scr, siri = siri),
+    "extinction rate of incipient species must be zero or positive"
+  )
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = NaN, scr = scr, siri = siri),
+    "extinction rate of incipient species must be zero or positive"
+  )
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = eri, scr = -1.2, siri = siri),
+    "speciation completion rate must be zero or positive"
+  )
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = eri, scr = NaN, siri = siri),
+    "speciation completion rate must be zero or positive"
+  )
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = eri, scr = scr, siri = -1.2),
+    "speciation initiation rate of incipient species must be zero or positive"
+  )
+  testthat::expect_error(
+    PBD::pbd_mean_durspec(eri = eri, scr = scr, siri = NaN),
+    "speciation initiation rate of incipient species must be zero or positive"
+  )
+})
