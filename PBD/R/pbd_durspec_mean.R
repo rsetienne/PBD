@@ -24,6 +24,7 @@
 #' @export
 pbd_durspec_mean = function(pars)
 {
+  # Do not check 'pars' being valid, as this is the classic behavior
   pbd_durspec_mean_impl(la2 = pars[2], la3 = pars[1], mu2 = pars[3])
 }
 
