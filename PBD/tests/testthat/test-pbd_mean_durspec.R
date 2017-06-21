@@ -142,10 +142,53 @@ test_that("basic vectorized usage", {
   scrs <- c(scr_1, scr_2)
   siris <- c(siri_1, siri_2)
 
-  mean_durspecs <- PBD::pbd_mean_durspec(eri = eris, scr = scrs, siri = siris)
+  mean_durspecs <- PBD::pbd_mean_durspecs(eri = eris, scr = scrs, siri = siris)
 
   testthat::expect_equal(mean_durspecs, mean_durspecs_expected,
     tolerance = 0.000001)
 })
 
+test_that("vectorized usage with recycling", {
+
+  # Recycle eri
+  testthat::expect_silent(
+    PBD::pbd_mean_durspecs(eri = c(0.1), scr = c(0.2, 0.3), siri = c(0.4, 0.5))
+  )
+  # Recycle scr
+  testthat::expect_silent(
+    PBD::pbd_mean_durspecs(eri = c(0.1, 0.2), scr = c(0.3), siri = c(0.4, 0.5))
+  )
+  # Recycle siri
+  testthat::expect_silent(
+    PBD::pbd_mean_durspecs(eri = c(0.1, 0.2), scr = c(0.3, 0.4), siri = c(0.5))
+  )
+})
+
+test_that("vectorized usage with invalid arguments", {
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspecs(
+      eri = c(-0.1, 0.2), # Invalid first eri
+      scr = c(0.3, 0.4),
+      siri = c(0.5, 0.6)
+    )
+  )
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspecs(
+      eri = c(0.1, 0.2),
+      scr = c(0.3, -0.4), # Invalid second scr
+      siri = c(0.5, 0.6)
+    )
+  )
+
+  testthat::expect_error(
+    PBD::pbd_mean_durspecs(
+      eri = c(-0.1, 0.2),
+      scr = c(0.3, 0.4),
+      siri = c(NA, 0.6) # Invalid first siri
+    )
+  )
+
+})
 
