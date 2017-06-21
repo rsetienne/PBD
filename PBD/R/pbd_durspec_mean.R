@@ -26,10 +26,14 @@ pbd_durspec_mean = function(pars)
 
 #' Calculate the mean duration of speciation
 #' (equations 19 and 20 of reference article)
-#' @param scr speciation completion rate, in probability per time unit
-#' @param siri speciation initiation rate of incipient species, in
-#'   probability per time unit
+#' @param scr speciation completion rate,
+#'   or lambda_2 in article,
+#'   in probability per time unit
+#' @param siri speciation initiation rate of incipient species, or
+#'   lambda_3 in article,
+#'   in probability per time unit
 #' @param eri extinction rate of the incipient species,
+#'   or mu_2 in article,
 #'   in probability per time unit
 #' @return the means duration of speciation, in time units
 #' @examples
