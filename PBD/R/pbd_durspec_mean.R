@@ -28,8 +28,8 @@ pbd_durspec_mean = function(pars)
   pbd_durspec_mean_impl(la2 = pars[2], la3 = pars[1], mu2 = pars[3])
 }
 
-#' Calculate the mean duration of speciation
-#' (equations 19 and 20 of reference article), non-vectorized
+#' Calculate the mean durations of speciation
+#' (equations 19 and 20 of reference article)
 #' @param scrs one or more speciation completion rates,
 #'   or lambda_2 in article,
 #'   in probability per time unit.

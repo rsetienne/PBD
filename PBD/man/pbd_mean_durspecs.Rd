@@ -2,8 +2,8 @@
 % Please edit documentation in R/pbd_durspec_mean.R
 \name{pbd_mean_durspecs}
 \alias{pbd_mean_durspecs}
-\title{Calculate the mean duration of speciation
-(equations 19 and 20 of reference article), non-vectorized}
+\title{Calculate the mean durations of speciation
+(equations 19 and 20 of reference article)}
 \usage{
 pbd_mean_durspecs(eris, scrs, siris)
 }
@@ -28,8 +28,8 @@ the means durations of speciation, in time units. Will fail if
   any rate is less than zero or NaN
 }
 \description{
-Calculate the mean duration of speciation
-(equations 19 and 20 of reference article), non-vectorized
+Calculate the mean durations of speciation
+(equations 19 and 20 of reference article)
 }
 \note{
 Maybe a future version will return a vector that has NAs
