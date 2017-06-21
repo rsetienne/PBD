@@ -48,7 +48,7 @@ pbd_durspec_mean = function(pars)
 #'   eris <- c(0.1, 0.2) # extinction rates of incipient species
 #'   scrs <- c(0.2, 0.3)  # speciation completion rates
 #'   siris <- c(0.3, 0.4) # speciation initiation rates of incipient species
-#'   mean_durspecs <- pbd_mean_durspec(eris, scrs, siris)
+#'   mean_durspecs <- pbd_mean_durspecs(eris, scrs, siris)
 #'   expected_mean_durspecs <- c(2.829762, 1.865386)
 #'   testthat::expect_equal(mean_durspecs, expected_mean_durspecs,
 #'     tolerance = 0.000001)
