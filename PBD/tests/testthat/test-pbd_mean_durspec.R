@@ -166,29 +166,30 @@ test_that("vectorized usage with recycling", {
 
 test_that("vectorized usage with invalid arguments", {
 
-  testthat::expect_error(
-    PBD::pbd_mean_durspecs(
-      eri = c(-0.1, 0.2), # Invalid first eri
-      scr = c(0.3, 0.4),
-      siri = c(0.5, 0.6)
-    )
+  v <- PBD::pbd_mean_durspecs(
+    eris = c(-0.1, 0.2), # Invalid first eri
+    scrs = c(0.3, 0.4),
+    siris = c(0.5, 0.6)
+  )
+  testthat::expect_true(is.na(v[1]))
+  testthat::expect_true(!is.na(v[2]))
+
+  v <- PBD::pbd_mean_durspecs(
+    eris = c(0.1, 0.2),
+    scrs = c(0.3, -0.4), # Invalid second scr
+    siris = c(0.5, 0.6)
+  )
+  testthat::expect_true(!is.na(v[1]))
+  testthat::expect_true(is.na(v[2]))
+
+  v <- PBD::pbd_mean_durspecs(
+    eris = c(-0.1, 0.2),
+    scrs = c(0.3, 0.4),
+    siris = c(NA, 0.6) # Invalid first siri
   )
 
-  testthat::expect_error(
-    PBD::pbd_mean_durspecs(
-      eri = c(0.1, 0.2),
-      scr = c(0.3, -0.4), # Invalid second scr
-      siri = c(0.5, 0.6)
-    )
-  )
-
-  testthat::expect_error(
-    PBD::pbd_mean_durspecs(
-      eri = c(-0.1, 0.2),
-      scr = c(0.3, 0.4),
-      siri = c(NA, 0.6) # Invalid first siri
-    )
-  )
+  testthat::expect_true(is.na(v[1]))
+  testthat::expect_true(!is.na(v[2]))
 
 })
 

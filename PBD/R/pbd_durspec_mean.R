@@ -42,8 +42,8 @@ pbd_durspec_mean = function(pars)
 #'   or mu_2 in article,
 #'   in probability per time unit.
 #'   These values will be recycled if needed
-#' @return the means durations of speciation, in time units. Will fail if
-#'   any rate is less than zero or NaN
+#' @return the means durations of speciation, in time units. Puts an NA
+#'   at each invalid combination of inputs
 #' @examples
 #'   eris <- c(0.1, 0.2) # extinction rates of incipient species
 #'   scrs <- c(0.2, 0.3)  # speciation completion rates
@@ -57,13 +57,27 @@ pbd_durspec_mean = function(pars)
 #'   counteracts the pull of the present: protracted speciation can explain
 #'   observed slowdowns in diversification." Systematic
 #'   Biology 61.2 (2012): 204-213.
-#' @note Maybe a future version will return a vector that has NAs
-#'   for each invalid triplet of rates
 #' @seealso pbd_mean_durspec
 #' @export
 pbd_mean_durspecs = function(eris, scrs, siris) {
 
-  mapply(pbd_mean_durspec, eris, scrs, siris)
+  # Find invalid indices
+  invalid <- eris < 0.0 | is.na(eris) |
+    scrs < 0.0 | is.na(scrs) |
+    siris < 0.0 | is.na(siris)
+
+  # Correct invalid rates to valid ones
+  correct <- function(x) {
+    x[ is.na(x) | x < 0.0] <- 0.0
+    x
+  }
+
+  # Get durations for corrected rates
+  v <- mapply(pbd_mean_durspec, correct(eris), correct(scrs), correct(siris))
+
+  # Let invalid rates become NAs
+  v[ invalid ] <- NA
+  v
 }
 
 #' Calculate the mean duration of speciation

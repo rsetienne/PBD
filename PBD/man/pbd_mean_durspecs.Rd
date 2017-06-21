@@ -24,16 +24,12 @@ in probability per time unit.
 These values will be recycled if needed}
 }
 \value{
-the means durations of speciation, in time units. Will fail if
-  any rate is less than zero or NaN
+the means durations of speciation, in time units. Puts an NA
+  at each invalid combination of inputs
 }
 \description{
 Calculate the mean durations of speciation
 (equations 19 and 20 of reference article)
-}
-\note{
-Maybe a future version will return a vector that has NAs
-  for each invalid triplet of rates
 }
 \examples{
   eris <- c(0.1, 0.2) # extinction rates of incipient species
