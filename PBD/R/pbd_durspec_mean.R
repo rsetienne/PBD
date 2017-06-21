@@ -25,16 +25,18 @@ pbd_durspec_mean = function(pars)
 }
 
 #' Calculate the mean duration of speciation
-#' @param lambda_2 speciation completion rate, in probability per time unit
-#' @param lambda_3 speciation initiation rate of incipient species, in
+#' (equations 19 and 20 of reference article)
+#' @param scr speciation completion rate, in probability per time unit
+#' @param siri speciation initiation rate of incipient species, in
 #'   probability per time unit
-#' @param mu_2 incipient species extinction rate, in probability per time unit
+#' @param eri extinction rate of the incipient species,
+#'   in probability per time unit
 #' @return the means duration of speciation, in time units
 #' @examples
-#'   lambda_2 <- 0.1 # speciation completion rate
-#'   lambda_3 <- 0.2 # speciation initiation rate of incipient species
-#'   mu_2 <- 0.3 # incipient species extinction rate
-#'   mean_durspec <- pbd_mean_durspec(lambda_2, lambda_3, mu_2)
+#'   scr <- 0.1 # speciation completion rate
+#'   siri <- 0.2 # speciation initiation rate of incipient species
+#'   eri <- 0.3 # incipient species extinction rate
+#'   mean_durspec <- pbd_mean_durspec(eri, scr, siri)
 #'   expected_mean_durspec <- 3.242955
 #'   tolerance <- 0.0000001
 #'   if (abs(mean_durspec - expected_mean_durspec) > tolerance) {
@@ -46,16 +48,16 @@ pbd_durspec_mean = function(pars)
 #'   Biology 61.2 (2012): 204-213.
 #' @seealso pbd_durspec_mean
 #' @export
-pbd_mean_durspec = function(lambda_2, lambda_3, mu_2) {
-  if (is.na(lambda_2) || lambda_2 < 0.0) {
-    stop("lambda_2 (speciation completion rate) must be zero or positive")
+pbd_mean_durspec = function(eri, scr, siri) {
+  if (is.na(scr) || scr < 0.0) {
+    stop("speciation completion rate must be zero or positive")
   }
-  if (is.na(lambda_3) || lambda_3 < 0.0) {
-    stop("lambda_3 (speciation initiation rate of incipient species) must",
+  if (is.na(siri) || siri < 0.0) {
+    stop("speciation initiation rate of incipient species must",
       "be zero or positive")
   }
-  if (is.na(mu_2) || mu_2 < 0.0) {
-    stop("mu_2 (incipient species extinction rate) must be zero or positive")
+  if (is.na(eri) || eri < 0.0) {
+    stop("extinction rate of incipient species must be zero or positive")
   }
-  pbd_durspec_mean(c(lambda_3, lambda_2, mu_2))
+  pbd_durspec_mean(c(siri, scr, eri))
 }
