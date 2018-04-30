@@ -57,6 +57,6 @@ Suggests:
 Because the PBD package is located in the folder `PBD`, do:
 
 ```
-Removes:
+Remotes:
   rsetienne/PBD/PBD
 ```
