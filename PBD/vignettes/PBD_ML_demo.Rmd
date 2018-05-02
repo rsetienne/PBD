@@ -111,7 +111,7 @@ To test for the uncertainty of our ML estimate, we can do a parametric bootstrap
 
 The function `pbd_bootstrap` consists of a few steps:
 
- 1. Do a ML estimate
+ 1. Do an ML estimate
  2. Run a simulation with those estimates
  3. Perform ML estimation on the simulated data
  4. Go to 2 depending on the setting of endmc.

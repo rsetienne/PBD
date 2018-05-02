@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/rsetienne/PBD.svg?branch=master)](https://travis-ci.org/rsetienne/PBD)
 [![codecov.io](https://codecov.io/github/rsetienne/PBD/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/PBD?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PBD)](https://cran.r-project.org/package=PBD)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/PBD)]( https://CRAN.R-project.org/package=PBD)
+[![](http://cranlogs.r-pkg.org/badges/PBD)](https://CRAN.R-project.org/package=PBD)
+
 
 Protracted Birth-Death model in R
 
@@ -53,6 +57,6 @@ Suggests:
 Because the PBD package is located in the folder `PBD`, do:
 
 ```
-Removes:
+Remotes:
   rsetienne/PBD/PBD
 ```
