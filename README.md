@@ -1,7 +1,7 @@
 # PBD
 
-[![Build Status](https://travis-ci.org/rsetienne/PBD.svg?branch=master)](https://travis-ci.org/rsetienne/PBD)
-[![codecov.io](https://codecov.io/github/rsetienne/PBD/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/PBD?branch=master)
+[![Build Status](https://travis-ci.org/richelbilderbeek/PBD.svg?branch=master)](https://travis-ci.org/richelbilderbeek/PBD)
+[![codecov.io](https://codecov.io/github/richelbilderbeek/PBD/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/PBD?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PBD)](https://cran.r-project.org/package=PBD)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/PBD)]( https://CRAN.R-project.org/package=PBD)
 [![](http://cranlogs.r-pkg.org/badges/PBD)](https://CRAN.R-project.org/package=PBD)
@@ -29,7 +29,7 @@ install.packages("PBD")
 Because the PBD package is located in the folder `PBD`, do:
 
 ```
-devtools::install_github("rsetienne/PBD/PBD")
+devtools::install_github("richelbilderbeek/PBD/PBD")
 ```
 
 ## Using PBD as a package dependency
@@ -58,5 +58,5 @@ Because the PBD package is located in the folder `PBD`, do:
 
 ```
 Remotes:
-  rsetienne/PBD/PBD
+  richelbilderbeek/PBD/PBD
 ```
