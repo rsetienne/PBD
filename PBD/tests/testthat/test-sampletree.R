@@ -19,31 +19,37 @@ test_that("sample randomly", {
 
 test_that("sample youngest", {
 
-  # For students
+  input_L <- matrix(
+    c(1, 2, 3, 1, 1, 1, 0, 0.3, 0.8, -1, 0.9, -1, -1, -1, -1, 1, 2, 1),
+    nrow = 3,
+    ncol = 6)
 
-  # Create an L table that has a different result when sampled
-  # with 'youngest' and 'oldest'
+  expected_L <- matrix(
+    c(3, 2, 1, 1, 1, 1, 0.8, 0.3, 0, -1, 0.9, -1, -1, -1, 1, 1, 2, 1),
+    nrow = 3,
+    ncol = 6)
 
-  # Create the expected L table
+  output_L <- PBD:::sampletree(L = input_L, age = 1, samplemethod = "youngest")
 
-  # Create the L table by sampling 'youngest'
-
-  # Expected and created L table must be identical
+  testthat::expect_equal(output_L, expected_L)
 
 })
 
 test_that("sample oldest", {
 
-  # For students
+  input_L <- matrix(
+    c(1, 2, 3, 1, 1, 1, 0, 0.3, 0.8, -1, 0.9, -1, -1, -1, -1, 1, 2, 1),
+    nrow = 3,
+    ncol = 6)
 
-  # Create an L table that has a different result when sampled
-  # with 'youngest' and 'oldest'
+  expected_L <- matrix(
+    c(3, 2, 1, 1, 1, 1, 0.8, 0.3, 0, -1, 0.9, -1, 1, -1, -1, 1, 2, 1),
+    nrow = 3,
+    ncol = 6)
 
-  # Create the expected L table
+  output_L <- PBD:::sampletree(L = input_L, age = 1, samplemethod = "oldest")
 
-  # Create the L table by sampling 'oldest'
-
-  # Expected and created L table must be identical
+  testthat::expect_equal(output_L, expected_L)
 
 })
 
