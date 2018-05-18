@@ -20,16 +20,16 @@ test_that("sample randomly", {
 test_that("sample youngest", {
 
   input_L <- matrix(
-    c(1, 2, 3, 1, 1, 1, 0, 0.3, 0.8, -1, 0.9, -1, -1, -1, -1, 1, 2, 1),
-    nrow = 3,
+    c(1, 2, 3, 4, 0, 1, 2, 1, -1e-10, 0.2, 0.4, 0.6, 0, 1.0, -1, 0.8, -1, -1, -1, -1, 1, 2, 1, 3),
+    nrow = 4,
     ncol = 6)
 
   expected_L <- matrix(
-    c(3, 2, 1, 1, 1, 1, 0.8, 0.3, 0, -1, 0.9, -1, -1, -1, 1, 1, 2, 1),
-    nrow = 3,
+    c(4, 3, 2, 1, 1, 2, 1, 0, 0.6, 0.4, 0.2, -1e-10, 0.8, -1, 1, 0, -1, -1, -1, 1.2, 3, 1, 2, 1),
+    nrow = 4,
     ncol = 6)
 
-  output_L <- PBD:::sampletree(L = input_L, age = 1, samplemethod = "youngest")
+  output_L <- PBD:::sampletree(L = input_L, age = 1.2, samplemethod = "youngest")
 
   testthat::expect_equal(output_L, expected_L)
 
@@ -38,16 +38,16 @@ test_that("sample youngest", {
 test_that("sample oldest", {
 
   input_L <- matrix(
-    c(1, 2, 3, 1, 1, 1, 0, 0.3, 0.8, -1, 0.9, -1, -1, -1, -1, 1, 2, 1),
-    nrow = 3,
+    c(1, 2, 3, 4, 0, 1, 2, 1, -1e-10, 0.2, 0.4, 0.6, 0, 1.0, -1, 0.8, -1, -1, -1, -1, 1, 2, 1, 3),
+    nrow = 4,
     ncol = 6)
 
   expected_L <- matrix(
-    c(3, 2, 1, 1, 1, 1, 0.8, 0.3, 0, -1, 0.9, -1, 1, -1, -1, 1, 2, 1),
-    nrow = 3,
+    c(4, 3, 2, 1, 1, 2, 1, 0, 0.6, 0.4, 0.2, -1e-10, 0.8, -1, 1, 0, -1, 1.2, -1, -1, 3, 1, 2, 1),
+    nrow = 4,
     ncol = 6)
 
-  output_L <- PBD:::sampletree(L = input_L, age = 1, samplemethod = "oldest")
+  output_L <- PBD:::sampletree(L = input_L, age = 1.2, samplemethod = "oldest")
 
   testthat::expect_equal(output_L, expected_L)
 
@@ -55,46 +55,37 @@ test_that("sample oldest", {
 
 test_that("sample shortest", {
 
-  # For students
+  input_L <- matrix(
+    c(1, 2, 3, 4, 0, 1, 2, 1, -1e-10, 0.2, 0.4, 0.6, 0, 1.0, -1, 0.8, -1, -1, -1, -1, 1, 2, 1, 3),
+    nrow = 4,
+    ncol = 6)
 
-  # Create an L table that has a different result when sampled
-  # with 'shortest' and 'youngest'
+  expected_L <- matrix(
+    c(4, 3, 2, 1, 1, 2, 1, 0, 0.6, 0.4, 0.2, -1e-10, 0.8, -1, 1, 0, -1, 1.2, -1, -1, 3, 1, 2, 1),
+    nrow = 4,
+    ncol = 6)
 
-  # Create the expected L table
+  output_L <- PBD:::sampletree(L = input_L, age = 1.2, samplemethod = "shortest")
 
-  # Create the L table by sampling 'shortest'
-
-  # Expected and created L table must be identical
+  testthat::expect_equal(output_L, expected_L)
 
 })
 
 test_that("sample longest", {
 
-  # For students
+  input_L <- matrix(
+    c(1, 2, 3, 4, 0, 1, 2, 1, -1e-10, 0.2, 0.4, 0.6, 0, 1.0, -1, 0.8, -1, -1, -1, -1, 1, 2, 1, 3),
+    nrow = 4,
+    ncol = 6)
 
-  # Create an L table that has a different result when sampled
-  # with 'longest' and 'oldest'
+  expected_L <- matrix(
+    c(4, 3, 2, 1, 1, 2, 1, 0, 0.6, 0.4, 0.2, -1e-10, 0.8, -1, 1, 0, -1, -1, -1, 1.2, 3, 1, 2, 1),
+    nrow = 4,
+    ncol = 6)
 
-  # Create the expected L table
+  output_L <- PBD:::sampletree(L = input_L, age = 1.2, samplemethod = "longest")
 
-  # Create the L table by sampling 'longest'
-
-  # Expected and created L table must be identical
-
-})
-
-test_that("sample shortest", {
-
-  # For students
-
-  # Create an L table that has a different result when sampled
-  # with 'shortest' and 'youngest'
-
-  # Create the expected L table
-
-  # Create the L table by sampling 'shortest'
-
-  # Expected and created L table must be identical
+  testthat::expect_equal(output_L, expected_L)
 
 })
 
