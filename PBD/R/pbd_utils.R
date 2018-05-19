@@ -197,7 +197,7 @@ sampletree = function(L,age,samplemethod = "random")
    if (samplemethod == "longest")
    {
      M <- matrix(
-       c(rep(1e10, lenL)),
+       c(rep(-1e-10, lenL)),
        nrow = lenL,
        ncol = 1
      )
@@ -205,12 +205,12 @@ sampletree = function(L,age,samplemethod = "random")
      for (i in 2:lenL)
      {
        if (L[L[i, 2], 6] != L[i, 6]) {
-         if (L[L[i, 2], 7] > L[i, 3]) L[L[i, 2], 7] <- L[i, 3]
+         if (L[L[i, 2], 7] < L[i, 3]) L[L[i, 2], 7] <- L[i, 3]
        }
      }
      for (i in 2:lenL)
      {
-       if (L[i, 7] == 1e10) L[i, 7] <- L[i, 3]
+       if (L[i, 7] == -1e-10) L[i, 7] <- L[i, 3]
      }
      neworder = order(L[, 7], decreasing = F)
      L <- L[, -7]
