@@ -2,32 +2,30 @@
 % Please edit documentation in R/pbd_durspec_mean.R
 \name{pbd_mean_durspec}
 \alias{pbd_mean_durspec}
-\title{Calculate the mean duration of speciation
-(equations 19 and 20 of reference article), non-vectorized}
+\title{Calculate the mean duration of speciation (equations 19 and 20 of reference
+article), non-vectorized}
 \usage{
 pbd_mean_durspec(eri, scr, siri)
 }
 \arguments{
-\item{eri}{one single extinction rate of the incipient species,
-or mu_2 in article,
-in probability per time unit}
+\item{eri}{one single extinction rate of the incipient species, or mu_2 in
+article, in probability per time unit}
 
-\item{scr}{one single speciation completion rate,
-or lambda_2 in article,
-in probability per time unit}
+\item{scr}{one single speciation completion rate, or lambda_2 in article, in
+probability per time unit}
 
 \item{siri}{one single speciation initiation rate of incipient species, or
-lambda_3 in article,
-in probability per time unit}
+lambda_3 in article, in probability per time unit}
 }
 \value{
 the means duration of speciation, in time units
 }
 \description{
-Calculate the mean duration of speciation
-(equations 19 and 20 of reference article), non-vectorized
+Calculate the mean duration of speciation (equations 19 and 20 of reference
+article), non-vectorized
 }
 \examples{
+
   eri <- 0.1 # extinction rate of incipient species
   scr <- 0.2 # speciation completion rate
   siri <- 0.3 # speciation initiation rate of incipient species
@@ -35,12 +33,13 @@ Calculate the mean duration of speciation
   expected_mean_durspec <- 2.829762
   testthat::expect_equal(mean_durspec, expected_mean_durspec,
     tolerance = 0.000001)
+
 }
 \references{
 Etienne, Rampal S., and James Rosindell. "Prolonging the past
-  counteracts the pull of the present: protracted speciation can explain
-  observed slowdowns in diversification." Systematic
-  Biology 61.2 (2012): 204-213.
+counteracts the pull of the present: protracted speciation can explain
+observed slowdowns in diversification." Systematic Biology 61.2 (2012):
+204-213.
 }
 \author{
 Richel J.C. Bilderbeek

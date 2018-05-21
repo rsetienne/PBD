@@ -12,9 +12,9 @@ b_1 <- 0.3 # speciation-initiation rate of good species
 la_1 <- 0.2 # speciation-completion rate
 b_2 <- b_1 # the speciation-initiation rate of incipient species
 mu_1 <- 0.1 #  extinction rate of good species
-mu_2 <- mu_1 # extinction rate of incipient species 
+mu_2 <- mu_1 # extinction rate of incipient species
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
-age <- 15 # the age for the simulation 
+age <- 15 # the age for the simulation
 phylogenies <- pbd_sim(pars = pars, age = age)
 plot(phylogenies$recontree)
 plot(phylogenies$igtree.extant)
@@ -48,9 +48,9 @@ btorph <- 1
 ## ------------------------------------------------------------------------
 r <- pbd_ML(
   brts = brts,
-  initparsopt = initparsopt, 
+  initparsopt = initparsopt,
   exteq = exteq,
-  soc = soc, 
+  soc = soc,
   cond = cond,
   btorph = btorph,
   verbose = FALSE
@@ -72,9 +72,9 @@ endmc <- 10 # Sets the number of simulations for the bootstrap
 
 b <- pbd_bootstrap(
   brts = brts,
-  initparsopt = initparsopt, 
+  initparsopt = initparsopt,
   exteq = exteq,
-  soc = soc, 
+  soc = soc,
   cond = cond,
   btorph = btorph,
   plotltt = FALSE,
@@ -84,20 +84,20 @@ b <- pbd_bootstrap(
 knitr::kable(b[[3]])
 
 ## ------------------------------------------------------------------------
-dg <- rbind(df, 
+dg <- rbind(df,
   list(
-    b = b[[1]]$b, 
-    mu_1 = b[[1]]$mu_1, 
-    lambda_1 = b[[1]]$lambda_1, 
+    b = b[[1]]$b,
+    mu_1 = b[[1]]$mu_1,
+    lambda_1 = b[[1]]$lambda_1,
     mu_2 = b[[1]]$mu_2,
     loglik = b[[1]]$loglik,
     df = b[[1]]$df,
     conv = b[[1]]$conv
   ),
   list(
-    b = b[[3]]$b, 
-    mu_1 = b[[3]]$mu_1, 
-    lambda_1 = b[[3]]$lambda_1, 
+    b = b[[3]]$b,
+    mu_1 = b[[3]]$mu_1,
+    lambda_1 = b[[3]]$lambda_1,
     mu_2 = b[[3]]$mu_2,
     loglik = b[[3]]$loglik,
     df = b[[3]]$df,
@@ -123,4 +123,3 @@ l <- pbd_loglik(
   brts = brts
 )
 print(l)
-
