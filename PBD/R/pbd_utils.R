@@ -182,13 +182,20 @@ sampletree = function(L,age,samplemethod = "random")
         nrow = lenL,
         ncol = 1
       )
+      # Add column for 'importance', will be sorted on later
       L <- cbind(L, M)
+      # Skip 1, because parent 0 is not in L table
       for (i in 2:lenL)
       {
+        # [i,2]: parent
+        # [i,6]: species index
+        # If incipient is deri
         if (L[L[i, 2], 6] != L[i, 6]) {
+          # Set
           if (L[L[i, 2], 7] < L[i, 3]) L[L[i, 2], 7] <- L[i, 3]
         }
       }
+      # Skip 1, because parent 0 is not in L table
       for (i in 2:lenL)
       {
         if (L[i, 7] == -1e10) L[i, 7] <- L[i, 3]
