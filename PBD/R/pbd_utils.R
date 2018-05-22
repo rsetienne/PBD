@@ -158,9 +158,11 @@ detphy = function(L, age, ig = F, dropextinct = T)
    return(linlist[7])
 }
 
+#' @param L L-table with number of subspecies of rows
+#'   and 6 columns: ???
 sampletree = function(L,age,samplemethod = "random")
 {
-   lenL = length(L[,1])
+   lenL <- length(L[,1])
    if(samplemethod == "random")
    {
       neworder = DDD::sample2(1:lenL, replace = F)
@@ -191,7 +193,7 @@ sampletree = function(L,age,samplemethod = "random")
       {
         if (L[i, 7] == -1e10) L[i, 7] <- L[i, 3]
       }
-      neworder = order(L[, 7], decreasing = T)
+      neworder <- order(L[, 7], decreasing = TRUE)
       L <- L[, -7]
    }
    if (samplemethod == "longest")
@@ -212,7 +214,7 @@ sampletree = function(L,age,samplemethod = "random")
      {
        if (L[i, 7] == -1e-10) L[i, 7] <- L[i, 3]
      }
-     neworder = order(L[, 7], decreasing = F)
+     neworder <- order(L[, 7], decreasing = FALSE)
      L <- L[, -7]
    }
    L2 = L[neworder,]
