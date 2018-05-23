@@ -4,6 +4,38 @@
 \name{PBD-package}
 \alias{PBD-package}
 \alias{PBD}
+<<<<<<< HEAD
+\docType{package}
+\title{Protracted Birth-Death Model of Diversification }
+\description{ This package computes the (maximum) likelihood of the protracted speciation model for a given set of branching times
+This package is a likelihood-based statistical package to estimate parameters
+under the protracted speciation model.\cr \cr
+   First version: 0.8\cr
+   New in version 0.9\cr
+   - Bug fix for stem age\cr
+   New in version 0.91\cr
+   - Reports loglik = -Inf on an error in the deSolve package (function ode)\cr
+   New in version 0.92\cr
+   - Correcting order of parameters of pbd_sim\cr
+   New in version 0.93\cr
+   - pbd_sim produces a tree, a matrix containing all events in the simulation, and a tree with one sample per species.\cr
+   New in version 1.0\cr
+   - Conditioning is also possible on a range of values of the number of species.\cr
+   New in version 1.1\cr
+   - Simulation of the protracted speciation tree has more features. \cr
+   New in version 1.2\cr
+   - Optimization can make use of subplex (default) and simplex (older versions).\cr
+   New in version 1.3\cr
+   - Contains a function to carry out a bootstrap likelihood ratio test.\cr
+   - Vignette and test added.\cr
+   - Reports an error if exteq = TRUE and initparsopt contains 4 parameters.\cr
+   - Option to limit a simulation to a certain maximum number of species; if exceeded, the simulation is ignored.\cr
+   New in version 1.4:\cr
+   - Includes all special cases in pbd_durspec_mean\cr
+   - Fixes a bug in conditioning on a range of values of the number of species\cr
+   New in version 1.5:\cr
+   - Fixes bug with missing species in dd_LR\cr
+=======
 \title{Protracted Birth-Death Model of Diversification}
 \description{
 This package computes the (maximum) likelihood of the protracted speciation
@@ -25,6 +57,7 @@ Option to limit a simulation to a certain maximum number of species; if
 exceeded, the simulation is ignored.\cr New in version 1.4:\cr - Includes
 all special cases in pbd_durspec_mean\cr - Fixes a bug in conditioning on a
 range of values of the number of species\cr
+>>>>>>> 1bb7b8cd667b768fe465b2cda8aa17c5b6a969bc
 }
 \details{
 pbd_loglik computes the likelihood of the protracted birth-death model of
