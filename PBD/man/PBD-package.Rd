@@ -29,6 +29,8 @@ under the protracted speciation model.\cr \cr
    New in version 1.4:\cr
    - Includes all special cases in pbd_durspec_mean\cr
    - Fixes a bug in conditioning on a range of values of the number of species\cr
+   New in version 1.5:\cr
+   - Fixes bug with missing species in dd_LR\cr
 }
 \details{
 pbd_loglik computes the likelihood of the protracted birth-death model of

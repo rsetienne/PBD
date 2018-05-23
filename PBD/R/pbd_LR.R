@@ -65,9 +65,9 @@ pbd_LR = function(
   {
     cat('Analyzing simulation:',mc,'\n')
     utils::flush.console()
-    outCR = pbd_ML(brtsCR[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD1 = pbd_ML(brtsCR[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD2 = pbd_ML(brtsCR[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outCR = pbd_ML(brtsCR[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outPBD1 = pbd_ML(brtsCR[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outPBD2 = pbd_ML(brtsCR[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
     if(outPBD1$conv == -1 & outPBD2$conv == -1)
     {
       maxLLPBD = outCR$loglik
@@ -96,9 +96,9 @@ pbd_LR = function(
   {
     cat('Analyzing simulation:',mc,'\n')
     utils::flush.console()
-    outCR = pbd_ML(brtsPBD[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD1 = pbd_ML(brtsPBD[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD2 = pbd_ML(brtsPBD[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outCR = pbd_ML(brtsPBD[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outPBD1 = pbd_ML(brtsPBD[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outPBD2 = pbd_ML(brtsPBD[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
     if(outPBD1$conv == -1 & outPBD2$conv == -1)
     {
       maxLLPBD = outCR$loglik
