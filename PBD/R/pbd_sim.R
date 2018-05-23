@@ -233,7 +233,7 @@ reconL = reconL[order(reconL[,1]),]
 
 if(plotit == TRUE)
 {
-   graphics::par(mfrow = c(3,3))
+   graphics::par(mfrow = c(4,3))
    cols = stats::setNames(c("gray","black"),c("i","g"))
    phytools::plotSimmap(igtree.extinct,colors = cols)
    phytools::plotSimmap(igtree.extant,colors = cols)
@@ -241,6 +241,8 @@ if(plotit == TRUE)
    graphics::plot(stree_random, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(stree_oldest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(stree_youngest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
+   graphics::plot(stree_longest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
+   graphics::plot(stree_shortest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(recontree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::par(mfrow = c(1,1))
 }
