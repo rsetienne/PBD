@@ -1,32 +1,20 @@
-sudo: require
-language: cpp
-compiler: gcc
+language: r
+sudo: false
+cache: packages
 
+env:
+  - LINTR_COMMENT_BOT=false
+
+r_github_packages:
+  - jimhester/lintr
+  - jimhester/covr
+  - MangoTheCat/goodpractice
+
+# Go into folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-202411532
 before_install:
-  - sudo add-apt-repository --yes ppa:marutter/rrutter 
-  - sudo apt-get update -qq
-
-install: 
-  - sudo apt-get install -qq r-base r-base-dev 
-  - sudo apt-get install -qq texlive
-  - sudo pip install codecov
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-
-before_script:
- - sudo Rscript install_r_packages.R
-
-script: 
  - cd PBD
- - R CMD check .
 
-after_succes:
- - codecov
-
-after_failure:
- - cat /home/travis/build/richelbilderbeek/Cer2016/..Rcheck/00install.out
- - cat /home/travis/build/richelbilderbeek/Cer2016/..Rcheck/00check.log
-
+after_success:
+  - Rscript -e 'lintr::lint_package()'
+  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'library(goodpractice); gp()'

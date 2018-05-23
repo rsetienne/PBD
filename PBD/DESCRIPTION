@@ -24,6 +24,7 @@ Description: Conducts maximum likelihood analysis and simulation of the
 License: GPL-2
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

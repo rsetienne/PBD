@@ -1,57 +1,28 @@
----
-title: "pbd_ML demo"
-author: "Richel Bilderbeek & Rampal S. Etienne"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{pbd_ML demo}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-This document gives a demonstration how to use 
-the package to obtain a maximum-likelihood estimate
-of the protracted birth-death speciation model.
-
-First thing is to load the PBD package itself:
-
-
-```{r}
+## ------------------------------------------------------------------------
 rm(list = ls())
 library(PBD)
-```
 
-We will also need ape for `branching.times`:
-
-```{r}
+## ------------------------------------------------------------------------
 library(ape)
-```
 
-
-Here we simulate a tree with known parameters:
-
-```{r}
+## ------------------------------------------------------------------------
 seed <- 43
 set.seed(seed)
 b_1 <- 0.3 # speciation-initiation rate of good species
 la_1 <- 0.2 # speciation-completion rate
 b_2 <- b_1 # the speciation-initiation rate of incipient species
 mu_1 <- 0.1 #  extinction rate of good species
-mu_2 <- mu_1 # extinction rate of incipient species 
+mu_2 <- mu_1 # extinction rate of incipient species
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
-age <- 15 # the age for the simulation 
+age <- 15 # the age for the simulation
 phylogenies <- pbd_sim(pars = pars, age = age)
 plot(phylogenies$recontree)
 plot(phylogenies$igtree.extant)
 plot(phylogenies$tree)
 names(phylogenies)
 
-```
 
-Now we try to recover the parameters by maximum likelihood estimation:
-
-
-```{r}
+## ------------------------------------------------------------------------
 brts <- branching.times(phylogenies$recontree)  # branching times
 init_b <- 0.2  # speciation-initiation rate
 init_mu_1 <- 0.05  # extinction rate of good species
@@ -73,58 +44,37 @@ cond <- 1
 
 # Give the likelihood of the phylogeny (instead of the likelihood of the branching times)
 btorph <- 1
-```
 
-Maximum likelihood estimation can now be performed:
-
-```{r}
+## ------------------------------------------------------------------------
 r <- pbd_ML(
   brts = brts,
-  initparsopt = initparsopt, 
+  initparsopt = initparsopt,
   exteq = exteq,
-  soc = soc, 
+  soc = soc,
   cond = cond,
   btorph = btorph,
   verbose = FALSE
 )
-```
 
-The ML parameter estimates are:
-
-```{r}
+## ------------------------------------------------------------------------
 knitr::kable(r)
-```
 
-Comparing the known true value with the recovered values:
-
-```{r}
+## ------------------------------------------------------------------------
 loglik_true <- PBD::pbd_loglik(pars, brts = brts)
 df <- as.data.frame(r)
 df <- rbind(df, c(b_1, mu_1, la_1, mu_2, loglik_true, NA, NA))
 row.names(df) <- c("ML", "true")
 knitr::kable(df)
-```
 
-Ideally, all parameter columns should have the same values.
-
-To test for the uncertainty of our ML estimate, we can do a parametric bootstrap.
-
-The function `pbd_bootstrap` consists of a few steps:
-
- 1. Do an ML estimate
- 2. Run a simulation with those estimates
- 3. Perform ML estimation on the simulated data
- 4. Go to 2 depending on the setting of endmc.
-
-```{r}
+## ------------------------------------------------------------------------
 
 endmc <- 10 # Sets the number of simulations for the bootstrap
 
 b <- pbd_bootstrap(
   brts = brts,
-  initparsopt = initparsopt, 
+  initparsopt = initparsopt,
   exteq = exteq,
-  soc = soc, 
+  soc = soc,
   cond = cond,
   btorph = btorph,
   plotltt = FALSE,
@@ -132,30 +82,22 @@ b <- pbd_bootstrap(
   seed = seed
 )
 knitr::kable(b[[3]])
-```
 
-From the bootstrap analysis, we get 
-
- * Again the ML estimate
- * The ML estimates for simulations run with those estimates
-
-Putting this in a table:
-
-```{r}
-dg <- rbind(df, 
+## ------------------------------------------------------------------------
+dg <- rbind(df,
   list(
-    b = b[[1]]$b, 
-    mu_1 = b[[1]]$mu_1, 
-    lambda_1 = b[[1]]$lambda_1, 
+    b = b[[1]]$b,
+    mu_1 = b[[1]]$mu_1,
+    lambda_1 = b[[1]]$lambda_1,
     mu_2 = b[[1]]$mu_2,
     loglik = b[[1]]$loglik,
     df = b[[1]]$df,
     conv = b[[1]]$conv
   ),
   list(
-    b = b[[3]]$b, 
-    mu_1 = b[[3]]$mu_1, 
-    lambda_1 = b[[3]]$lambda_1, 
+    b = b[[3]]$b,
+    mu_1 = b[[3]]$mu_1,
+    lambda_1 = b[[3]]$lambda_1,
     mu_2 = b[[3]]$mu_2,
     loglik = b[[3]]$loglik,
     df = b[[3]]$df,
@@ -166,14 +108,8 @@ dg
 
 row.names(dg) <- c("ML", "true", "ML2", paste("BS", 1:endmc, sep = ""))
 knitr::kable(dg)
-```
 
-We expect rows ML and ML2 to be identical. Their values are
-indeed very similar.
-
-We can calculate the loglikelihood for 
-
-```{r}
+## ------------------------------------------------------------------------
 ml_b <- b[[1]]$b
 ml_mu_1 <- b[[1]]$mu_1
 ml_la_1 <- b[[1]]$lambda_1
@@ -187,13 +123,3 @@ l <- pbd_loglik(
   brts = brts
 )
 print(l)
-```
-
-
-```
-# Create .md, .html, and .pdf files
-setwd(paste(getwd(), "vignettes", sep = "/"))
-knit("PBD_ML_demo.Rmd")
-markdown::markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c("use_xhml"))
-system("pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf")
-```
