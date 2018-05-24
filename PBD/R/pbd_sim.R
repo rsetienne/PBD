@@ -249,7 +249,7 @@ if(plotit == TRUE)
 
 Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
 if (add_shortest_and_longest == TRUE) {
-  Ltreeslist <- c(Ltreeslist, stree_shortest, stree_longest, sL_shortest, sL_longest)
+  Ltreeslist <- list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0, stree_shortest = stree_shortest, stree_longest = stree_longest, sL_shortest = sL_shortest, sL_longest = sL_longest)
 }
 return(Ltreeslist)
 }
