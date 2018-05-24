@@ -1,7 +1,7 @@
 
 
 #' Protracted Birth-Death Model of Diversification
-#' 
+#'
 #' This package computes the (maximum) likelihood of the protracted speciation
 #' model for a given set of branching times This package is a likelihood-based
 #' statistical package to estimate parameters under the protracted speciation
@@ -21,19 +21,21 @@
 #' exceeded, the simulation is ignored.\cr New in version 1.4:\cr - Includes
 #' all special cases in pbd_durspec_mean\cr - Fixes a bug in conditioning on a
 #' range of values of the number of species\cr
-#' 
+#' New in version 1.5:\cr
+#'  - Fixes bug with missing species in dd_LR\cr
+#'
 #' pbd_loglik computes the likelihood of the protracted birth-death model of
 #' diversification, given a set of parameters and a data set of phylogenetic
 #' branching times.
-#' 
+#'
 #' pbd_ML finds the parameters that maximizes the likelihood computed by
 #' pbd_loglik.
-#' 
+#'
 #' pbd_bootstrap performs a maximum likelihood analysis and simulates with the
 #' maximum likelihood parameters. The ML parameters of the simulated data sets
 #' are then estimated, providing an uncertainty distribution for the original
 #' ML estimate on the original data.
-#' 
+#'
 #' @name PBD-package
 #' @aliases PBD-package PBD
 #' @docType package

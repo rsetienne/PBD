@@ -158,9 +158,18 @@ detphy = function(L, age, ig = F, dropextinct = T)
    return(linlist[7])
 }
 
-sampletree = function(L,age,samplemethod = "random")
+#' Internal function to sample a tree from an L table
+#' @param L an L-table at the subspecies level,
+#'   with number of subspecies of rows
+#'   and 6 columns
+#' @param age crown age
+#' @param samplemethod the sampling method. Can be 'random',
+#'   'youngest', 'oldest', 'shortest' or 'longest'
+#' @return an L table at the species level
+#' @noRd
+sampletree = function(L, age, samplemethod = "random")
 {
-   lenL = length(L[,1])
+   lenL <- length(L[,1])
    if(samplemethod == "random")
    {
       neworder = DDD::sample2(1:lenL, replace = F)
@@ -180,39 +189,169 @@ sampletree = function(L,age,samplemethod = "random")
         nrow = lenL,
         ncol = 1
       )
+      # Add column for 'importance', will be sorted on later
       L <- cbind(L, M)
-      for (i in 2:lenL)
-      {
+      # Skip 1, because parent 0 is not in L table
+      for (i in 2:lenL) {
+        # [i,2]: parent
+        # [i,6]: species index
+        # If parent has different species index than daughter
         if (L[L[i, 2], 6] != L[i, 6]) {
-          if (L[L[i, 2], 7] < L[i, 3]) L[L[i, 2], 7] <- L[i, 3]
+          # If daughter speciation initiation time is greater than parent 'importance'
+          if (L[L[i, 2], 7] < L[i, 3]) {
+            # Set parent 'importance' to daughter speciation initiation time
+            L[L[i, 2], 7] <- L[i, 3]
+          }
+          # If daughter speciation initiation time is greater than daughter 'importance'
+          if (L[i, 7] < L[i, 3]) {
+            # Set daughter 'importance' to daughter speciation initiation time
+            L[i, 7] <- L[i, 3]
+          }
         }
       }
-      for (i in 2:lenL)
-      {
-        if (L[i, 7] == -1e10) L[i, 7] <- L[i, 3]
+      # As long as not all 'importances' have been set
+      while (any(L[, 7] == -1e10)) {
+        # Skip 1, because parent 0 is not in L table
+        for (i in 2:lenL) {
+          # If daughter 'importance' is not set
+          if (L[i, 7] == -1e10) {
+            # If parent 'importance' is set
+            if (L[L[i, 2], 7] != -1e10) {
+              # If parent 'importance' is greater/equal than daughter speciation initiation time
+              if (L[L[i, 2], 7] >= L[i, 3]) {
+                # Set daughter 'importance' to daughter speciation initiation time
+                L[i, 7] <- L[i, 3]
+                # If parent 'importance' is less than daughter speciation initiation time
+              } else {
+                # Set daughter 'importance' to parent 'importance'
+                L[i, 7] <- L[L[i, 2], 7]
+              }
+            }
+          }
+        }
+        # Skip 1, because parent 0 is not in L table
+        for (i in 2:lenL) {
+          # If daughter 'importance' is set
+          if (L[i, 7] != -1e10) {
+            # If parent 'importance' is not set
+            if (L[L[i, 2], 7] == -1e10) {
+              # Set parent 'importance' to daughter speciation time
+              L[L[i, 2], 7] <- L[i, 3]
+            }
+          }
+        }
       }
-      neworder = order(L[, 7], decreasing = T)
+      # Order on 'importance'
+      neworder <- order(L[, 7], decreasing = TRUE)
+      # Remove new column
       L <- L[, -7]
    }
    if (samplemethod == "longest")
    {
      M <- matrix(
-       c(rep(-1e-10, lenL)),
+       c(rep(-1e10, lenL)),
        nrow = lenL,
        ncol = 1
      )
+     # Add column for 'importance', will be sorted on later
      L <- cbind(L, M)
-     for (i in 2:lenL)
-     {
+     # Skip 1, because parent 0 is not in L table
+     for (i in 2:lenL) {
+       # [i,2]: parent
+       # [i,6]: species index
+       # If parent has different species index than daughter
        if (L[L[i, 2], 6] != L[i, 6]) {
-         if (L[L[i, 2], 7] < L[i, 3]) L[L[i, 2], 7] <- L[i, 3]
+         # If daughter speciation initiation time is greater than parent 'importance'
+         if (L[L[i, 2], 7] < L[i, 3]) {
+           # Set parent 'importance' to daughter speciation initiation time
+           L[L[i, 2], 7] <- L[i, 3]
+         }
+         # If daughter speciation initiation time is greater than daughter 'importance'
+         if (L[i, 7] < L[i, 3]) {
+           # Set daughter 'importance' to daughter speciation initiation time
+           L[i, 7] <- L[i, 3]
+         }
        }
      }
-     for (i in 2:lenL)
-     {
-       if (L[i, 7] == -1e-10) L[i, 7] <- L[i, 3]
+     # As long as not all 'importances' have been set
+     while (any(L[, 7] == -1e10)) {
+       # Skip 1, because parent 0 is not in L table
+       for (i in 2:lenL) {
+         # If daughter 'importance' is not set
+         if (L[i, 7] == -1e10) {
+           # If parent 'importance' is set
+           if (L[L[i, 2], 7] != -1e10) {
+             # If parent 'importance' is greater/equal than daughter speciation initiation time
+             if (L[L[i, 2], 7] >= L[i, 3]) {
+               # Set daughter 'importance' to daughter speciation initiation time
+               L[i, 7] <- L[i, 3]
+               # If parent 'importance' is less than daughter speciation initiation time
+             } else {
+               # Set daughter 'importance' to parent 'importance'
+               L[i, 7] <- L[L[i, 2], 7]
+             }
+           }
+         }
+       }
+       # Skip 1, because parent 0 is not in L table
+       for (i in 2:lenL) {
+         # If daughter 'importance' is set
+         if (L[i, 7] != -1e10) {
+           # If parent 'importance' is not set
+           if (L[L[i, 2], 7] == -1e10) {
+             # Set parent 'importance' to daughter speciation time
+             L[L[i, 2], 7] <- L[i, 3]
+           }
+         }
+       }
      }
-     neworder = order(L[, 7], decreasing = F)
+     for (j in 1:lenL) {
+       # Skip 1, because parent 0 is not in L table
+       for (i in 2:lenL) {
+         # If daughter 'importance' is different from parent 'importance'
+         if (L[i, 7] != L[L[i, 2], 7]) {
+           # If parent 'importance' is less than daughter speciation initiation time
+           if (L[L[i, 2], 7] < L[i, 3]) {
+             # Set parent 'importance' to daughter speciation initiation time
+              L[L[i, 2], 7] <- L[i, 3]
+              break
+           }
+         }
+       }
+       # Skip 1, because parent 0 is not in L table
+       for (i in 2:lenL) {
+         # If daughter 'importance' is less than parent 'importance'
+         if (L[i, 7] < L[L[i, 2], 7]) {
+           # If parent importance is less than daughter speciation initiation time
+           if (L[L[i, 2], 7] < L[i, 3]) {
+             # Set daughter 'importance' to parent 'importance'
+             L[i, 7] <- L[L[i, 2], 7]
+             # If parent 'importance' is greater/equal than daughter speciation initiation time
+           } else {
+             # Make list of all daughters of i
+             listk <- NULL
+             for (k in 1:lenL) {
+               if (L[k, 2] == i) {
+                 listk <- c(listk, k)
+               }
+             }
+             # If i has no daughters
+             if (length(listk) == 0) {
+               # Set 1 as daughter of i (1 has lowest speciation initiation time)
+               listk <- c(listk, 1)
+             }
+             # If daughter speciation initiation time is greater than speciation initiation time of most recent daughter
+             if (L[i, 3] > min(L[listk, 3])) {
+               # Set daughter 'importance' to daughter speciation initiation time
+               L[i, 7] <- L[i, 3]
+             }
+           }
+         }
+       }
+     }
+     # Order on 'importance'
+     neworder <- order(L[, 7], decreasing = FALSE)
+     # Remove new column
      L <- L[, -7]
    }
    L2 = L[neworder,]
