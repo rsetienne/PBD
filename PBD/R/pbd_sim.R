@@ -22,6 +22,8 @@
 #' @param limitsize Sets a maximum to the number of incipient + good species
 #' that are created during the simulation; if exceeded, the simulation is
 #' aborted and removed.
+#' @param add_shortest_and_longest Gives the output of the new samplemethods
+#' 'shortest' and 'longest'.
 #' @return \item{out}{ A list with the following elements: \cr \cr \code{tree}
 #' is the tree of extant species in phylo format \cr \code{stree_random} is a
 #' tree with one random sample per species in phylo format \cr
@@ -53,7 +55,7 @@
 #' @examples
 #'  pbd_sim(c(0.2,1,0.2,0.1,0.1),15)
 #' @export pbd_sim
-pbd_sim = function(pars,age,soc = 2,plotit = FALSE, limitsize = Inf)
+pbd_sim = function(pars,age,soc = 2,plotit = FALSE, limitsize = Inf, add_shortest_and_longest = FALSE)
 {
 la1 = pars[1]
 la2 = pars[2]
@@ -190,6 +192,12 @@ stree_oldest = ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
 # Sampling the youngest
 sL_youngest = sampletree(absL, age, samplemethod = "youngest")
 stree_youngest = ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
+# Sampling the shortest
+sL_shortest <- sampletree(absL, age, samplemethod = "shortest")
+stree_shortest <- ape::as.phylo(ape::read.tree(text = detphy(sL_shortest, age)))
+# Sampling the longest
+sL_longest <- sampletree(absL, age, samplemethod = "longest")
+stree_longest <- ape::as.phylo(ape::read.tree(text = detphy(sL_longest, age)))
 
 sL_random[, 3:5][which(sL_random[, 3:5] == -1)] = age + 1
 sL_random[, 3:5] = age - sL_random[, 3:5]
@@ -200,6 +208,12 @@ sL_oldest = sL_oldest[order(sL_oldest[, 1]), ]
 sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
 sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
 sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
+sL_shortest[, 3:5][which(sL_shortest[, 3:5] == -1)] = age + 1
+sL_shortest[, 3:5] = age - sL_shortest[, 3:5]
+sL_shortest = sL_shortest[order(sL_shortest[, 1]), ]
+sL_longest[, 3:5][which(sL_longest[, 3:5] == -1)] = age + 1
+sL_longest[, 3:5] = age - sL_longest[, 3:5]
+sL_longest = sL_longest[order(sL_longest[, 1]), ]
 
 #sL = sampletree(absL,age)
 #stree = as.phylo(read.tree(text = detphy(sL,age)))
@@ -234,5 +248,8 @@ if(plotit == TRUE)
 }
 
 Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
+if (add_shortest_and_longest == TRUE) {
+  Ltreeslist <- c(Ltreeslist, stree_shortest, stree_longest, sL_shortest, sL_longest)
+}
 return(Ltreeslist)
 }
