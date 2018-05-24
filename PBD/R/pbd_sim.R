@@ -187,12 +187,6 @@ stree_random = ape::as.phylo(ape::read.tree(text = detphy(sL_random, age)))
 # Sampling the oldest
 sL_oldest = sampletree(absL, age, samplemethod = "oldest")
 stree_oldest = ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
-# Sampling the youngest
-sL_youngest = sampletree(absL, age, samplemethod = "youngest")
-stree_youngest = ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
-# Sampling the shortest
-sL_shortest <- sampletree(absL, age, samplemethod = "shortest")
-stree_shortest <- ape::as.phylo(ape::read.tree(text = detphy(sL_shortest, age)))
 # Sampling the longest
 sL_longest <- sampletree(absL, age, samplemethod = "longest")
 stree_longest <- ape::as.phylo(ape::read.tree(text = detphy(sL_longest, age)))
@@ -206,12 +200,6 @@ sL_oldest = sL_oldest[order(sL_oldest[, 1]), ]
 sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
 sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
 sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
-sL_shortest[, 3:5][which(sL_shortest[, 3:5] == -1)] <- age + 1
-sL_shortest[, 3:5] <- age - sL_shortest[, 3:5]
-sL_shortest <- sL_shortest[order(sL_shortest[, 1]), ]
-sL_longest[, 3:5][which(sL_longest[, 3:5] == -1)] <- age + 1
-sL_longest[, 3:5] <- age - sL_longest[, 3:5]
-sL_longest <- sL_longest[order(sL_longest[, 1]), ]
 
 #sL = sampletree(absL,age)
 #stree = as.phylo(read.tree(text = detphy(sL,age)))
@@ -233,7 +221,7 @@ reconL = reconL[order(reconL[,1]),]
 
 if(plotit == TRUE)
 {
-   graphics::par(mfrow = c(4,3))
+   graphics::par(mfrow = c(3,3))
    cols = stats::setNames(c("gray","black"),c("i","g"))
    phytools::plotSimmap(igtree.extinct,colors = cols)
    phytools::plotSimmap(igtree.extant,colors = cols)
@@ -241,12 +229,10 @@ if(plotit == TRUE)
    graphics::plot(stree_random, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(stree_oldest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(stree_youngest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
-   graphics::plot(stree_longest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
-   graphics::plot(stree_shortest, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::plot(recontree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
    graphics::par(mfrow = c(1,1))
 }
 
-Ltreeslist = list(tree = tree, stree_random = stree_random, stree_oldest = stree_oldest, stree_youngest = stree_youngest, stree_shortest = stree_shortest, stree_longest = stree_longest, L = L, sL_random = sL_random, sL_oldest = sL_oldest, sL_youngest = sL_youngest, sL_shortest = sL_shortest, sL_longest = sL_longest, igtree.extinct = igtree.extinct, igtree.extant = igtree.extant, recontree = recontree, reconL = reconL, L0 = L0)
+Ltreeslist = list(tree = tree, stree_random = stree_random, stree_oldest = stree_oldest, stree_youngest = stree_youngest, stree_shortest = stree_shortest, stree_longest = stree_longest, L = L, sL_random = sL_random, sL_oldest = sL_oldest, sL_youngest = sL_youngest, igtree.extinct = igtree.extinct, igtree.extant = igtree.extant, recontree = recontree, reconL = reconL, L0 = L0)
 return(Ltreeslist)
 }
