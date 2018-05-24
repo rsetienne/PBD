@@ -11,10 +11,10 @@ pbd_bootstrap_sim = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:len
 # exteq = incipient species have the same (1) or different (0) extinction rate as good species
 # parsfunc = functions of parameters
 # res = resolution of the method; res should be larger than the total number of species
-# missnumspec = number of missing species    
+# missnumspec = number of missing species
 # cond = conditioning
 # . cond = 0 conditioning on stem or clade age
-# . cond = 1 conditioning on age and non-extinction of the phylogeny 
+# . cond = 1 conditioning on age and non-extinction of the phylogeny
 # . cond = 2 conditioning on age and on number of extant taxa
 # soc = stem (1) or crown (2) age
 # btorph = likelihood of branching times (0) or phylogeny (1), differ by a factor (S - 1)! where S is the number of extant species
