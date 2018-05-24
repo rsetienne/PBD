@@ -2,6 +2,7 @@
 
 Branch|[![Travis CI logo](TravisCI.png)](https://travis-ci.org)|[![Codecov logo](Codecov.png)](https://www.codecov.io)
 ---|---|---
+master|[![Build Status](https://travis-ci.org/rsetienne/PBD.svg?branch=master)](https://travis-ci.org/rsetienne/PBD) | [![codecov.io](https://codecov.io/github/rsetienne/PBD/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/PBD?branch=master)
 master|[![Build Status](https://travis-ci.org/richelbilderbeek/PBD.svg?branch=master)](https://travis-ci.org/richelbilderbeek/PBD) | [![codecov.io](https://codecov.io/github/richelbilderbeek/PBD/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/PBD?branch=master)
 develop|[![Build Status](https://travis-ci.org/richelbilderbeek/PBD.svg?branch=develop)](https://travis-ci.org/richelbilderbeek/PBD) | [![codecov.io](https://codecov.io/github/richelbilderbeek/PBD/coverage.svg?branch=develop)](https://codecov.io/github/richelbilderbeek/PBD?branch=develop)
 
@@ -31,7 +32,7 @@ install.packages("PBD")
 Because the PBD package is located in the folder `PBD`, do:
 
 ```
-devtools::install_github("richelbilderbeek/PBD/PBD")
+devtools::install_github("rsetienne/PBD/PBD")
 ```
 
 ## Using PBD as a package dependency
@@ -60,5 +61,5 @@ Because the PBD package is located in the folder `PBD`, do:
 
 ```
 Remotes:
-  richelbilderbeek/PBD/PBD
+  rsetienne/PBD/PBD
 ```

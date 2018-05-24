@@ -55,8 +55,30 @@ test_that("sample oldest", {
 
 test_that("sample shortest", {
 
+  #           +------------------------- 1-3
+  #           |
+  #     +-----+
+  #     |     |
+  # ====+     +-----------------=======  2-2
+  #     |
+  #     |            +----=============  3-4
+  #     |            |
+  #     +============+
+  #                  |
+  #                  +=================  1-1
+  #
+  # +----+-----+-----+-----+----+-----+- t
+  # 0   0.2   0.4   0.6   0.8  1.0   1.2
+  #
   input_L <- matrix(
-    c(1, 2, 3, 4, 0, 1, 2, 1, -1e-10, 0.2, 0.4, 0.6, 0, 1.0, -1, 0.8, -1, -1, -1, -1, 1, 2, 1, 3),
+    c(
+      1, 2, 3, 4, # Subspecies IDs
+      0, 1, 2, 1, # Parent IDs
+      -1e-10, 0.2, 0.4, 0.6, # Speciation initiation times
+      0, 1.0, -1, 0.8, # Speciation completion times, -1 if still incipient
+      -1, -1, -1, -1, # Extinction time, -1 if still present
+      1, 2, 1, 3 # Species ID
+    ),
     nrow = 4,
     ncol = 6)
 
