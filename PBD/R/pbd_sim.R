@@ -233,6 +233,6 @@ if(plotit == TRUE)
    graphics::par(mfrow = c(1,1))
 }
 
-Ltreeslist = list(tree = tree, stree_random = stree_random, stree_oldest = stree_oldest, stree_youngest = stree_youngest, L = L, sL_random = sL_random, sL_oldest = sL_oldest, sL_youngest = sL_youngest, igtree.extinct = igtree.extinct, igtree.extant = igtree.extant, recontree = recontree, reconL = reconL, L0 = L0)
+Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
 return(Ltreeslist)
 }
