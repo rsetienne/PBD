@@ -187,9 +187,9 @@ stree_random = ape::as.phylo(ape::read.tree(text = detphy(sL_random, age)))
 # Sampling the oldest
 sL_oldest = sampletree(absL, age, samplemethod = "oldest")
 stree_oldest = ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
-# Sampling the longest
-sL_longest <- sampletree(absL, age, samplemethod = "longest")
-stree_longest <- ape::as.phylo(ape::read.tree(text = detphy(sL_longest, age)))
+# Sampling the youngest
+sL_youngest = sampletree(absL, age, samplemethod = "youngest")
+stree_youngest = ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
 
 sL_random[, 3:5][which(sL_random[, 3:5] == -1)] = age + 1
 sL_random[, 3:5] = age - sL_random[, 3:5]
