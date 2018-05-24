@@ -158,9 +158,16 @@ detphy = function(L, age, ig = F, dropextinct = T)
    return(linlist[7])
 }
 
-#' @param L L-table with number of subspecies of rows
-#'   and 6 columns: ???
-sampletree = function(L,age,samplemethod = "random")
+#' Internal function to sample a tree from an L table
+#' @param L an L-table at the subspecies level,
+#'   with number of subspecies of rows
+#'   and 6 columns
+#' @param age crown age
+#' @param samplemethod the sampling method. Can be 'random',
+#'   'youngest', 'oldest', 'shortest' or 'longest'
+#' @return an L table at the species level
+#' @noRd
+sampletree = function(L, age, samplemethod = "random")
 {
    lenL <- length(L[,1])
    if(samplemethod == "random")
