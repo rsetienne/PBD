@@ -106,7 +106,7 @@ pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(
 pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda", quantile)
 {
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
-  numspec_quantile <- (soc == 2) + qnbinom(size = soc,prob = pT, p = quantile)
+  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc,prob = pT, p = quantile)
   return(numspec_quantile)
 }
 
