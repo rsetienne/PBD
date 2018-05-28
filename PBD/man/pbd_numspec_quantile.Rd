@@ -37,6 +37,8 @@ completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 
 \item{methode}{Sets which method should be used in the ode-solver. Default
 is 'lsoda'. See package deSolve for details.}
+
+\item{quantile}{the quantile}
 }
 \value{
 The expected duration of speciation

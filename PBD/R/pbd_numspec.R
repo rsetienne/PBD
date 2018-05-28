@@ -121,6 +121,7 @@ pbd_numspec_mean <- function(
 #' @param soc specify whether it is the stem or the crown age
 #' @param methode Sets which method should be used in the ode-solver. Default
 #' is 'lsoda'. See package deSolve for details.
+#' @param quantile the quantile
 #' @return The expected duration of speciation
 #' @author Rampal S. Etienne
 #' @seealso
