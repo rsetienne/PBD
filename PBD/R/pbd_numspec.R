@@ -46,21 +46,39 @@ checkquantile <- function(quantile)
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The expected duration of speciation
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
 #' \code{\link{pbd_numspec_quantile}}\cr
 #' \code{\link{pbd_durspec_var}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_mean(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
 #' @export pbd_numspec_mean
-pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda")
-{
+pbd_numspec_mean <- function(
+  pars,
+  parsf = c(
+    function(t,pars) {pars[1]},
+    function(t,pars) {pars[2]},
+    function(t,pars) {pars[3]},
+    function(t,pars) {pars[4]}
+  ),
+  age, soc = 2,
+  methode = "lsoda"
+) {
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
   numspec_mean <- (soc == 2) + as.numeric(soc * (1 - pT)/pT)
 
@@ -90,21 +108,41 @@ pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The expected duration of speciation
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
 #' \code{\link{pbd_numspec_quantile}}\cr
 #' \code{\link{pbd_durspec_var}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_quantile(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2, quantile = 0.95)
 #' @export pbd_numspec_quantile
-pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda", quantile)
-{
+pbd_numspec_quantile <- function(
+  pars,
+  parsf = c(
+    function(t,pars) {pars[1]},
+    function(t,pars) {pars[2]},
+    function(t,pars) {pars[3]},
+    function(t,pars) {pars[4]}
+  ),
+  age,
+  soc = 2,
+  methode = "lsoda",
+  quantile
+) {
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
   numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc,prob = pT, p = quantile)
   return(numspec_quantile)
@@ -125,13 +163,22 @@ pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},funct
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The expected duration of speciation
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
 #' \code{\link{pbd_numspec_quantile}}\cr
 #' \code{\link{pbd_durspec_var}}
 #' @keywords models
