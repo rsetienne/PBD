@@ -23,10 +23,10 @@ pbd_incipient = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,
 # Example: pbd_incipient(pars1 = c(0.1,0.05,1,0.05), brts = 1:10, missnumspec = 4)
 
   pars1 = c(pars1f,pars1)
-  
+
   brts = sort(abs(brts))
   abstol = 1e-16
-  reltol = 1e-10 
+  reltol = 1e-10
   b = pars1[[1]](brts,as.numeric(pars1[5:length(pars1)]))
   methode = pars2[5]
   cond = as.numeric(pars2[1])
@@ -35,8 +35,8 @@ pbd_incipient = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,
   res = as.numeric(pars2[6])
   S = length(brts) + (soc - 1)
   m = missnumspec
-  
-  
+
+
   probs = c(1,1,0,0,1,1,1,1,0)
   y = deSolve::ode(probs,c(0,brts),pbd_incipient_rhs,c(pars1),rtol = reltol,atol = abstol,method = methode)
   #loglik = (btorph == 0) * lgamma(S) + sum(log(b) + log(y[2:S,2]) + log(1 - y[2:S,3])) - log(b[1]) + (soc == 2) * (log(y[S,2]) + log(1 - y[S,3])) - soc * (cond > 0) * (log(1 - y[S,3])) - (cond == 2) * ((soc == 2) * log(S + m - 1) + soc * log(y[S,2]) + (S + m - soc) * log(1 - y[S,2]))
@@ -62,7 +62,7 @@ pbd_incipient = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,
   PN = DDD::conv(PN,PNj)[1:(res + 1)]
   #print(PN[1:10])
   expinc = t(PN) %*% (0:res)
-  
+
   if(as.numeric(pars2[4]) == 1)
   {
       pastetxt = paste('Parameters:',pars1[[5]][1],sep = ' ')
@@ -74,6 +74,6 @@ pbd_incipient = function(pars1,pars1f = c(function(t,pars) {pars[1]},function(t,
       cat(pastetxt,s2,"\n",sep = "")
       utils::flush.console()
   }
-  
+
   return(as.numeric(PN))
 }
