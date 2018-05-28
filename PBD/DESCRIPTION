@@ -13,6 +13,7 @@ Imports:
     phytools,
     graphics,
     stats,
+    testit,
     utils
 Author: Rampal S. Etienne
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
