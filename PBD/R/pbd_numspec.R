@@ -129,23 +129,26 @@ pbd_numspec_mean <- function(
 #' \code{\link{pbd_durspec_var}}
 #' @keywords models
 #' @examples
-#' pbd_numspec_quantile(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2, quantile = 0.95)
+#' pbd_numspec_quantile(
+#'   pars = c(0.3, 0.1, 0.5, 0.1),
+#'   age = 10, soc = 2, quantile = 0.95
+#'  )
 #' @export pbd_numspec_quantile
 pbd_numspec_quantile <- function(
   pars,
   parsf = c(
-    function(t,pars) {pars[1]},
-    function(t,pars) {pars[2]},
-    function(t,pars) {pars[3]},
-    function(t,pars) {pars[4]}
+    function(t, pars) {pars[1]},
+    function(t, pars) {pars[2]},
+    function(t, pars) {pars[3]},
+    function(t, pars) {pars[4]}
   ),
   age,
   soc = 2,
   methode = "lsoda",
   quantile
 ) {
-  pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
-  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc,prob = pT, p = quantile)
+  pT <- pbd_pgeom(pars = pars, parsf = parsf, age = age, soc = soc, methode = methode)
+  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc, prob = pT, p = quantile)
   return(numspec_quantile)
 }
 

@@ -48,7 +48,10 @@ pbd_numspec_quantile computes the number of species for a given quantile under t
 protracted speciation model for a given set of parameters
 }
 \examples{
-pbd_numspec_quantile(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2, quantile = 0.95)
+pbd_numspec_quantile(
+  pars = c(0.3, 0.1, 0.5, 0.1),
+  age = 10, soc = 2, quantile = 0.95
+ )
 }
 \seealso{
 \code{\link{pbd_numspec_quantile}}\cr
