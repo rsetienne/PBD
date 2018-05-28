@@ -7,8 +7,12 @@ test_that("Default run gives default output", {
     age = 1)
 
   testthat::expect_equal(length(out), 13)
-  testthat::expect_equal(names(out), c("tree", "stree_random", "stree_oldest", "stree_youngest", "L", "sL_random", "sL_oldest", "sL_youngest", "igtree.extinct", "igtree.extant", "recontree", "reconL", "L0"))
-
+  expected_names <- c(
+    "tree", "stree_random", "stree_oldest", "stree_youngest", "L",
+    "sL_random", "sL_oldest", "sL_youngest", "igtree.extinct",
+    "igtree.extant", "recontree", "reconL", "L0"
+  )
+  testthat::expect_equal(names(out), expected_names)
 })
 
 test_that("Run with shortest/longest gives shortest/longest output", {
@@ -19,6 +23,11 @@ test_that("Run with shortest/longest gives shortest/longest output", {
     add_shortest_and_longest = TRUE)
 
   testthat::expect_equal(length(out), 17)
-  testthat::expect_equal(names(out), c("tree", "stree_random", "stree_oldest", "stree_youngest", "L", "sL_random", "sL_oldest", "sL_youngest", "igtree.extinct", "igtree.extant", "recontree", "reconL", "L0", "stree_shortest", "stree_longest", "sL_shortest", "sL_longest"))
-
+  expected_names <- c(
+    "tree", "stree_random", "stree_oldest", "stree_youngest", "L", "sL_random",
+    "sL_oldest", "sL_youngest", "igtree.extinct", "igtree.extant", "recontree",
+    "reconL", "L0", "stree_shortest", "stree_longest", "sL_shortest",
+    "sL_longest"
+  )
+  testthat::expect_equal(names(out), expected_names)
 })
