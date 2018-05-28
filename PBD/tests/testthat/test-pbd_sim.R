@@ -4,7 +4,8 @@ test_that("Default run gives default output", {
 
   out <- pbd_sim(
     pars = c(2, 0.1, 2, 0, 0),
-    age = 1)
+    age = 1
+  )
 
   testthat::expect_equal(length(out), 13)
   expected_names <- c(
