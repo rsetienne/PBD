@@ -34,8 +34,8 @@ pbd_sim_checked <- function(
   if (siri < 0.0) {
     stop("'siri' must be positive")
   }
-  if (scr < 0.0) {
-    stop("'scr' must be positive")
+  if (scr <= 0.0) {
+    stop("'scr' must be non-zero and positive")
   }
   if (is.null(crown_age)) {
     if (is.null(stem_age)) {
