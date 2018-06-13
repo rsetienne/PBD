@@ -47,14 +47,16 @@ checkquantile <- function(quantile)
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
 #' @param age the stem or crown age (see soc)
+#' @details The number of representative species at time t = T when
+#' starting with one lineage at time t = 0 is geometrically distributed with
+#' parameter equal to g(T) where g(T) follows from the set of ODEs in Etienne
+#' et al. 2014.
 #' @param soc specify whether it is the stem or the crown age
-#' @return The expected duration of speciation
+#' @return The expected number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
 #' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_median}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_mean(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
@@ -92,13 +94,11 @@ pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
-#' @return The expected duration of speciation
+#' @return The number of species at a given quantile
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
-#' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_mean}}\cr
+#' \code{\link{pbd_numspec_median}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_quantile(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2, quantile = 0.95)
@@ -127,13 +127,11 @@ pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},funct
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
-#' @return The expected duration of speciation
+#' @return The mean number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_density}}\cr
-#' \code{\link{pbd_numspec_cumdensity}}\cr
 #' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_mean}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_median(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
