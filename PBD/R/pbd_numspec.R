@@ -56,29 +56,22 @@ checkquantile <- function(quantile)
 #' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
+#' @details The number of representative species at time t = T when
+#' starting with one lineage at time t = 0 is geometrically distributed with
+#' parameter equal to g(T) where g(T) follows from the set of ODEs in Etienne
+#' et al. 2014.
 #' @param soc specify whether it is the stem or the crown age
-#' @param methode Sets which method should be used in the ode-solver. Default
-#' is 'lsoda'. See package deSolve for details.
-#' @return The expected duration of speciation
+#' @return The expected number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
 #' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_median}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_mean(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
 #' @export pbd_numspec_mean
-pbd_numspec_mean <- function(
-  pars,
-  parsf = c(
-    function(t,pars) {pars[1]},
-    function(t,pars) {pars[2]},
-    function(t,pars) {pars[3]},
-    function(t,pars) {pars[4]}
-  ),
-  age, soc = 2,
-  methode = "lsoda"
-) {
+pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda")
+{
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
   numspec_mean <- (soc == 2) + as.numeric(soc * (1 - pT)/pT)
 
@@ -119,36 +112,19 @@ pbd_numspec_mean <- function(
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
-#' @param methode Sets which method should be used in the ode-solver. Default
-#' is 'lsoda'. See package deSolve for details.
-#' @param quantile the quantile
-#' @return The expected duration of speciation
+#' @return The number of species at a given quantile
 #' @author Rampal S. Etienne
 #' @seealso
-#' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_mean}}\cr
+#' \code{\link{pbd_numspec_median}}
 #' @keywords models
 #' @examples
-#' pbd_numspec_quantile(
-#'   pars = c(0.3, 0.1, 0.5, 0.1),
-#'   age = 10, soc = 2, quantile = 0.95
-#'  )
+#' pbd_numspec_quantile(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2, quantile = 0.95)
 #' @export pbd_numspec_quantile
-pbd_numspec_quantile <- function(
-  pars,
-  parsf = c(
-    function(t, pars) {pars[1]},
-    function(t, pars) {pars[2]},
-    function(t, pars) {pars[3]},
-    function(t, pars) {pars[4]}
-  ),
-  age,
-  soc = 2,
-  methode = "lsoda",
-  quantile
-) {
-  pT <- pbd_pgeom(pars = pars, parsf = parsf, age = age, soc = soc, methode = methode)
-  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc, prob = pT, p = quantile)
+pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda", quantile)
+{
+  pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
+  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc,prob = pT, p = quantile)
   return(numspec_quantile)
 }
 
@@ -178,13 +154,11 @@ pbd_numspec_quantile <- function(
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
-#' @param methode Sets which method should be used in the ode-solver. Default
-#' is 'lsoda'. See package deSolve for details.
-#' @return The expected duration of speciation
+#' @return The mean number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
 #' \code{\link{pbd_numspec_quantile}}\cr
-#' \code{\link{pbd_durspec_var}}
+#' \code{\link{pbd_numspec_mean}}
 #' @keywords models
 #' @examples
 #' pbd_numspec_median(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)

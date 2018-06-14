@@ -33,12 +33,9 @@ completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 \item{age}{the stem or crown age (see soc)}
 
 \item{soc}{specify whether it is the stem or the crown age}
-
-\item{methode}{Sets which method should be used in the ode-solver. Default
-is 'lsoda'. See package deSolve for details.}
 }
 \value{
-The expected duration of speciation
+The mean number of representative species
 }
 \description{
 pbd_numspec_median computes the median number of species under the
@@ -49,7 +46,7 @@ pbd_numspec_median(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
 }
 \seealso{
 \code{\link{pbd_numspec_quantile}}\cr
-\code{\link{pbd_durspec_var}}
+\code{\link{pbd_numspec_mean}}
 }
 \author{
 Rampal S. Etienne

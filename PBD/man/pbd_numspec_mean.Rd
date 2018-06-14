@@ -33,23 +33,26 @@ completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 \item{age}{the stem or crown age (see soc)}
 
 \item{soc}{specify whether it is the stem or the crown age}
-
-\item{methode}{Sets which method should be used in the ode-solver. Default
-is 'lsoda'. See package deSolve for details.}
 }
 \value{
-The expected duration of speciation
+The expected number of representative species
 }
 \description{
 pbd_numspec_mean computes the mean number of species under the
 protracted speciation model for a given set of parameters
+}
+\details{
+The number of representative species at time t = T when
+starting with one lineage at time t = 0 is geometrically distributed with
+parameter equal to g(T) where g(T) follows from the set of ODEs in Etienne
+et al. 2014.
 }
 \examples{
 pbd_numspec_mean(pars = c(0.3,0.1,0.5,0.1), age = 10, soc = 2)
 }
 \seealso{
 \code{\link{pbd_numspec_quantile}}\cr
-\code{\link{pbd_durspec_var}}
+\code{\link{pbd_numspec_median}}
 }
 \author{
 Rampal S. Etienne
