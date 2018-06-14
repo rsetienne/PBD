@@ -46,12 +46,23 @@ checkquantile <- function(quantile)
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @details The number of representative species at time t = T when
 #' starting with one lineage at time t = 0 is geometrically distributed with
 #' parameter equal to g(T) where g(T) follows from the set of ODEs in Etienne
 #' et al. 2014.
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The expected number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
@@ -92,8 +103,20 @@ pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
+#' @param quantile the quantile
 #' @return The number of species at a given quantile
 #' @author Rampal S. Etienne
 #' @seealso
@@ -125,8 +148,19 @@ pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},funct
 #' speciation completion rate \cr
 #' \code{pars[4]} corresponds
 #' to mu_2 (= mu_i in ER2012) = extinction rate of incipient species \cr
+#' @param parsf Vector of functions how the rates depend on time, default
+#' functions are constant functions of the parameters in pars1: \cr \cr
+#' \code{parsf[1]} corresponds to time-dependence of b (= la_1 in Etienne &
+#' Rosindell R2012) = speciation initiation rate \cr \code{parsf[2]}
+#' corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
+#' = extinction rate of good species \cr \code{parsf[3]} corresponds to
+#' tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
+#' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
+#' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The mean number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
