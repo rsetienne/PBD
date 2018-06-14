@@ -61,6 +61,8 @@ checkquantile <- function(quantile)
 #' parameter equal to g(T) where g(T) follows from the set of ODEs in Etienne
 #' et al. 2014.
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The expected number of representative species
 #' @author Rampal S. Etienne
 #' @seealso
@@ -112,6 +114,9 @@ pbd_numspec_mean <- function(pars,parsf = c(function(t,pars) {pars[1]},function(
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
+#' @param quantile the quantile
 #' @return The number of species at a given quantile
 #' @author Rampal S. Etienne
 #' @seealso
@@ -154,6 +159,8 @@ pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},funct
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age the stem or crown age (see soc)
 #' @param soc specify whether it is the stem or the crown age
+#' @param methode Sets which method should be used in the ode-solver. Default
+#' is 'lsoda'. See package deSolve for details.
 #' @return The mean number of representative species
 #' @author Rampal S. Etienne
 #' @seealso

@@ -34,6 +34,11 @@ completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 \item{age}{the stem or crown age (see soc)}
 
 \item{soc}{specify whether it is the stem or the crown age}
+
+\item{methode}{Sets which method should be used in the ode-solver. Default
+is 'lsoda'. See package deSolve for details.}
+
+\item{quantile}{the quantile}
 }
 \value{
 The number of species at a given quantile
