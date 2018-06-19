@@ -72,7 +72,7 @@ test_that("abuse", {
       siri = 1.0,
       crown_age = 1.0
     ),
-    "'scr' must be positive"
+    "'scr' must be non-zero and positive"
   )
 
   expect_error(

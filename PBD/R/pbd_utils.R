@@ -209,34 +209,31 @@ sampletree = function(L, age, samplemethod = "random")
           }
         }
       }
-      # As long as not all 'importances' have been set
-      while (any(L[, 7] == -1e10)) {
-        # Skip 1, because parent 0 is not in L table
-        for (i in 2:lenL) {
-          # If daughter 'importance' is not set
-          if (L[i, 7] == -1e10) {
-            # If parent 'importance' is set
-            if (L[L[i, 2], 7] != -1e10) {
-              # If parent 'importance' is greater/equal than daughter speciation initiation time
-              if (L[L[i, 2], 7] >= L[i, 3]) {
-                # Set daughter 'importance' to daughter speciation initiation time
-                L[i, 7] <- L[i, 3]
-                # If parent 'importance' is less than daughter speciation initiation time
-              } else {
-                # Set daughter 'importance' to parent 'importance'
-                L[i, 7] <- L[L[i, 2], 7]
-              }
-            }
+      # Go backwards because we set everyone's parents which goes youngest to oldest, skip 1, because parent 0 is not in L table
+      for (i in lenL:2) {
+        # If daughter 'importance' is set
+        if (L[i, 7] != -1e10) {
+          # If parent 'importance' is less than daughter speciation initiation time
+          if (L[L[i, 2], 7] < L[i, 3]) {
+            # Set parent 'importance' to daughter speciation initiation time
+            L[L[i, 2], 7] <- L[i, 3]
           }
         }
-        # Skip 1, because parent 0 is not in L table
-        for (i in 2:lenL) {
-          # If daughter 'importance' is set
-          if (L[i, 7] != -1e10) {
-            # If parent 'importance' is not set
-            if (L[L[i, 2], 7] == -1e10) {
-              # Set parent 'importance' to daughter speciation time
-              L[L[i, 2], 7] <- L[i, 3]
+      }
+      # Skip 1, because parent 0 is not in L table
+      for (i in 2:lenL) {
+        # If daughter 'importance' is not set
+        if (L[i, 7] == -1e10) {
+          # If parent 'importance' is set
+          if (L[L[i, 2], 7] != -1e10) {
+            # If parent 'importance' is greater/equal than daughter speciation initiation time
+            if (L[L[i, 2], 7] >= L[i, 3]) {
+              # Set daughter 'importance' to daughter speciation initiation time
+              L[i, 7] <- L[i, 3]
+              # If parent 'importance' is less than daughter speciation initiation time
+            } else {
+              # Set daughter 'importance' to parent 'importance'
+              L[i, 7] <- L[L[i, 2], 7]
             }
           }
         }
@@ -284,34 +281,20 @@ sampletree = function(L, age, samplemethod = "random")
          }
        }
      }
-     # As long as not all 'importances' have been set
-     while (any(L[, 7] == -1e10)) {
-       # Skip 1, because parent 0 is not in L table
-       for (i in 2:lenL) {
-         # If daughter 'importance' is not set
-         if (L[i, 7] == -1e10) {
-           # If parent 'importance' is set
-           if (L[L[i, 2], 7] != -1e10) {
-             # If parent 'importance' is greater/equal than daughter speciation initiation time
-             if (L[L[i, 2], 7] >= L[i, 3]) {
-               # Set daughter 'importance' to daughter speciation initiation time
-               L[i, 7] <- L[i, 3]
-               # If parent 'importance' is less than daughter speciation initiation time
-             } else {
-               # Set daughter 'importance' to parent 'importance'
-               L[i, 7] <- L[L[i, 2], 7]
-             }
-           }
-         }
-       }
-       # Skip 1, because parent 0 is not in L table
-       for (i in 2:lenL) {
-         # If daughter 'importance' is set
-         if (L[i, 7] != -1e10) {
-           # If parent 'importance' is not set
-           if (L[L[i, 2], 7] == -1e10) {
-             # Set parent 'importance' to daughter speciation time
-             L[L[i, 2], 7] <- L[i, 3]
+     # Skip 1, because parent 0 is not in L table
+     for (i in 2:lenL) {
+       # If daughter 'importance' is not set
+       if (L[i, 7] == -1e10) {
+         # If parent 'importance' is set
+         if (L[L[i, 2], 7] != -1e10) {
+           # If parent 'importance' is greater/equal than daughter speciation initiation time
+           if (L[L[i, 2], 7] >= L[i, 3]) {
+             # Set daughter 'importance' to daughter speciation initiation time
+             L[i, 7] <- L[i, 3]
+             # If parent 'importance' is less than daughter speciation initiation time
+           } else {
+             # Set daughter 'importance' to parent 'importance'
+             L[i, 7] <- L[L[i, 2], 7]
            }
          }
        }
