@@ -4,7 +4,8 @@
 \alias{pbd_sim}
 \title{Function to simulate the protracted speciation process}
 \usage{
-pbd_sim(pars, age, soc = 2, plotit = FALSE, limitsize = Inf)
+pbd_sim(pars, age, soc = 2, plotit = FALSE, limitsize = Inf,
+  add_shortest_and_longest = FALSE)
 }
 \arguments{
 \item{pars}{Vector of parameters: \cr \cr \code{pars[1]} corresponds to b_1,
@@ -25,6 +26,9 @@ be plotted or not}
 \item{limitsize}{Sets a maximum to the number of incipient + good species
 that are created during the simulation; if exceeded, the simulation is
 aborted and removed.}
+
+\item{add_shortest_and_longest}{Gives the output of the new samplemethods
+'shortest' and 'longest'.}
 }
 \value{
 \item{out}{ A list with the following elements: \cr \cr \code{tree}
