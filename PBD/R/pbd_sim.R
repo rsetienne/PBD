@@ -1,6 +1,61 @@
-#' @export
-
-pbd_sim = function(pars,age,soc = 2,plotit = FALSE)
+#' Function to simulate the protracted speciation process
+#'
+#' Simulating the protracted speciation process using the Doob-Gillespie
+#' algorithm. This function differs from pbd_sim_cpp that 1) it does not
+#' require that the speciation-initiation rate is the same for good and
+#' incipient species, and 2) that it simulates the exact protracted speciation
+#' process, and not the approximation made by the coalescent point process.
+#' This function provides also the conversion to the approximation as output.
+#'
+#'
+#' @param pars Vector of parameters: \cr \cr \code{pars[1]} corresponds to b_1,
+#' the speciation-initiation rate of good species \cr \code{pars[2]}
+#' corresponds to la_1, the speciation-completion rate \cr \code{pars[3]}
+#' corresponds to b_2, the speciation-initiation rate of incipient species \cr
+#' \code{pars[4]} corresponds to mu_1, the extinction rate of good species \cr
+#' \code{pars[5]} corresponds to mu_2, the extinction rate of incipient species
+#' \cr
+#' @param age Sets the age for the simulation
+#' @param soc Sets whether this age is the stem (1) or crown (2) age
+#' @param plotit Sets whether the various trees produced by the function should
+#' be plotted or not
+#' @param limitsize Sets a maximum to the number of incipient + good species
+#' that are created during the simulation; if exceeded, the simulation is
+#' aborted and removed.
+#' @param add_shortest_and_longest Gives the output of the new samplemethods
+#' 'shortest' and 'longest'.
+#' @return \item{out}{ A list with the following elements: \cr \cr \code{tree}
+#' is the tree of extant species in phylo format \cr \code{stree_random} is a
+#' tree with one random sample per species in phylo format \cr
+#' \code{stree_oldest} is a tree with the oldest sample per species in phylo
+#' format \cr \code{stree_youngest} is a tree with the youngest sample per
+#' species in phylo format \cr \code{L} is a matrix of all events in the
+#' simulation where \cr - the first column is the incipient-level label of a
+#' species \cr - the second column is the incipient-level label of the parent
+#' of the species \cr - the third column is the time at which a species is born
+#' as incipient species\cr - the fourth column is the time of
+#' speciation-completion of the species \cr If the fourth element equals -1,
+#' then the species is still incipient.  - the fifth column is the time of
+#' extinction of the species \cr If the fifth element equals -1, then the
+#' species is still extant.  - The sixth column is the species-level label of
+#' the species \cr \code{sL_random} is a matrix like L but for
+#' \code{stree_random} \cr \code{sL_oldest} is a matrix like L but for
+#' \code{stree_oldest} \cr \code{sL_youngest} is a matrix like L but for
+#' \code{stree_youngest} \cr \code{igtree.extinct} is the tree in simmap format
+#' with incipient and good flags and including extinct species \cr
+#' \code{igtree.extant} is the tree in simmap format with incipient and good
+#' flags without extinct species \cr \code{recontree} is the reconstructed tree
+#' in phylo format, reconstructed using the approximation in Lambert et al.
+#' 2014 \cr \code{reconL} is the matrix corresponding to \code{recontree} \cr
+#' \code{L0} is a matrix where the crown age is at 0; for internal use only \cr
+#' }
+#' @author Rampal S. Etienne
+#' @seealso \code{\link{pbd_sim_cpp}}
+#' @keywords models
+#' @examples
+#'  pbd_sim(c(0.2,1,0.2,0.1,0.1),15)
+#' @export pbd_sim
+pbd_sim = function(pars,age,soc = 2,plotit = FALSE, limitsize = Inf, add_shortest_and_longest = FALSE)
 {
 la1 = pars[1]
 la2 = pars[2]
@@ -82,6 +137,11 @@ while(i <= soc)
           si = si[-which(abs(si) == todie)]
           Ni = Ni - 1
       }
+      if(Ng + Ni > limitsize)
+      {
+        Ni = 0
+        Ng = 0
+      }
       probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
       denom = sum(probs)
       probs = probs/denom
@@ -132,6 +192,12 @@ stree_oldest = ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
 # Sampling the youngest
 sL_youngest = sampletree(absL, age, samplemethod = "youngest")
 stree_youngest = ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
+# Sampling the shortest
+sL_shortest <- sampletree(absL, age, samplemethod = "shortest")
+stree_shortest <- ape::as.phylo(ape::read.tree(text = detphy(sL_shortest, age)))
+# Sampling the longest
+sL_longest <- sampletree(absL, age, samplemethod = "longest")
+stree_longest <- ape::as.phylo(ape::read.tree(text = detphy(sL_longest, age)))
 
 sL_random[, 3:5][which(sL_random[, 3:5] == -1)] = age + 1
 sL_random[, 3:5] = age - sL_random[, 3:5]
@@ -142,6 +208,12 @@ sL_oldest = sL_oldest[order(sL_oldest[, 1]), ]
 sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
 sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
 sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
+sL_shortest[, 3:5][which(sL_shortest[, 3:5] == -1)] = age + 1
+sL_shortest[, 3:5] = age - sL_shortest[, 3:5]
+sL_shortest = sL_shortest[order(sL_shortest[, 1]), ]
+sL_longest[, 3:5][which(sL_longest[, 3:5] == -1)] = age + 1
+sL_longest[, 3:5] = age - sL_longest[, 3:5]
+sL_longest = sL_longest[order(sL_longest[, 1]), ]
 
 #sL = sampletree(absL,age)
 #stree = as.phylo(read.tree(text = detphy(sL,age)))
@@ -176,5 +248,8 @@ if(plotit == TRUE)
 }
 
 Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
+if (add_shortest_and_longest == TRUE) {
+  Ltreeslist <- list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0, stree_shortest = stree_shortest, stree_longest = stree_longest, sL_shortest = sL_shortest, sL_longest = sL_longest)
+}
 return(Ltreeslist)
 }

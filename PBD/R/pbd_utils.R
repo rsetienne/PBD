@@ -1,14 +1,14 @@
 checkgood = function(L,si,sg,id1)
 {
-    j = 1;
+    j = 1
     found = 0
     if(length(sg) > 0)
-    {  
+    {
        found = 1
     } else {
     if(length(si) == 0) { found = 0 } else {
     while(found == 0 & j <= length(si))
-    {           
+    {
         rowinc = which(L[,1] == abs(si[j]))
         parent = L[rowinc,2]
         birth = L[rowinc,3]
@@ -16,7 +16,7 @@ checkgood = function(L,si,sg,id1)
         #birth = L[si[j] - id1,3]
         while(found == 0 & parent > 1)
         {
-            rowpar = which(L[,1] == parent)   
+            rowpar = which(L[,1] == parent)
             if(L[rowpar,4] > -1 & L[rowpar,4] < birth)
             #if(L[parent - id1,4] > -1 & L[parent - id1,4] < birth)
             {
@@ -50,8 +50,8 @@ detphy = function(L, age, ig = F, dropextinct = T)
    } else {
       sall = which(L[,5] >= -1)
       tend = (L[,5] == -1) * age + (L[,5] > -1) * L[,5]
-   }   
-   
+   }
+
    linlist = matrix(0,nrow = 1,ncol = 8)
    if(length(sall) == 1)
    {
@@ -62,7 +62,7 @@ detphy = function(L, age, ig = F, dropextinct = T)
    done = 0
    while(done == 0)
    {
-      j = which.max(linlist[,3])      
+      j = which.max(linlist[,3])
       daughter = as.numeric(linlist[j,1])
       parent = as.numeric(linlist[j,2])
       parentj = which(linlist[,1] == parent)
@@ -80,7 +80,7 @@ detphy = function(L, age, ig = F, dropextinct = T)
           startedge = as.numeric(linlist[j,3])
           comptime = as.numeric(linlist[j,4])
           endedge = as.numeric(linlist[j,8])
-          comptimeparent = as.numeric(linlist[parentj,4])          
+          comptimeparent = as.numeric(linlist[parentj,4])
           endedgeparent = as.numeric(linlist[parentj,8])
           if(ig == FALSE)
           {
@@ -97,7 +97,7 @@ detphy = function(L, age, ig = F, dropextinct = T)
               {
                   spec1 = paste(linlist[parentj,7],":{g,",gtimeparent,":i,",itimeparent,":g,0}",sep = "")
               } else {
-                  spec1 = paste(linlist[parentj,7],":{g,",gtimeparent,":i,",itimeparent,"}",sep = "")                  
+                  spec1 = paste(linlist[parentj,7],":{g,",gtimeparent,":i,",itimeparent,"}",sep = "")
               }
               if(comptime == -1 | comptime > endedge)
               {
@@ -114,17 +114,17 @@ detphy = function(L, age, ig = F, dropextinct = T)
           }
           linlist[parentj,7] = paste("(",spec1,",",spec2,")",sep = "")
           linlist[parentj,8] = linlist[j,3]
-          linlist = linlist[-j,]               
+          linlist = linlist[-j,]
       } else {
           if(as.numeric(parent) != 0)
           {
-              parentj2 = which(L[,1] == as.numeric(parent))                            
+              parentj2 = which(L[,1] == as.numeric(parent))
               comptimeparent2 = L[parentj2,4]
-              
+
               #print(paste('parentj2 is ',parentj2))
               #print(L)
               #print(paste('comptimeparent is ',comptimeparent2))
-              
+
               if(comptimeparent2 > -1 & (comptimeparent2 < as.numeric(linlist[j,3]) | parentj2 <= -1))
               {
                  linlist[j,4] = L[parentj2,4]
@@ -133,24 +133,24 @@ detphy = function(L, age, ig = F, dropextinct = T)
           }
       }
       if(is.null(nrow(linlist)))
-      { 
+      {
           done = 1
           if(ig == FALSE)
           {
              linlist[7] = paste(linlist[7],":",abs(as.numeric(linlist[3])),";",sep = "")
           } else {
-             linlist[7] = paste(linlist[7],";",sep = "")             
+             linlist[7] = paste(linlist[7],";",sep = "")
           }
       } else {
           if(nrow(linlist) == 1)
-          { 
+          {
               done = 1
               if(ig == FALSE)
               {
                  linlist[7] = paste("(",linlist[7],":",age,");",sep = "")
               } else {
-                 linlist[7] = paste(linlist[7],";",sep = "")              
-              }                                                                  
+                 linlist[7] = paste(linlist[7],";",sep = "")
+              }
           }
       }
    }
@@ -158,13 +158,22 @@ detphy = function(L, age, ig = F, dropextinct = T)
    return(linlist[7])
 }
 
-sampletree = function(L,age,samplemethod = "random")
+#' Internal function to sample a tree from an L table
+#' @param L an L-table at the subspecies level,
+#'   with number of subspecies of rows
+#'   and 6 columns
+#' @param age crown age
+#' @param samplemethod the sampling method. Can be 'random',
+#'   'youngest', 'oldest', 'shortest' or 'longest'
+#' @return an L table at the species level
+#' @noRd
+sampletree = function(L, age, samplemethod = "random")
 {
-   lenL = length(L[,1])
+   lenL <- length(L[,1])
    if(samplemethod == "random")
    {
-      neworder = DDD::sample2(1:lenL, replace = F) 
-   }   
+      neworder = DDD::sample2(1:lenL, replace = F)
+   }
    if(samplemethod == "youngest")
    {
       neworder = order(L[,3],decreasing = T)
@@ -172,9 +181,131 @@ sampletree = function(L,age,samplemethod = "random")
    if (samplemethod == "oldest")
    {
       neworder = order(L[,3],decreasing = F)
-   }     
+   }
+   if (samplemethod == "shortest")
+   {
+      M <- matrix(
+        c(rep(-1e10, lenL)),
+        nrow = lenL,
+        ncol = 1
+      )
+      # Add column for 'importance', will be sorted on later
+      L <- cbind(L, M)
+      # Skip 1, because parent 0 is not in L table
+      for (i in 2:lenL) {
+        # [i,2]: parent
+        # [i,6]: species index
+        # If parent has different species index than daughter
+        if (L[L[i, 2], 6] != L[i, 6]) {
+          # If daughter speciation initiation time is greater than parent 'importance'
+          if (L[L[i, 2], 7] < L[i, 3]) {
+            # Set parent 'importance' to daughter speciation initiation time
+            L[L[i, 2], 7] <- L[i, 3]
+          }
+          # If daughter speciation initiation time is greater than daughter 'importance'
+          if (L[i, 7] < L[i, 3]) {
+            # Set daughter 'importance' to daughter speciation initiation time
+            L[i, 7] <- L[i, 3]
+          }
+        }
+      }
+      # Go backwards because we set everyone's parents which goes youngest to oldest, skip 1, because parent 0 is not in L table
+      for (i in lenL:2) {
+        # If daughter 'importance' is set
+        if (L[i, 7] != -1e10) {
+          # If parent 'importance' is less than daughter speciation initiation time
+          if (L[L[i, 2], 7] < L[i, 3]) {
+            # Set parent 'importance' to daughter speciation initiation time
+            L[L[i, 2], 7] <- L[i, 3]
+          }
+        }
+      }
+      # Skip 1, because parent 0 is not in L table
+      for (i in 2:lenL) {
+        # If daughter 'importance' is not set
+        if (L[i, 7] == -1e10) {
+          # If parent 'importance' is set
+          if (L[L[i, 2], 7] != -1e10) {
+            # If parent 'importance' is greater/equal than daughter speciation initiation time
+            if (L[L[i, 2], 7] >= L[i, 3]) {
+              # Set daughter 'importance' to daughter speciation initiation time
+              L[i, 7] <- L[i, 3]
+              # If parent 'importance' is less than daughter speciation initiation time
+            } else {
+              # Set daughter 'importance' to parent 'importance'
+              L[i, 7] <- L[L[i, 2], 7]
+            }
+          }
+        }
+      }
+      # Order on 'importance'
+      neworder <- order(L[, 7], decreasing = TRUE)
+      # Remove new column
+      L <- L[, -7]
+   }
+   if (samplemethod == "longest")
+   {
+     M <- matrix(
+       c(rep(-1e10, lenL)),
+       nrow = lenL,
+       ncol = 1
+     )
+     # Add column for 'importance', will be sorted on later
+     L <- cbind(L, M)
+     # Skip 1, because parent 0 is not in L table
+     for (i in 2:lenL) {
+       # [i,2]: parent
+       # [i,6]: species index
+       # If parent has different species index than daughter
+       if (L[L[i, 2], 6] != L[i, 6]) {
+         # If daughter speciation initiation time is greater than parent 'importance'
+         if (L[L[i, 2], 7] < L[i, 3]) {
+           # Set parent 'importance' to daughter speciation initiation time
+           L[L[i, 2], 7] <- L[i, 3]
+         }
+         # If daughter speciation initiation time is greater than daughter 'importance'
+         if (L[i, 7] < L[i, 3]) {
+           # Set daughter 'importance' to daughter speciation initiation time
+           L[i, 7] <- L[i, 3]
+         }
+       }
+     }
+     # Go backwards because we set everyone's parents which goes youngest to oldest, skip 1, because parent 0 is not in L table
+     for (i in lenL:2) {
+       # If daughter 'importance' is set
+       if (L[i, 7] != -1e10) {
+         # If parent 'importance' is less than daughter speciation initiation time
+         if (L[L[i, 2], 7] < L[i, 3]) {
+           # Set parent 'importance' to daughter speciation initiation time
+           L[L[i, 2], 7] <- L[i, 3]
+         }
+       }
+     }
+     # Skip 1, because parent 0 is not in L table
+     for (i in 2:lenL) {
+       # If daughter 'importance' is not set
+       if (L[i, 7] == -1e10) {
+         # If parent 'importance' is set
+         if (L[L[i, 2], 7] != -1e10) {
+           # If parent 'importance' is greater/equal than daughter speciation initiation time
+           if (L[L[i, 2], 7] >= L[i, 3]) {
+             # Set daughter 'importance' to daughter speciation initiation time
+             L[i, 7] <- L[i, 3]
+             # If parent 'importance' is less than daughter speciation initiation time
+           } else {
+             # Set daughter 'importance' to parent 'importance'
+             L[i, 7] <- L[L[i, 2], 7]
+           }
+         }
+       }
+     }
+     # Order on 'importance'
+     neworder <- order(L[, 7], decreasing = FALSE)
+     # Remove new column
+     L <- L[, -7]
+   }
    L2 = L[neworder,]
-   ss = NULL;
+   ss = NULL
    for(i in 1:lenL)
    {
        if(L2[i,5] == -1)
@@ -183,59 +314,59 @@ sampletree = function(L,age,samplemethod = "random")
            {
               ss = c(ss,L2[i,6])
            } else {
-              L2[i,5] = age # peudo extinction just before the present
+              L2[i,5] = age # pseudo extinction just before the present
            }
        }
    }
-   L2 = L2[rev(order(L2[,3])),]   
+   L2 = L2[rev(order(L2[,3])),]
    return(L2)
 }
- 
+
 pbd_reconstruct = function(L)
 {
   L2 = L[order(L[,3]),]
-  L3 = L2;
+  L3 = L2
   for(i in 1:length(L2[,2]))
   {
-      pai = which(abs(L2[,2]) == L2[i,1]);
-      L3[pai,2] = sign(L2[pai,2]) * i;
+      pai = which(abs(L2[,2]) == L2[i,1])
+      L3[pai,2] = sign(L2[pai,2]) * i
   }
-  orglabs = L3[,1];
+  orglabs = L3[,1]
   numincspec = length(L3[,2])
-  id = 1:numincspec;
-  L3[,1] = id;
-  L = L3;
-  L[1,3] = -1E-10;
+  id = 1:numincspec
+  L3[,1] = id
+  L = L3
+  L[1,3] = -1E-10
   if(L[2,3] == 0)
   {
-      L[2,3] = 1E-10;
+      L[2,3] = 1E-10
   }
-  
-  pa = L[,2]; # vector of parent species
-  ti = L[,3]; # vector of speciation-initiation times
-  tc = L[,4]; # vector of speciation-completion times
-  te = L[,5]; # vector of extinction times
-  sl = L[,6]; # vector of species labels              
-  id2 = id;
-  tr = NULL; ###
+
+  pa = L[,2] # vector of parent species
+  ti = L[,3] # vector of speciation-initiation times
+  tc = L[,4] # vector of speciation-completion times
+  te = L[,5] # vector of extinction times
+  sl = L[,6] # vector of species labels
+  id2 = id
+  tr = NULL ###
   ### print(cbind(id,pa,ti,tc,te,sl))
-  
+
   # find the branch that went extinct last
   idx1 = which(te == max(te) & te > 0)
   while(length(idx1) != 0)
   {
       # does this extinct branch have offspring?
       # find the offspring who have the extinct branch as parent
-      idx2 = rev(which(abs(pa) == idx1))[1];
+      idx2 = rev(which(abs(pa) == idx1))[1]
       if(is.na(idx2))
       {
           # extinct branch does not have offspring
           # extinct branch can be neglected
-          ti[idx1] = 0;
-          tc[idx1] = 0;
-          te[idx1] = 0;
-          pa[idx1] = 0;
-          sl[idx1] = 0;
+          ti[idx1] = 0
+          tc[idx1] = 0
+          te[idx1] = 0
+          pa[idx1] = 0
+          sl[idx1] = 0
       } else {
           # extinct branch has offspring
           # find the offspring of the offspring of the extinct branch
@@ -245,57 +376,57 @@ pbd_reconstruct = function(L)
           if(pa[idx2] > 0)
           {
               # extinct branch was good
-              pa[idx3] = idx1;
+              pa[idx3] = idx1
           } else {
               # extinct branch was incipient
-              pa[idx3] = sign(pa[idx3]) * idx1;
-              tc[idx1] = tc[idx2];
+              pa[idx3] = sign(pa[idx3]) * idx1
+              tc[idx1] = tc[idx2]
           }
-          te[idx1] = te[idx2];
-          sl[idx1] = sl[idx2]; ###
-          tr = rbind(tr,c(id2[idx1],id2[idx2])); ##
-          id2[idx1] = id2[idx2]; ###
-          ti[idx2] = 0;
-          tc[idx2] = 0;
-          te[idx2] = 0;
-          pa[idx2] = 0;
-          sl[idx2] = 0;                             
+          te[idx1] = te[idx2]
+          sl[idx1] = sl[idx2] ###
+          tr = rbind(tr,c(id2[idx1],id2[idx2])) ##
+          id2[idx1] = id2[idx2] ###
+          ti[idx2] = 0
+          tc[idx2] = 0
+          te[idx2] = 0
+          pa[idx2] = 0
+          sl[idx2] = 0
       }
-      #idx1 = rev(which(te > 0))[1];
+      #idx1 = rev(which(te > 0))[1]
       idx1 = which(te == max(te) & te > 0)
   }
   ### print(cbind(id,pa,ti,tc,te,sl))
   # eliminate zero rows
-  idxs = which(ti != 0); 
-  diff = (idxs != (1:length(idxs)));
+  idxs = which(ti != 0)
+  diff = (idxs != (1:length(idxs)))
   while(sum(diff) != 0)
   {
-      idx1 = (which(diff == 1))[1];
-      idx2 = idxs[idx1];
-      ti[idx1] = ti[idx2];
-      tc[idx1] = tc[idx2];
-      te[idx1] = te[idx2];
-      pa[idx1] = pa[idx2]; 
-      sl[idx1] = sl[idx2];
-      id[idx1] = id[idx2]; 
-      id2[idx1] = id2[idx2];
-      ti[idx2] = 0;
-      tc[idx2] = 0;
-      te[idx2] = 0;
-      pa[idx2] = 0;
-      ### pa[abs(pa) == idx2] = sign(pa[abs(pa) == idx2]) * idx1; ###
-      sl[idx2] = 0;
-      id[idx2] = 0;
-      id2[idx2] = 0;
-      idxs = which(ti != 0);
-      diff = (idxs != (1:length(idxs)));
+      idx1 = (which(diff == 1))[1]
+      idx2 = idxs[idx1]
+      ti[idx1] = ti[idx2]
+      tc[idx1] = tc[idx2]
+      te[idx1] = te[idx2]
+      pa[idx1] = pa[idx2]
+      sl[idx1] = sl[idx2]
+      id[idx1] = id[idx2]
+      id2[idx1] = id2[idx2]
+      ti[idx2] = 0
+      tc[idx2] = 0
+      te[idx2] = 0
+      pa[idx2] = 0
+      ### pa[abs(pa) == idx2] = sign(pa[abs(pa) == idx2]) * idx1 ###
+      sl[idx2] = 0
+      id[idx2] = 0
+      id2[idx2] = 0
+      idxs = which(ti != 0)
+      diff = (idxs != (1:length(idxs)))
   }
-  ig = rep(0,length(ti)); # good/incipient flags
-  ig[te == -1 & tc != -1] = 1;
-  ig[te == -1 & tc == -1] = -1;
+  ig = rep(0,length(ti)) # good/incipient flags
+  ig[te == -1 & tc != -1] = 1
+  ig[te == -1 & tc == -1] = -1
   if(te[1] == -1)
-  { 
-     ig[1] = 1;
+  {
+     ig[1] = 1
   }
   zeros = c(which(sl == 0))
   if(length(zeros) > 0)
@@ -309,141 +440,141 @@ pbd_reconstruct = function(L)
      sl = sl[-zeros]
      ig = ig[-zeros]
   }
-  ### print(cbind(id,pa,ti,tc,te,sl,ig)); ###
+  ### print(cbind(id,pa,ti,tc,te,sl,ig)) ###
 
-  igg = ig; # copy of table of good/incipient flags
-  ppa = pa; # copy of table of parent indices
-  its = 0; # index that will run through table
-  tt = NULL; # table of splitting times
-  pp = NULL; # table of parent indices
-  dd = NULL; # table of daughter indices
-  sls = NULL; # table of species labels
-  idxs = which(igg != 0);
+  igg = ig # copy of table of good/incipient flags
+  ppa = pa # copy of table of parent indices
+  its = 0 # index that will run through table
+  tt = NULL # table of splitting times
+  pp = NULL # table of parent indices
+  dd = NULL # table of daughter indices
+  sls = NULL # table of species labels
+  idxs = which(igg != 0)
   while(idxs[length(idxs)] > 1)
   {
-     idx = which.max(ti[idxs]);
-     di = idxs[idx]; # daughter index
-     parenti = ppa[di]; # parent index (can be negative!)
+     idx = which.max(ti[idxs])
+     di = idxs[idx] # daughter index
+     parenti = ppa[di] # parent index (can be negative!)
      pai = which(id == abs(parenti))
      if(igg[pai] == 1 & parenti > 0 & igg[di] == -1)
      {
          #print('1. parent alive, good at event, good at present, daughter inc at present')
-         igg[di] = 0;
-         #igg[pai] = 1; This was already the case
+         igg[di] = 0
+         #igg[pai] = 1 This was already the case
      } else {
      if(igg[pai] == 1 & parenti > 0 & igg[di] == 1)
      {
          #print('2. parent alive, good at event, good at present, daughter good at present')
-         igg[di] = 0;
-         #igg[pai] = 1; This was already the case
-         its = its + 1;
-         tt[its] = ti[di];
-         pp[its] = abs(parenti);
-         dd[its] = id[di];
-         tr = rbind(tr,c(id[di],id2[di])); ##
-         sls[its] = sl[di];
+         igg[di] = 0
+         #igg[pai] = 1 This was already the case
+         its = its + 1
+         tt[its] = ti[di]
+         pp[its] = abs(parenti)
+         dd[its] = id[di]
+         tr = rbind(tr,c(id[di],id2[di])) ##
+         sls[its] = sl[di]
      } else {
      if(igg[pai] == 1 & parenti < 0 & igg[di] == -1)
      {
          #print('3. parent alive, inc at event, good at present, daughter inc at present')
-         igg[di] = 0;
-         #igg[pai] = 1; This was already the case
+         igg[di] = 0
+         #igg[pai] = 1 This was already the case
      } else {
      if(igg[pai] == 1 & parenti < 0 & igg[di] == 1)
      {
          #print('4. parent alive, inc at event, good at present, daughter good at present')
-         igg[di] = 0;
-         #igg[pai] = 1; This was already the case
-         its = its + 1;
-         tt[its] = ti[di];
-         pp[its] = abs(parenti);
-         dd[its] = id[di];
-         #dd[its] = id2[di]; ##
-         tr = rbind(tr,c(id[di],id2[di])); ##
-         sls[its] = sl[di];
+         igg[di] = 0
+         #igg[pai] = 1 This was already the case
+         its = its + 1
+         tt[its] = ti[di]
+         pp[its] = abs(parenti)
+         dd[its] = id[di]
+         #dd[its] = id2[di] ##
+         tr = rbind(tr,c(id[di],id2[di])) ##
+         sls[its] = sl[di]
      } else {
      if(igg[pai] == -1 & parenti < 0 & igg[di] == -1)
      {
          #print('5. parent alive, inc at event, inc at present, daughter inc at present')
-         igg[di] = 0;
-         #igg[pai] = -1; This was already the case
+         igg[di] = 0
+         #igg[pai] = -1 This was already the case
      } else {
      if(igg[pai] == -1 & parenti < 0 & igg[di] == 1)
      {
          #print('6. parent alive, inc at event, inc at present, daughter good at present')
-         igg[di] = 0;
-         igg[pai] = 1;
-         pp[which(pp == id[di])] = abs(parenti);
-         tr = rbind(tr,c(id2[pai],id2[di])); ###
-         #id2[pai] = id2[di]; ##
-         sl[pai] = sl[di]; #
+         igg[di] = 0
+         igg[pai] = 1
+         pp[which(pp == id[di])] = abs(parenti)
+         tr = rbind(tr,c(id2[pai],id2[di])) ###
+         #id2[pai] = id2[di] ##
+         sl[pai] = sl[di] #
      } else {
      if(igg[pai] == 0 & parenti > 0 & igg[di] == -1)
      {
          #print('7. parent dead, good at event, daughter inc at present')
-         igg[di] = 0;
-         igg[pai] = 1;
-         tr = rbind(tr,c(id2[pai],id2[di])); ###
+         igg[di] = 0
+         igg[pai] = 1
+         tr = rbind(tr,c(id2[pai],id2[di])) ###
      } else {
      if(igg[pai] == 0 & parenti > 0 & igg[di] == 1)
      {
          #print('8. parent dead, good at event, daughter good at present')
-         igg[di] = 0;
-         igg[pai] = 1;
-         pp[which(pp == id[di])] = abs(parenti);
+         igg[di] = 0
+         igg[pai] = 1
+         pp[which(pp == id[di])] = abs(parenti)
          sl[pai] = sl[di]
-         tr = rbind(tr,c(id2[pai],id2[di])); ###       
+         tr = rbind(tr,c(id2[pai],id2[di])) ###
          ## The daughter keeps her own species label
      } else {
      if(igg[pai] == 0 & parenti < 0 & igg[di] == -1)
      {
          #print('9. parent dead, inc at event, daughter inc at present')
-         igg[di] = 0;
-         igg[pai] = -1;
-         tr = rbind(tr,c(id2[pai],id2[di])); ###         
+         igg[di] = 0
+         igg[pai] = -1
+         tr = rbind(tr,c(id2[pai],id2[di])) ###
      } else {
      if(igg[pai] == 0 & parenti < 0 & igg[di] == 1)
      {
          #print('10. parent dead, inc at event, daughter good at present')
-         igg[di] = 0;
-         igg[pai] = 1;
-         pp[which(pp == id[di])] = abs(parenti);
-         tr = rbind(tr,c(id2[pai],id2[di])); ###        
-         sl[pai] = sl[di]; 
+         igg[di] = 0
+         igg[pai] = 1
+         pp[which(pp == id[di])] = abs(parenti)
+         tr = rbind(tr,c(id2[pai],id2[di])) ###
+         sl[pai] = sl[di]
      }
      }}}}}}}}}
-     idxs = which(igg != 0); 
+     idxs = which(igg != 0)
   }
-  dd = c(1,dd); ##
-  pp = c(0,pp); ##
-  tt = c(-1e-10,tt); ##
-  tt2 = c(0,tt); ##
-  te = c(-1,te); ##
-  sls = c(sl[1],sls); ##
-  dd2 = dd; ##
-  pp2 = pp; ##
+  dd = c(1,dd) ##
+  pp = c(0,pp) ##
+  tt = c(-1e-10,tt) ##
+  tt2 = c(0,tt) ##
+  te = c(-1,te) ##
+  sls = c(sl[1],sls) ##
+  dd2 = dd ##
+  pp2 = pp ##
   for(i in length(tr[,1]):1)
   {
       dd2[which(dd2 == tr[i,1])] = tr[i,2]
       pp2[which(pp2 == tr[i,1])] = tr[i,2]
   }
-  dd = dd2; ##
-  pp = pp2; ##
+  dd = dd2 ##
+  pp = pp2 ##
   reconL = cbind(dd,pp,tt,tt,rep(-1,length(dd)),sls,deparse.level = 0)
   ## reconL = rbind(c(1,0,-1e-10,0,-1,1),cbind(dd,pp,tt,tt,rep(-1,length(dd)),sls,deparse.level = 0))
-  ### print(reconL); ###
-  L = reconL;
-  L[,1] = orglabs[reconL[,1]];
-  L[,2] = c(0,orglabs[reconL[,2]]);
-  reconL = L;
-  ### print(reconL); ###
+  ### print(reconL) ###
+  L = reconL
+  L[,1] = orglabs[reconL[,1]]
+  L[,2] = c(0,orglabs[reconL[,2]])
+  reconL = L; # Leave this semicolon in for teaching
+  ### print(reconL) ###
   return(reconL)
 }
 
 L2phylo2 = function(L,dropextinct = T)
 # makes a phylogeny out of a matrix with branching times, parent and daughter species, and extinction times
 {
-   L = L[order(abs(L[,3])),]  
+   L = L[order(abs(L[,3])),]
    age = L[1,1]
    L[,1] = age - L[,1]
    L[1,1] = -1
@@ -476,7 +607,7 @@ L2phylo2 = function(L,dropextinct = T)
          linlist[parentj,4] = paste("(",spec1,",",spec2,")",sep = "")
          linlist[parentj,5] = linlist[j,1]
          linlist = linlist[-j,]
-      } else {      
+      } else {
          #linlist[j,1:3] = L[abs(as.numeric(parent)),1:3]
          linlist[j,1:3] = L[which(L[,3] == as.numeric(parent)),1:3]
       }

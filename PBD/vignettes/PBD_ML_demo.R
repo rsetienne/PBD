@@ -15,11 +15,15 @@ mu_1 <- 0.1 #  extinction rate of good species
 mu_2 <- mu_1 # extinction rate of incipient species 
 pars <- c(b_1, la_1, b_2, mu_1, mu_2)
 age <- 15 # the age for the simulation 
-phylogeny <- pbd_sim(pars = pars, age = age)$recontree
-plot(phylogeny)
+phylogenies <- pbd_sim(pars = pars, age = age)
+plot(phylogenies$recontree)
+plot(phylogenies$igtree.extant)
+plot(phylogenies$tree)
+names(phylogenies)
+
 
 ## ------------------------------------------------------------------------
-brts <- branching.times(phylogeny)  # branching times
+brts <- branching.times(phylogenies$recontree)  # branching times
 init_b <- 0.2  # speciation-initiation rate
 init_mu_1 <- 0.05  # extinction rate of good species
 init_la_1 <- 0.3 # speciation-completion rate
@@ -48,21 +52,23 @@ r <- pbd_ML(
   exteq = exteq,
   soc = soc, 
   cond = cond,
-  btorph = btorph
+  btorph = btorph,
+  verbose = FALSE
 )
 
 ## ------------------------------------------------------------------------
-print(r)
+knitr::kable(r)
 
 ## ------------------------------------------------------------------------
+loglik_true <- PBD::pbd_loglik(pars, brts = brts)
 df <- as.data.frame(r)
-df <- rbind(df, c(b_1, mu_1, la_1, mu_2, NA, NA, NA))
+df <- rbind(df, c(b_1, mu_1, la_1, mu_2, loglik_true, NA, NA))
 row.names(df) <- c("ML", "true")
 knitr::kable(df)
 
 ## ------------------------------------------------------------------------
 
-endmc <- 3 # Sets the number of simulations for the bootstrap
+endmc <- 10 # Sets the number of simulations for the bootstrap
 
 b <- pbd_bootstrap(
   brts = brts,
@@ -75,6 +81,7 @@ b <- pbd_bootstrap(
   endmc = endmc,
   seed = seed
 )
+knitr::kable(b[[3]])
 
 ## ------------------------------------------------------------------------
 dg <- rbind(df, 
@@ -98,7 +105,8 @@ dg <- rbind(df,
   )
 )
 dg
-row.names(dg) <- c("ML", "true", "ML2", "BS1", "BS2", "BS3")
+
+row.names(dg) <- c("ML", "true", "ML2", paste("BS", 1:endmc, sep = ""))
 knitr::kable(dg)
 
 ## ------------------------------------------------------------------------
