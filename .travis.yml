@@ -10,9 +10,12 @@ r_github_packages:
   - jimhester/covr
   - MangoTheCat/goodpractice
 
-# Go into folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-202411532
 before_install:
- - cd PBD
+  - sudo add-apt-repository -y ppa:opencpu/imagemagick
+  - sudo apt-get update
+  - sudo apt-get install -y libmagick++-dev
+  # Go into folder, from https://github.com/travis-ci/travis-ci/issues/5775#issuecomment-202411532
+  - cd PBD
 
 after_success:
   - Rscript -e 'lintr::lint_package()'
