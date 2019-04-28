@@ -26,16 +26,18 @@
 #' @param plotit Boolean to plot results or not
 #' @param parsfunc Specifies functions how the rates depend on time, default
 #' functions are constant functions
-#' @param cond Conditioning: \cr cond == 0 : conditioning on stem or crown age
-#' \cr cond == 1 : conditioning on stem or crown age and non-extinction of the
-#' phylogeny \cr cond == 2 : conditioning on stem or crown age and on the total
-#' number of extant taxa (including missing species) \cr cond == 3 :
-#' conditioning on the total number of extant taxa (including missing species)
-#' \cr Note: cond == 3 assumes a uniform prior on stem age, as is the standard
+#' @param cond Conditioning: \cr
+#' cond == 0 : conditioning on stem or crown age\cr
+#' cond == 1 : conditioning on stem or crown age and non-extinction of the
+#' phylogeny \cr
+#' cond == 2 : conditioning on stem or crown age and on the total
+#' number of extant taxa (including missing species) \cr
+#' cond == 3 : conditioning on the total number of extant taxa (including
+#' missing species)\cr
+#' Note: cond == 3 assumes a uniform prior on stem age, as is the standard
 #' in constant-rate birth-death models, see e.g. D. Aldous & L. Popovic 2004.
 #' Adv. Appl. Prob. 37: 1094-1115 and T. Stadler 2009. J. Theor. Biol. 261:
 #' 58-66.
-#'
 #' @param btorph Sets whether the likelihood is for the branching times (0) or
 #' the phylogeny (1)
 #' @param soc Sets whether stem or crown age should be used (1 or 2)
@@ -54,36 +56,47 @@
 #' @param maxiter Sets the maximum number of iterations in the optimization
 #' @param optimmethod Method used in optimization of the likelihood. Current
 #' default is 'subplex'. Alternative is 'simplex'.
+#' @param num_cycles Number of cycles of the optimization (default is 1).
 #' @param verbose if TRUE, explanatory text will be shown
 #' @return \item{brtsCR}{a list of sets of branching times generated under the
 #' constant-rates model using the ML parameters under the CR model}
 #' \item{brtsDD}{a list of sets of branching times generated under the
 #' protracted birth-death model using the ML parameters under the PBD model}
 #' \item{out}{a dataframe with the parameter estimates and maximum likelihoods
-#' for protracted birth-death and constant-rates models \code{$model} - the
-#' model used to generate the data. 0 = unknown (for real data), 1 = CR, 2 =
-#' PBD \cr \code{$mc} - the simulation number for each model \cr \code{$b_CR} -
-#' speciation rate estimated under CR \cr \code{$mu_CR} - extinction rate
-#' estimated under CR \cr \code{$LL_CR} - maximum likelihood estimated under CR
-#' \cr \code{$conv_CR} - convergence code for likelihood optimization; conv = 0
-#' means convergence \cr \code{$b_PBD1} - speciation-initation rate estimated
-#' under PBD for first set of initial values\cr \code{$mu_PB1} - extinction
+#' for protracted birth-death and constant-rates models
+#' \code{$model} - the model used to generate the data. 0 = unknown (for real
+#' data), 1 = CR, 2 = PBD \cr
+#' \code{$mc} - the simulation number for each model \cr
+#' \code{$b_CR} - peciation rate estimated under CR \cr
+#' \code{$mu_CR} - extinction rate estimated under CR \cr
+#' \code{$LL_CR} - maximum likelihood estimated under CR\cr
+#' \code{$conv_CR} - convergence code for likelihood optimization; conv = 0
+#' means convergence \cr
+#' \code{$b_PBD1} - speciation-initation rate estimated
+#' under PBD for first set of initial values\cr
+#' \code{$mu_PB1} - extinction
 #' rate estimated under DD for first set of initial values \cr
 #' \code{$lambda_PB1} - speciation-completion rate estimated under PBD for
-#' first set of initial values \cr \code{$LL_PBD1} - maximum likelihood
-#' estimated under DD for first set of initial values \cr \code{$conv_PBD1} -
+#' first set of initial values \cr
+#' \code{$LL_PBD1} - maximum likelihood estimated under DD for first set of
+#' initial values \cr \code{$conv_PBD1} -
 #' convergence code for likelihood optimization for first set of initial
-#' values; conv = 0 means convergence \cr \code{$b_PBD2} - speciation-initation
-#' rate estimated under PBD for second set of initial values\cr \code{$mu_PB2}
-#' - extinction rate estimated under DD for second set of initial values \cr
+#' values; conv = 0 means convergence \cr
+#' \code{$b_PBD2} - speciation-initation
+#' rate estimated under PBD for second set of initial values\cr
+#' \code{$mu_PB2} - extinction rate estimated under DD for second set of
+#' initial values \cr
 #' \code{$lambda_PB2} - speciation-completion rate estimated under PBD for
-#' second set of initial values \cr \code{$LL_PBD2} - maximum likelihood
-#' estimated under DD for second set of initial values \cr \code{$conv_PBD2} -
-#' convergence code for likelihood optimization for second set of initial
-#' values; conv = 0 means convergence \cr \code{$LR} - likelihood ratio between
-#' DD and CR } \item{pvalue}{p-value of the test} \item{LRalpha}{Likelihood
-#' ratio at the signifiance level alpha} \item{poweroftest}{power of the test
-#' for significance level alpha}
+#' second set of initial values \cr
+#' \code{$LL_PBD2} - maximum likelihood
+#' estimated under DD for second set of initial values \cr
+#' \code{$conv_PBD2} - convergence code for likelihood optimization for
+#' econd set of initial values; conv = 0 means convergence \cr
+#' \code{$LR} - likelihood ratio between DD and CR }
+#' \item{pvalue}{p-value of the test}
+#' \item{LRalpha}{Likelihood
+#' ratio at the signifiance level alpha}
+#' \item{poweroftest}{power of the test for significance level alpha}
 #' @author Rampal S. Etienne
 #' @seealso \code{\link{pbd_loglik}}, \code{\link{pbd_ML}}
 #' @references - Etienne, R.S. et al. 2016. Meth. Ecol. Evol. 7: 1092-1099,
@@ -110,6 +123,7 @@ pbd_LR = function(
   tol = c(1E-6,1E-6,1E-6),
   maxiter = 2000,
   optimmethod = 'subplex',
+  num_cycles = num_cycles,
   verbose = FALSE
 )
 {
@@ -117,14 +131,12 @@ pbd_LR = function(
   {
     set.seed(DDD::roundn(seed))
   }
-
-
   infinity = 10^10
   age = max(brts)
   cat("Estimating parameters under the constant-rate model ...\n")
-  outCRO = pbd_ML(brts = brts,initparsopt = initparsoptCR,idparsopt = 1:2,idparsfix = 3,parsfix = 10^8,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+  outCRO = pbd_ML(brts = brts,initparsopt = initparsoptCR,idparsopt = 1:2,idparsfix = 3,parsfix = 10^8,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
   cat("Estimating parameters under the protracted birth-death model ...\n")
-  outPBDO = pbd_ML(brts = brts,initparsopt = initparsoptPBD,idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+  outPBDO = pbd_ML(brts = brts,initparsopt = initparsoptPBD,idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = missnumspec,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
   LRO = outPBDO$loglik - outCRO$loglik
   out = cbind(NA,NA,outCRO,outPBDO,NA,NA,NA,NA,NA,LRO)
   out = out[,-c(5,6,8,13,15)]
@@ -155,9 +167,9 @@ pbd_LR = function(
   {
     cat('Analyzing simulation:',mc,'\n')
     utils::flush.console()
-    outCR = pbd_ML(brtsCR[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD1 = pbd_ML(brtsCR[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD2 = pbd_ML(brtsCR[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outCR = pbd_ML(brtsCR[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
+    outPBD1 = pbd_ML(brtsCR[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
+    outPBD2 = pbd_ML(brtsCR[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
     if(outPBD1$conv == -1 & outPBD2$conv == -1)
     {
       maxLLPBD = outCR$loglik
@@ -186,9 +198,9 @@ pbd_LR = function(
   {
     cat('Analyzing simulation:',mc,'\n')
     utils::flush.console()
-    outCR = pbd_ML(brtsPBD[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD1 = pbd_ML(brtsPBD[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
-    outPBD2 = pbd_ML(brtsPBD[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, verbose = verbose)
+    outCR = pbd_ML(brtsPBD[[mc]],initparsopt = parsCR,idparsopt = 1:2,idparsfix = 3,parsfix = infinity,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod,num_cycles = num_cycles, verbose = verbose)
+    outPBD1 = pbd_ML(brtsPBD[[mc]],initparsopt = parsPBD[1:3],idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
+    outPBD2 = pbd_ML(brtsPBD[[mc]],initparsopt = c(parsCR + 0.05,length(brts) + 1000),idparsopt = 1:3,idparsfix = NULL,parsfix = NULL,exteq = 1,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,soc = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
     if(outPBD1$conv == -1 & outPBD2$conv == -1)
     {
       maxLLPBD = outCR$loglik

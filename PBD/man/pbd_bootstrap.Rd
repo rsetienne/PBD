@@ -5,13 +5,15 @@
 \title{Bootstrap analysis under protracted birth-death model of diversification}
 \usage{
 pbd_bootstrap(brts, initparsopt = c(0.2, 0.1, 1),
-  idparsopt = 1:length(initparsopt), idparsfix = NULL, parsfix = NULL,
-  exteq = (length(initparsopt) < 4), parsfunc = c(function(t, pars) {    
-  pars[1] }, function(t, pars) {     pars[2] }, function(t, pars) {     pars[3]
-  }, function(t, pars) {     pars[4] }), missnumspec = 0, cond = 1,
-  btorph = 0, soc = 2, plotltt = 1, methode = "lsoda", n_low = 0,
-  n_up = 0, tol = c(1e-04, 1e-04, 1e-06), maxiter = 1000 *
-  round((1.25)^length(idparsopt)), endmc = 100, seed = 42)
+  idparsopt = 1:length(initparsopt), idparsfix = NULL,
+  parsfix = NULL, exteq = (length(initparsopt) < 4),
+  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {    
+  pars[2] }, function(t, pars) {     pars[3] }, function(t, pars) {    
+  pars[4] }), missnumspec = 0, cond = 1, btorph = 0, soc = 2,
+  plotltt = 1, methode = "lsoda", n_low = 0, n_up = 0,
+  tol = c(1e-04, 1e-04, 1e-06), maxiter = 1000 *
+  round((1.25)^length(idparsopt)), endmc = 100, seed = 42,
+  optimmethod = "subplex", num_cycles = 1, verbose = FALSE)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}
@@ -76,6 +78,14 @@ tolerance of parameter values in optimization}
 \item{endmc}{Sets the number of simulations for the bootstrap}
 
 \item{seed}{Sets the seed for the simulations of the bootstrap}
+
+\item{optimmethod}{Method used in optimization of the likelihood. Current
+default is 'subplex'. Alternative is 'simplex' (default of previous
+versions)}
+
+\item{num_cycles}{Number of cycles of the optimization (default is 1).}
+
+\item{verbose}{if TRUE, explanatory text will be shown}
 }
 \value{
 A list of three dataframes. The first dataframe contains the maximum
@@ -83,15 +93,18 @@ likelihood results of the real data set, the second contains the simulated
 trees, and the third dataframe, with number of rows equal to endmc, contain
 the maximum likelihood results for the simulated data. The columns of both
 frames contains the following elements for each simulated data set:
-\item{ntips}{ gives the number of tips } \item{b}{ gives the maximum
-likelihood estimate of b} \item{mu_1}{ gives the maximum likelihood estimate
-of mu_1} \item{la_1}{ gives the maximum likelihood estimate of la_1}
-\item{mu_2}{ gives the maximum likelihood estimate of mu_2} \item{loglik}{
-gives the maximum loglikelihood} \item{df}{ gives the number of estimated
-parameters, i.e. degrees of feedom} \item{conv}{ gives a message on
-convergence of optimization; conv = 0 means convergence} \item{exp_durspec}{
-gives the expected duration of speciation} \item{median_durspec}{ gives the
-median duration of speciation}
+\item{ntips}{ gives the number of tips }
+\item{b}{ gives the maximum likelihood estimate of b}
+\item{mu_1}{ gives the maximum likelihood estimate
+of mu_1}
+\item{la_1}{ gives the maximum likelihood estimate of la_1}
+\item{mu_2}{ gives the maximum likelihood estimate of mu_2}
+\item{loglik}{gives the maximum loglikelihood}
+\item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+\item{conv}{ gives a message on convergence of optimization; conv = 0 means
+convergence}
+\item{exp_durspec}{gives the expected duration of speciation}
+\item{median_durspec}{ gives the median duration of speciation}
 }
 \description{
 Likelihood maximization for protracted birth-death model of diversification

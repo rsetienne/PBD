@@ -4,9 +4,10 @@
 \alias{pbd_sim_cpp}
 \title{Function to simulate the approximate protracted speciation process}
 \usage{
-pbd_sim_cpp(pars, parsf = c(function(t, pars) {     pars[1] }, function(t,
-  pars) {     pars[2] }, function(t, pars) {     pars[3] }, function(t, pars) { 
-     pars[4] }), age, soc = 2, plotltt = 1, methode = "lsoda")
+pbd_sim_cpp(pars, parsf = c(function(t, pars) {     pars[1] },
+  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
+  function(t, pars) {     pars[4] }), age, soc = 2, plotltt = 1,
+  methode = "lsoda")
 }
 \arguments{
 \item{pars}{Vector of parameters: \cr \cr \code{pars[1]} corresponds to b (=

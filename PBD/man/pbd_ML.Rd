@@ -6,13 +6,14 @@
 diversification}
 \usage{
 pbd_ML(brts, initparsopt = c(0.2, 0.1, 1),
-  idparsopt = 1:length(initparsopt), idparsfix = NULL, parsfix = NULL,
-  exteq = 1, parsfunc = c(function(t, pars) {     pars[1] }, function(t,
-  pars) {     pars[2] }, function(t, pars) {     pars[3] }, function(t, pars) { 
-     pars[4] }), missnumspec = 0, cond = 1, btorph = 1, soc = 2,
-  methode = "lsoda", n_low = 0, n_up = 0, tol = c(1e-06, 1e-06, 1e-06),
-  maxiter = 1000 * round((1.25)^length(idparsopt)), optimmethod = "subplex",
-  verbose = TRUE)
+  idparsopt = 1:length(initparsopt), idparsfix = NULL,
+  parsfix = NULL, exteq = 1, parsfunc = c(function(t, pars) {    
+  pars[1] }, function(t, pars) {     pars[2] }, function(t, pars) {    
+  pars[3] }, function(t, pars) {     pars[4] }), missnumspec = 0,
+  cond = 1, btorph = 1, soc = 2, methode = "lsoda", n_low = 0,
+  n_up = 0, tol = c(1e-06, 1e-06, 1e-06), maxiter = 1000 *
+  round((1.25)^length(idparsopt)), optimmethod = "subplex",
+  num_cycles = 1, verbose = TRUE)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}
@@ -76,16 +77,20 @@ tolerance of parameter values in optimization}
 default is 'subplex'. Alternative is 'simplex' (default of previous
 versions)}
 
+\item{num_cycles}{Number of cycles of the optimization (default is 1).}
+
 \item{verbose}{if TRUE, explanatory text will be shown}
 }
 \value{
-A data frame with the following components:\cr \item{b}{ gives the
-maximum likelihood estimate of b} \item{mu_1}{ gives the maximum likelihood
-estimate of mu_1} \item{la_1}{ gives the maximum likelihood estimate of
-la_1} \item{mu_2}{ gives the maximum likelihood estimate of mu_2}
-\item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
-of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
-message on convergence of optimization; conv = 0 means convergence}
+A data frame with the following components:\cr
+\item{b}{ gives the maximum likelihood estimate of b}
+\item{mu_1}{ gives the maximum likelihood estimate of mu_1}
+\item{la_1}{ gives the maximum likelihood estimate of la_1}
+\item{mu_2}{ gives the maximum likelihood estimate of mu_2}
+\item{loglik}{ gives the maximum loglikelihood}
+\item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+\item{conv}{ gives a message on convergence of optimization;
+conv = 0 means convergence}
 }
 \description{
 Likelihood maximization for protracted birth-death model of diversification

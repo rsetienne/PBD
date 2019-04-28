@@ -51,52 +51,59 @@
 #' @param maxiter Sets the maximum number of iterations in the optimization
 #' @param endmc Sets the number of simulations for the bootstrap
 #' @param seed Sets the seed for the simulations of the bootstrap
+#' @param optimmethod Method used in optimization of the likelihood. Current
+#' default is 'subplex'. Alternative is 'simplex' (default of previous
+#' versions)
+#' @param num_cycles Number of cycles of the optimization (default is 1).
+#' @param verbose if TRUE, explanatory text will be shown
 #' @return A list of three dataframes. The first dataframe contains the maximum
 #' likelihood results of the real data set, the second contains the simulated
 #' trees, and the third dataframe, with number of rows equal to endmc, contain
 #' the maximum likelihood results for the simulated data. The columns of both
 #' frames contains the following elements for each simulated data set:
-#' \item{ntips}{ gives the number of tips } \item{b}{ gives the maximum
-#' likelihood estimate of b} \item{mu_1}{ gives the maximum likelihood estimate
-#' of mu_1} \item{la_1}{ gives the maximum likelihood estimate of la_1}
-#' \item{mu_2}{ gives the maximum likelihood estimate of mu_2} \item{loglik}{
-#' gives the maximum loglikelihood} \item{df}{ gives the number of estimated
-#' parameters, i.e. degrees of feedom} \item{conv}{ gives a message on
-#' convergence of optimization; conv = 0 means convergence} \item{exp_durspec}{
-#' gives the expected duration of speciation} \item{median_durspec}{ gives the
-#' median duration of speciation}
+#' \item{ntips}{ gives the number of tips }
+#' \item{b}{ gives the maximum likelihood estimate of b}
+#' \item{mu_1}{ gives the maximum likelihood estimate
+#' of mu_1}
+#' \item{la_1}{ gives the maximum likelihood estimate of la_1}
+#' \item{mu_2}{ gives the maximum likelihood estimate of mu_2}
+#' \item{loglik}{gives the maximum loglikelihood}
+#' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+#' \item{conv}{ gives a message on convergence of optimization; conv = 0 means
+#' convergence}
+#' \item{exp_durspec}{gives the expected duration of speciation}
+#' \item{median_durspec}{ gives the median duration of speciation}
 #' @author Rampal S. Etienne
 #' @seealso \code{\link{pbd_ML}}
 #' @keywords models
 #' @export pbd_bootstrap
-pbd_bootstrap = function(brts, initparsopt = c(0.2,0.1,1), idparsopt = 1:length(initparsopt), idparsfix = NULL, parsfix = NULL, exteq = (length(initparsopt) < 4), parsfunc = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), missnumspec = 0, cond = 1, btorph = 0, soc = 2, plotltt = 1, methode = "lsoda", n_low = 0, n_up = 0, tol = c(1E-4, 1E-4, 1E-6), maxiter = 1000 * round((1.25)^length(idparsopt)), endmc = 100, seed = 42)
+pbd_bootstrap = function(
+  brts,
+  initparsopt = c(0.2,0.1,1),
+  idparsopt = 1:length(initparsopt),
+  idparsfix = NULL,
+  parsfix = NULL,
+  exteq = (length(initparsopt) < 4),
+  parsfunc = c(function(t,pars) {pars[1]},
+               function(t,pars) {pars[2]},
+               function(t,pars) {pars[3]},
+               function(t,pars) {pars[4]}),
+  missnumspec = 0,
+  cond = 1,
+  btorph = 0,
+  soc = 2,
+  plotltt = 1,
+  methode = "lsoda",
+  n_low = 0,
+  n_up = 0,
+  tol = c(1E-4, 1E-4, 1E-6),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  endmc = 100,
+  seed = 42,
+  optimmethod = 'subplex',
+  num_cycles = 1,
+  verbose = FALSE)
 {
-# brts = branching times (positive, from present to past)
-# - max(brts) = crown age
-# - min(brts) = most recent branching time
-# initparsopt contains initial parameter values
-# - initparsopt[1] = b (= la_1 in ER2012) = speciation initiation rate
-# - initparsopt[2] = mu_1 (= mu_g in ER2012) = extinction rate of good species
-# - initparsopt[3] = la_1 (= la_2 in ER2012) = speciation completion rate
-# - initparsopt[4] = mu_2 (= mu_i in ER2012) = extinction rate of incipient species
-# exteq = incipient species have the same (1) or different (0) extinction rate as good species
-# parsfunc = functions of parameters
-# missnumspec = number of missing species
-# cond = conditioning
-# . cond = 0 conditioning on stem or clade age
-# . cond = 1 conditioning on age and non-extinction of the phylogeny
-# . cond = 2 conditioning on age and on number of extant taxa
-# soc = stem (1) or crown (2) age
-# btorph = likelihood of branching times (0) or phylogeny (1), differ by a factor (S - 1)! where S is the number of extant species
-# methode = method of the numerical integration; see package deSolve for details
-# tol = tolerance in optimization
-# - reltolx = relative tolerance of parameter values in optimization
-# - reltolf = relative tolerance of function value in optimization
-# - abstolx = absolute tolerance of parameter values in optimization
-# maxiter = the maximum number of iterations in the optimization
-# endmc = number of simulations in the bootstrap
-# seed = seed for the simulations in the bootstrap
-
 set.seed(seed)
 cat('Finding the maximum likelihood estimates ...\n\n')
 if(plotltt == 1)
@@ -117,7 +124,7 @@ for(i in 1:endmc)
    utils::flush.console()
    simbrts = pbd_sim_cpp(pars = MLpars, age = max(abs(brts)), soc = soc, plotltt = plotltt, methode = methode)
    trees[[i]] = DDD::brts2phylo(simbrts)
-   simML = pbd_ML(simbrts,initparsopt = MLpars[1:(4-exteq)],idparsopt,idparsfix,parsfix,exteq,parsfunc,missnumspec = 0,cond,btorph,soc,methode,n_low,n_up,tol,maxiter)
+   simML = pbd_ML(brts = simbrts,initparsopt = MLpars[1:(4-exteq)],idparsopt = idparsopt,idparsfix = idparsfix,parsfix = parsfix,exteq = exteq,parsfunc = parsfunc,missnumspec = 0,cond = cond,btorph = btorph,so = soc,methode = methode,n_low = n_low,n_up = n_up,tol = tol,maxiter = maxiter, optimmethod = optimmethod, num_cycles = num_cycles, verbose = verbose)
    simMLpars = as.numeric(unlist(simML[1:4]))
    exp_durspec = pbd_durspec_mean(c(simMLpars[1],simMLpars[3],simMLpars[4]))
    median_durspec = pbd_durspec_quantile(c(simMLpars[1],simMLpars[3],simMLpars[4]),0.5)

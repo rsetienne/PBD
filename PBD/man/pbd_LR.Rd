@@ -7,11 +7,12 @@ diversification}
 \usage{
 pbd_LR(brts, initparsoptPBD, initparsoptCR, missnumspec,
   outputfilename = NULL, seed = 42, endmc = 1000, alpha = 0.05,
-  plotit = TRUE, parsfunc = c(function(t, pars) {     pars[1] }, function(t,
-  pars) {     pars[2] }, function(t, pars) {     pars[3] }, function(t, pars) { 
-     pars[4] }), cond = 1, btorph = 1, soc = 2, methode = "lsoda",
-  n_low = 0, n_up = 0, tol = c(1e-06, 1e-06, 1e-06), maxiter = 2000,
-  optimmethod = "subplex", verbose = FALSE)
+  plotit = TRUE, parsfunc = c(function(t, pars) {     pars[1] },
+  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
+  function(t, pars) {     pars[4] }), cond = 1, btorph = 1, soc = 2,
+  methode = "lsoda", n_low = 0, n_up = 0, tol = c(1e-06, 1e-06,
+  1e-06), maxiter = 2000, optimmethod = "subplex",
+  num_cycles = num_cycles, verbose = FALSE)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}
@@ -40,12 +41,15 @@ the bootstrap data}
 \item{parsfunc}{Specifies functions how the rates depend on time, default
 functions are constant functions}
 
-\item{cond}{Conditioning: \cr cond == 0 : conditioning on stem or crown age
-\cr cond == 1 : conditioning on stem or crown age and non-extinction of the
-phylogeny \cr cond == 2 : conditioning on stem or crown age and on the total
-number of extant taxa (including missing species) \cr cond == 3 :
-conditioning on the total number of extant taxa (including missing species)
-\cr Note: cond == 3 assumes a uniform prior on stem age, as is the standard
+\item{cond}{Conditioning: \cr
+cond == 0 : conditioning on stem or crown age\cr
+cond == 1 : conditioning on stem or crown age and non-extinction of the
+phylogeny \cr
+cond == 2 : conditioning on stem or crown age and on the total
+number of extant taxa (including missing species) \cr
+cond == 3 : conditioning on the total number of extant taxa (including
+missing species)\cr
+Note: cond == 3 assumes a uniform prior on stem age, as is the standard
 in constant-rate birth-death models, see e.g. D. Aldous & L. Popovic 2004.
 Adv. Appl. Prob. 37: 1094-1115 and T. Stadler 2009. J. Theor. Biol. 261:
 58-66.}
@@ -76,6 +80,8 @@ tolerance of parameter values in optimization}
 \item{optimmethod}{Method used in optimization of the likelihood. Current
 default is 'subplex'. Alternative is 'simplex'.}
 
+\item{num_cycles}{Number of cycles of the optimization (default is 1).}
+
 \item{verbose}{if TRUE, explanatory text will be shown}
 }
 \value{
@@ -84,30 +90,40 @@ constant-rates model using the ML parameters under the CR model}
 \item{brtsDD}{a list of sets of branching times generated under the
 protracted birth-death model using the ML parameters under the PBD model}
 \item{out}{a dataframe with the parameter estimates and maximum likelihoods
-for protracted birth-death and constant-rates models \code{$model} - the
-model used to generate the data. 0 = unknown (for real data), 1 = CR, 2 =
-PBD \cr \code{$mc} - the simulation number for each model \cr \code{$b_CR} -
-speciation rate estimated under CR \cr \code{$mu_CR} - extinction rate
-estimated under CR \cr \code{$LL_CR} - maximum likelihood estimated under CR
-\cr \code{$conv_CR} - convergence code for likelihood optimization; conv = 0
-means convergence \cr \code{$b_PBD1} - speciation-initation rate estimated
-under PBD for first set of initial values\cr \code{$mu_PB1} - extinction
+for protracted birth-death and constant-rates models
+\code{$model} - the model used to generate the data. 0 = unknown (for real
+data), 1 = CR, 2 = PBD \cr
+\code{$mc} - the simulation number for each model \cr
+\code{$b_CR} - peciation rate estimated under CR \cr
+\code{$mu_CR} - extinction rate estimated under CR \cr
+\code{$LL_CR} - maximum likelihood estimated under CR\cr
+\code{$conv_CR} - convergence code for likelihood optimization; conv = 0
+means convergence \cr
+\code{$b_PBD1} - speciation-initation rate estimated
+under PBD for first set of initial values\cr
+\code{$mu_PB1} - extinction
 rate estimated under DD for first set of initial values \cr
 \code{$lambda_PB1} - speciation-completion rate estimated under PBD for
-first set of initial values \cr \code{$LL_PBD1} - maximum likelihood
-estimated under DD for first set of initial values \cr \code{$conv_PBD1} -
+first set of initial values \cr
+\code{$LL_PBD1} - maximum likelihood estimated under DD for first set of
+initial values \cr \code{$conv_PBD1} -
 convergence code for likelihood optimization for first set of initial
-values; conv = 0 means convergence \cr \code{$b_PBD2} - speciation-initation
-rate estimated under PBD for second set of initial values\cr \code{$mu_PB2}
-- extinction rate estimated under DD for second set of initial values \cr
+values; conv = 0 means convergence \cr
+\code{$b_PBD2} - speciation-initation
+rate estimated under PBD for second set of initial values\cr
+\code{$mu_PB2} - extinction rate estimated under DD for second set of
+initial values \cr
 \code{$lambda_PB2} - speciation-completion rate estimated under PBD for
-second set of initial values \cr \code{$LL_PBD2} - maximum likelihood
-estimated under DD for second set of initial values \cr \code{$conv_PBD2} -
-convergence code for likelihood optimization for second set of initial
-values; conv = 0 means convergence \cr \code{$LR} - likelihood ratio between
-DD and CR } \item{pvalue}{p-value of the test} \item{LRalpha}{Likelihood
-ratio at the signifiance level alpha} \item{poweroftest}{power of the test
-for significance level alpha}
+second set of initial values \cr
+\code{$LL_PBD2} - maximum likelihood
+estimated under DD for second set of initial values \cr
+\code{$conv_PBD2} - convergence code for likelihood optimization for
+econd set of initial values; conv = 0 means convergence \cr
+\code{$LR} - likelihood ratio between DD and CR }
+\item{pvalue}{p-value of the test}
+\item{LRalpha}{Likelihood
+ratio at the signifiance level alpha}
+\item{poweroftest}{power of the test for significance level alpha}
 }
 \description{
 This function computes the maximum likelihood and the associated estimates

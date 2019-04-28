@@ -48,14 +48,17 @@
 #' @param optimmethod Method used in optimization of the likelihood. Current
 #' default is 'subplex'. Alternative is 'simplex' (default of previous
 #' versions)
+#' @param num_cycles Number of cycles of the optimization (default is 1).
 #' @param verbose if TRUE, explanatory text will be shown
-#' @return A data frame with the following components:\cr \item{b}{ gives the
-#' maximum likelihood estimate of b} \item{mu_1}{ gives the maximum likelihood
-#' estimate of mu_1} \item{la_1}{ gives the maximum likelihood estimate of
-#' la_1} \item{mu_2}{ gives the maximum likelihood estimate of mu_2}
-#' \item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
-#' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
-#' message on convergence of optimization; conv = 0 means convergence}
+#' @return A data frame with the following components:\cr
+#' \item{b}{ gives the maximum likelihood estimate of b}
+#' \item{mu_1}{ gives the maximum likelihood estimate of mu_1}
+#' \item{la_1}{ gives the maximum likelihood estimate of la_1}
+#' \item{mu_2}{ gives the maximum likelihood estimate of mu_2}
+#' \item{loglik}{ gives the maximum loglikelihood}
+#' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+#' \item{conv}{ gives a message on convergence of optimization;
+#' conv = 0 means convergence}
 #' @author Rampal S. Etienne
 #' @seealso \code{\link{pbd_loglik}}
 #' @keywords models
@@ -82,38 +85,10 @@ pbd_ML = function(
   tol = c(1E-6, 1E-6, 1E-6),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   optimmethod = 'subplex',
+  num_cycles = 1,
   verbose = TRUE)
 {
-  # brts = branching times (positive, from present to past)
-  # - max(brts) = crown age
-  # - min(brts) = most recent branching time
-  # initparsopt contains initial parameter values
-  # - initparsopt[1] = b (= la_1 in ER2012) = speciation initiation rate
-  # - initparsopt[2] = mu_1 (= mu_g in ER2012) = extinction rate of good species
-  # - initparsopt[3] = la_1 (= la_2 in ER2012) = speciation completion rate
-  # - initparsopt[4] = mu_2 (= mu_i in ER2012) = extinction rate of incipient species
-  # exteq = incipient species have the same (1) or different (0) extinction rate as good species
-  # parsfunc = functions of parameters
-  # res = resolution of the method; res should be larger than the total number of species
-  # missnumspec = number of missing species
-  # cond = conditioning
-  # . cond = 0 conditioning on stem or clade age
-  # . cond = 1 conditioning on age and non-extinction of the phylogeny
-  # . cond = 2 conditioning on age and on number of extant taxa
-  # btorph = likelihood of branching times (0) or phylogeny (1), differ by a factor (S - 1)! where S is the number of extant species
-  # soc = stem (1) or crown (2) age
-  # methode = method of the numerical integration; see package deSolve for details
-  # n_low = lower bound on number of species (cond = 2)
-  # n_up = upper bound on number of species (cond = 2)
-  # tol = tolerance in optimization
-  # - reltolx = relative tolerance of parameter values in optimization
-  # - reltolf = relative tolerance of function value in optimization
-  # - abstolx = absolute tolerance of parameter values in optimization
-  # maxiter = the maximum number of iterations in the optimization
-  # optimmethod = 'subplex' (current default) or 'simplex' (default of previous versions)
-  # verbose = whether intermediate output should be shown
-
-  options(warn=-1)
+  #options(warn=-1)
   brts = sort(abs(as.numeric(brts)),decreasing = TRUE)
   if(is.numeric(brts) == FALSE)
   {
@@ -150,7 +125,7 @@ pbd_ML = function(
         if (verbose) { cat("Optimizing the likelihood - this may take a while.","\n") }
         utils::flush.console()
         optimpars = c(tol,maxiter)
-        out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = pbd_loglik_choosepar,trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq, parsfunc = parsfunc, pars2 = pars2,brts = brts, missnumspec = missnumspec)
+        out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = pbd_loglik_choosepar,trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,exteq = exteq, parsfunc = parsfunc, pars2 = pars2,brts = brts, missnumspec = missnumspec, num_cycles = num_cycles)
         if(out$conv > 0)
         {
           cat("Optimization has not converged. Try again with different initial values.\n")
@@ -178,5 +153,5 @@ pbd_ML = function(
       }
     }
   }
-  invisible(out2)
+  return(invisible(out2))
 }
