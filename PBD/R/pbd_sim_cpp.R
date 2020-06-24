@@ -47,6 +47,8 @@ pbd_loglik_rhs_cpp = function(t,x,pars)
 #' completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param age Sets the crown age for the simulation
+#' @param ntips Set the number of tips. If NULL (default) the number of tips will
+#' be sampled
 #' @param soc Determines whether the simulation should start at stem (1) or
 #' crown (2) age
 #' @param plotltt Sets whether the lineage-through-time plot should be plotted
@@ -60,7 +62,13 @@ pbd_loglik_rhs_cpp = function(t,x,pars)
 #' @examples
 #'  pbd_sim_cpp(pars = c(0.2,1,0.2,0.1),age = 15)
 #' @export pbd_sim_cpp
-pbd_sim_cpp = function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, plotltt = 1, methode = "lsoda")
+pbd_sim_cpp = function(pars,
+                       parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}),
+                       age,
+                       ntips = NULL,
+                       soc = 2,
+                       plotltt = 1,
+                       methode = "lsoda")
 {
   pars1 = c(parsf,pars)
   abstol = 1e-16
@@ -68,7 +76,11 @@ pbd_sim_cpp = function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars
   probs = c(1,1,0,0,0)
   y = deSolve::ode(probs,c(0,age),pbd_loglik_rhs_cpp,c(pars1,0),rtol = reltol,atol = abstol,method = methode)
   pT = 1 - y[2,2]
-  nd = sum(stats::rgeom(soc,1 - pT))
+  if(is.null(ntips)) {
+    nd = sum(stats::rgeom(soc,1 - pT))
+  } else {
+    nd <- ntips - soc
+  }
   brts = rep(0,nd + 1)
   brts[1] = age
   i = 1
