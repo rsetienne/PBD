@@ -4,10 +4,16 @@
 \alias{pbd_sim_cpp}
 \title{Function to simulate the approximate protracted speciation process}
 \usage{
-pbd_sim_cpp(pars, parsf = c(function(t, pars) {     pars[1] },
-  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
-  function(t, pars) {     pars[4] }), age, soc = 2, plotltt = 1,
-  methode = "lsoda")
+pbd_sim_cpp(
+  pars,
+  parsf = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  age,
+  ntips = NULL,
+  soc = 2,
+  plotltt = 1,
+  methode = "lsoda"
+)
 }
 \arguments{
 \item{pars}{Vector of parameters: \cr \cr \code{pars[1]} corresponds to b (=
@@ -31,6 +37,9 @@ completion rate \cr \code{parsf[4]} corresponds to time-dependence of mu_2
 (= mu_i in ER2012) = extinction rate of incipient species \cr \cr}
 
 \item{age}{Sets the crown age for the simulation}
+
+\item{ntips}{Set the number of tips. If NULL (default) the number of tips will
+be sampled}
 
 \item{soc}{Determines whether the simulation should start at stem (1) or
 crown (2) age}

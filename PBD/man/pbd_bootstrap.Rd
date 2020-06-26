@@ -4,16 +4,31 @@
 \alias{pbd_bootstrap}
 \title{Bootstrap analysis under protracted birth-death model of diversification}
 \usage{
-pbd_bootstrap(brts, initparsopt = c(0.2, 0.1, 1),
-  idparsopt = 1:length(initparsopt), idparsfix = NULL,
-  parsfix = NULL, exteq = (length(initparsopt) < 4),
-  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {    
-  pars[2] }, function(t, pars) {     pars[3] }, function(t, pars) {    
-  pars[4] }), missnumspec = 0, cond = 1, btorph = 0, soc = 2,
-  plotltt = 1, methode = "lsoda", n_low = 0, n_up = 0,
-  tol = c(1e-04, 1e-04, 1e-06), maxiter = 1000 *
-  round((1.25)^length(idparsopt)), endmc = 100, seed = 42,
-  optimmethod = "subplex", num_cycles = 1, verbose = FALSE)
+pbd_bootstrap(
+  brts,
+  initparsopt = c(0.2, 0.1, 1),
+  idparsopt = 1:length(initparsopt),
+  idparsfix = NULL,
+  parsfix = NULL,
+  exteq = (length(initparsopt) < 4),
+  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  missnumspec = 0,
+  cond = 1,
+  btorph = 0,
+  soc = 2,
+  plotltt = 1,
+  methode = "lsoda",
+  n_low = 0,
+  n_up = 0,
+  tol = c(1e-04, 1e-04, 1e-06),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  endmc = 100,
+  seed = 42,
+  optimmethod = "subplex",
+  num_cycles = 1,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}

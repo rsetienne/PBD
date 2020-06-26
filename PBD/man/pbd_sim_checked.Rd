@@ -4,9 +4,17 @@
 \alias{pbd_sim_checked}
 \title{Checked and safer version of PBD::pbd_sim}
 \usage{
-pbd_sim_checked(erg, eri, scr, sirg, siri, stem_age = NULL,
-  crown_age = NULL, max_n_taxa = Inf,
-  add_shortest_and_longest = FALSE)
+pbd_sim_checked(
+  erg,
+  eri,
+  scr,
+  sirg,
+  siri,
+  stem_age = NULL,
+  crown_age = NULL,
+  max_n_taxa = Inf,
+  add_shortest_and_longest = FALSE
+)
 }
 \arguments{
 \item{erg}{extinction rate of a good species}

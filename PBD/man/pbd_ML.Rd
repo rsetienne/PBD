@@ -5,15 +5,28 @@
 \title{Maximization of loglikelihood under protracted birth-death model of
 diversification}
 \usage{
-pbd_ML(brts, initparsopt = c(0.2, 0.1, 1),
-  idparsopt = 1:length(initparsopt), idparsfix = NULL,
-  parsfix = NULL, exteq = 1, parsfunc = c(function(t, pars) {    
-  pars[1] }, function(t, pars) {     pars[2] }, function(t, pars) {    
-  pars[3] }, function(t, pars) {     pars[4] }), missnumspec = 0,
-  cond = 1, btorph = 1, soc = 2, methode = "lsoda", n_low = 0,
-  n_up = 0, tol = c(1e-06, 1e-06, 1e-06), maxiter = 1000 *
-  round((1.25)^length(idparsopt)), optimmethod = "subplex",
-  num_cycles = 1, verbose = TRUE)
+pbd_ML(
+  brts,
+  initparsopt = c(0.2, 0.1, 1),
+  idparsopt = 1:length(initparsopt),
+  idparsfix = NULL,
+  parsfix = NULL,
+  exteq = 1,
+  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  missnumspec = 0,
+  cond = 1,
+  btorph = 1,
+  soc = 2,
+  methode = "lsoda",
+  n_low = 0,
+  n_up = 0,
+  tol = c(1e-06, 1e-06, 1e-06),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  optimmethod = "subplex",
+  num_cycles = 1,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}

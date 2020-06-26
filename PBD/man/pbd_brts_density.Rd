@@ -5,9 +5,13 @@
 \title{Node depth probbaility density for protracted birth-death model of
 diversification}
 \usage{
-pbd_brts_density(pars1, pars1f = c(function(t, pars) {     pars[1] },
-  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
-  function(t, pars) {     pars[4] }), methode = "lsoda", brts)
+pbd_brts_density(
+  pars1,
+  pars1f = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  methode = "lsoda",
+  brts
+)
 }
 \arguments{
 \item{pars1}{Vector of parameters: \cr \cr \code{pars1[1]} corresponds to b

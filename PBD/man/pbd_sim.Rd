@@ -4,8 +4,14 @@
 \alias{pbd_sim}
 \title{Function to simulate the protracted speciation process}
 \usage{
-pbd_sim(pars, age, soc = 2, plotit = FALSE, limitsize = Inf,
-  add_shortest_and_longest = FALSE)
+pbd_sim(
+  pars,
+  age,
+  soc = 2,
+  plotit = FALSE,
+  limitsize = Inf,
+  add_shortest_and_longest = FALSE
+)
 }
 \arguments{
 \item{pars}{Vector of parameters: \cr \cr \code{pars[1]} corresponds to b_1,

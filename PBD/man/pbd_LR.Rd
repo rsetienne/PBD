@@ -5,14 +5,30 @@
 \title{Bootstrap likelihood ratio test of protracted birth-death model of
 diversification}
 \usage{
-pbd_LR(brts, initparsoptPBD, initparsoptCR, missnumspec,
-  outputfilename = NULL, seed = 42, endmc = 1000, alpha = 0.05,
-  plotit = TRUE, parsfunc = c(function(t, pars) {     pars[1] },
-  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
-  function(t, pars) {     pars[4] }), cond = 1, btorph = 1, soc = 2,
-  methode = "lsoda", n_low = 0, n_up = 0, tol = c(1e-06, 1e-06,
-  1e-06), maxiter = 2000, optimmethod = "subplex",
-  num_cycles = num_cycles, verbose = FALSE)
+pbd_LR(
+  brts,
+  initparsoptPBD,
+  initparsoptCR,
+  missnumspec,
+  outputfilename = NULL,
+  seed = 42,
+  endmc = 1000,
+  alpha = 0.05,
+  plotit = TRUE,
+  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  cond = 1,
+  btorph = 1,
+  soc = 2,
+  methode = "lsoda",
+  n_low = 0,
+  n_up = 0,
+  tol = c(1e-06, 1e-06, 1e-06),
+  maxiter = 2000,
+  optimmethod = "subplex",
+  num_cycles = num_cycles,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{brts}{A set of branching times of a phylogeny, all positive}

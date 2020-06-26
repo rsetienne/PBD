@@ -4,10 +4,14 @@
 \alias{pbd_loglik}
 \title{Loglikelihood for protracted birth-death model of diversification}
 \usage{
-pbd_loglik(pars1, pars1f = c(function(t, pars) {     pars[1] },
-  function(t, pars) {     pars[2] }, function(t, pars) {     pars[3] },
-  function(t, pars) {     pars[4] }), pars2 = c(1, 1, 2, 1, "lsoda", 0,
-  0), brts, missnumspec = 0)
+pbd_loglik(
+  pars1,
+  pars1f = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
+    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  pars2 = c(1, 1, 2, 1, "lsoda", 0, 0),
+  brts,
+  missnumspec = 0
+)
 }
 \arguments{
 \item{pars1}{Vector of parameters: \cr \cr \code{pars1[1]} corresponds to b
