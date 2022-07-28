@@ -85,14 +85,14 @@ pbd_numspec_mean <- function(
   methode = "lsoda"
 ) {
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
-  numspec_mean <- (soc == 2) + as.numeric(soc * (1 - pT)/pT)
+  numspec_mean <- soc + as.numeric(soc * (1 - pT)/pT)
 
   #to be put in a test
   #endmc = 1000000
   #nd = rep(0,endmc)
   #for(mc in 1:endmc)
   #{
-  #   nd[mc] = (soc == 2) + sum(stats::rgeom(soc,pT))
+  #   nd[mc] = soc + sum(stats::rgeom(soc,pT))
   #}
   #print(mean(nd))
   return(numspec_mean)
@@ -139,7 +139,7 @@ pbd_numspec_mean <- function(
 pbd_numspec_quantile <- function(pars,parsf = c(function(t,pars) {pars[1]},function(t,pars) {pars[2]},function(t,pars) {pars[3]},function(t,pars) {pars[4]}), age, soc = 2, methode = "lsoda", quantile)
 {
   pT <- pbd_pgeom(pars = pars,parsf = parsf,age = age,soc = soc,methode = methode)
-  numspec_quantile <- (soc == 2) + stats::qnbinom(size = soc,prob = pT, p = quantile)
+  numspec_quantile <- soc + stats::qnbinom(size = soc,prob = pT, p = quantile)
   return(numspec_quantile)
 }
 
