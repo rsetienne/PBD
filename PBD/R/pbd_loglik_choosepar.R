@@ -18,7 +18,7 @@ pbd_loglik_choosepar = function(trparsopt,trparsfix,idparsopt,idparsfix,exteq,pa
       loglik = pbd_loglik(pars1,parsfunc,pars2,brts,missnumspec)
       if(is.nan(loglik) || is.na(loglik))
       {
-         cat("Parameter values have been used that cause numerical problems.\n")
+         warning("Parameter values have been used that cause numerical problems.\n")
          loglik = -Inf
       }
    }
