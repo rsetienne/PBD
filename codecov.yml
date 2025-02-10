@@ -1,6 +1,0 @@
-# No Codecov message with Pull Request
-comment: false
-
-# PBD package is in the PBD folder of the PBD repo
-fixes:
-  - "::PBD/" 

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Richel Bilderbeek &amp; Rampal S. Etienne" />
+
+<meta name="date" content="2018-06-12" />
+
+<title>pbd_ML demo</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">pbd_ML demo</h1>
+<h4 class="author"><em>Richel Bilderbeek &amp; Rampal S. Etienne</em></h4>
+<h4 class="date"><em>2018-06-12</em></h4>
+
+
+
+<p>This document gives a demonstration how to use the package to obtain a maximum-likelihood estimate of the protracted birth-death speciation model.</p>
+<p>First thing is to load the PBD package itself:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+<span class="kw">library</span>(PBD)</code></pre></div>
+<p>We will also need ape for <code>branching.times</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ape)</code></pre></div>
+<p>Here we simulate a tree with known parameters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">seed &lt;-<span class="st"> </span><span class="dv">43</span>
+<span class="kw">set.seed</span>(seed)
+b_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="fl">0.3</span> <span class="co"># speciation-initiation rate of good species</span>
+la_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="fl">0.2</span> <span class="co"># speciation-completion rate</span>
+b_<span class="dv">2</span> &lt;-<span class="st"> </span>b_<span class="dv">1</span> <span class="co"># the speciation-initiation rate of incipient species</span>
+mu_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="fl">0.1</span> <span class="co">#  extinction rate of good species</span>
+mu_<span class="dv">2</span> &lt;-<span class="st"> </span>mu_<span class="dv">1</span> <span class="co"># extinction rate of incipient species </span>
+pars &lt;-<span class="st"> </span><span class="kw">c</span>(b_<span class="dv">1</span>, la_<span class="dv">1</span>, b_<span class="dv">2</span>, mu_<span class="dv">1</span>, mu_<span class="dv">2</span>)
+age &lt;-<span class="st"> </span><span class="dv">15</span> <span class="co"># the age for the simulation </span>
+phylogenies &lt;-<span class="st"> </span><span class="kw">pbd_sim</span>(<span class="dt">pars =</span> pars, <span class="dt">age =</span> age)
+<span class="kw">plot</span>(phylogenies<span class="op">$</span>recontree)</code></pre></div>
+<p><img src="data:image/png;base64,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3fQ0BKjIzeedQJUeLoXMxu+dajc9FQbih2RN4hw6XAqZ3XYg1gyQNbvDPFwKmjtOA6OaAbIlcfJ29w2t1QCzCoa41256Kg/ImsQ52Nv4tsxLMJM4c8xxMMS9dtNT+ZUzWxLnoN38ieG4C81JMKR87UpfOXnButiSOP1jP6I7bmBOgiHVVWoDheuSTeIcPlyq2KwFQ6qr1MbJqAuKaoS5jrvQ7BzwmF1AORfZ3LzhuAvN7gGP2gGyJHGafW6h2XIOt0ulpiwIKCeJsyempNkkTsOs9qxKNMF1DmdS1QqQ7cBt8aJ1mxbasZp77D2te8XihwDkx1s5nSs1ZcFwoi2JU/Qup2qhHas56AjvztuXWDz6DWPXOlRqjBuaqKwVsyVxcmwPS0M7dnNw53dFTgPnKs7hfuZsZto7qvxyhxHayTELRYsfroGgGQZks1rGQfZDOC0RH7n44RwIqhkg2/eLWQ/hzJrl4od7IKhmgIaSOK9Yi0M7ydeEygEP72lO+Lwx5VKbWdwDQbUCZCZxXtb8aXsu3ivHxMnaJ6pszV7j40Nnc6oDt5MDPB3qUdH9VC9LzfTlDl+sW6jUVb91W/rFj93WfeorRNOEVuPAbbc811oBMg/cjkY2YRpzliURPoy+QlSc06VkfilA3dakc2Rz8/qB27yvVVsu1Tl3h+JTX9R5VKdfE48ejcUPx1PxZheQVbqbNzefaqXsN4uOoZoBMk7iNDefpqXseVRjqHaA9JM4zRFNWhKp09fXLsu1Aql1HP2b1JJVjuHSeCe4pqoVoHSWZX5RmFmSQ+lx86YS1QrQNESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBPR/XT1WWBbZXpcAAAAASUVORK5CYII=" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(phylogenies<span class="op">$</span>igtree.extant)</code></pre></div>
+<pre><code>## no colors provided. using the following legend:
+##       g       i 
+## &quot;black&quot;   &quot;red&quot;</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(phylogenies<span class="op">$</span>tree)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(phylogenies)</code></pre></div>
+<pre><code>##  [1] &quot;tree&quot;           &quot;stree_random&quot;   &quot;stree_oldest&quot;   &quot;stree_youngest&quot;
+##  [5] &quot;L&quot;              &quot;sL_random&quot;      &quot;sL_oldest&quot;      &quot;sL_youngest&quot;   
+##  [9] &quot;igtree.extinct&quot; &quot;igtree.extant&quot;  &quot;recontree&quot;      &quot;reconL&quot;        
+## [13] &quot;L0&quot;</code></pre>
+<p>Now we try to recover the parameters by maximum likelihood estimation:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brts &lt;-<span class="st"> </span><span class="kw">branching.times</span>(phylogenies<span class="op">$</span>recontree)  <span class="co"># branching times</span>
+init_b &lt;-<span class="st"> </span><span class="fl">0.2</span>  <span class="co"># speciation-initiation rate</span>
+init_mu_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="fl">0.05</span>  <span class="co"># extinction rate of good species</span>
+init_la_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="fl">0.3</span> <span class="co"># speciation-completion rate</span>
+<span class="co">#init_mu_2 &lt;- 0.05  # extinction rate of incipient species  # not used</span>
+
+<span class="co"># The initial values of the parameters that must be optimized</span>
+initparsopt &lt;-<span class="st"> </span><span class="kw">c</span>(init_b, init_mu_<span class="dv">1</span>, init_la_<span class="dv">1</span>)
+
+<span class="co"># The extinction rates between incipient and good species are equal</span>
+exteq &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+
+<span class="co"># The first element of the branching times is the crown age (and not the stem age)</span>
+soc &lt;-<span class="st"> </span><span class="dv">2</span>
+
+<span class="co"># Conditioning on non-extinction of the phylogeny</span>
+<span class="co"># as I actively selected for a nice phylogeny</span>
+cond &lt;-<span class="st"> </span><span class="dv">1</span>
+
+<span class="co"># Give the likelihood of the phylogeny (instead of the likelihood of the branching times)</span>
+btorph &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
+<p>Maximum likelihood estimation can now be performed:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">pbd_ML</span>(
+  <span class="dt">brts =</span> brts,
+  <span class="dt">initparsopt =</span> initparsopt, 
+  <span class="dt">exteq =</span> exteq,
+  <span class="dt">soc =</span> soc, 
+  <span class="dt">cond =</span> cond,
+  <span class="dt">btorph =</span> btorph,
+  <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+)</code></pre></div>
+<p>The ML parameter estimates are:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(r)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.20635</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.1221</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Comparing the known true value with the recovered values:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loglik_true &lt;-<span class="st"> </span>PBD<span class="op">::</span><span class="kw">pbd_loglik</span>(pars, <span class="dt">brts =</span> brts)</code></pre></div>
+<pre><code>## Parameters: 0.3, 0.2, 0.3, 0.1, 0.1, Loglikelihood: -37.324677</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(r)
+df &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, <span class="kw">c</span>(b_<span class="dv">1</span>, mu_<span class="dv">1</span>, la_<span class="dv">1</span>, mu_<span class="dv">2</span>, loglik_true, <span class="ot">NA</span>, <span class="ot">NA</span>))
+<span class="kw">row.names</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>)
+knitr<span class="op">::</span><span class="kw">kable</span>(df)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ML</td>
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.20635</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.12210</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>true</td>
+<td align="right">0.3000000</td>
+<td align="right">0.1000000</td>
+<td align="right">0.20000</td>
+<td align="right">0.1000000</td>
+<td align="right">-37.32468</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Ideally, all parameter columns should have the same values.</p>
+<p>To test for the uncertainty of our ML estimate, we can do a parametric bootstrap.</p>
+<p>The function <code>pbd_bootstrap</code> consists of a few steps:</p>
+<ol style="list-style-type: decimal">
+<li>Do an ML estimate</li>
+<li>Run a simulation with those estimates</li>
+<li>Perform ML estimation on the simulated data</li>
+<li>Go to 2 depending on the setting of endmc.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">endmc &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># Sets the number of simulations for the bootstrap</span>
+
+b &lt;-<span class="st"> </span><span class="kw">pbd_bootstrap</span>(
+  <span class="dt">brts =</span> brts,
+  <span class="dt">initparsopt =</span> initparsopt, 
+  <span class="dt">exteq =</span> exteq,
+  <span class="dt">soc =</span> soc, 
+  <span class="dt">cond =</span> cond,
+  <span class="dt">btorph =</span> btorph,
+  <span class="dt">plotltt =</span> <span class="ot">FALSE</span>,
+  <span class="dt">endmc =</span> endmc,
+  <span class="dt">seed =</span> seed
+)</code></pre></div>
+<pre><code>## Finding the maximum likelihood estimates ...
+## 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -37.25841 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.281715, mu_1: 0.100335, lambda_1: 0.206352, mu_2: 0.100335 
+##  Maximum loglikelihood: -37.122103 
+##  The expected duration of speciation for these parameters is: 2.807343 
+##  The median duration of speciation for these parameters is: 2.206200 
+## Bootstrapping ...
+## 
+## Simulated data set 1 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -22.03909 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.375753, mu_1: 0.311977, lambda_1: 0.230678, mu_2: 0.311977 
+##  Maximum loglikelihood: -21.596081 
+##  The expected duration of speciation for these parameters is: 2.030928 
+##  The median duration of speciation for these parameters is: 1.543204 
+## Simulated data set 2 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -57.99061 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.312123, mu_1: 0.081059, lambda_1: 0.190419, mu_2: 0.081059 
+##  Maximum loglikelihood: -57.720450 
+##  The expected duration of speciation for these parameters is: 2.943368 
+##  The median duration of speciation for these parameters is: 2.365253 
+## Simulated data set 3 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -115.261 
+## Optimizing the likelihood - this may take a while. 
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## Parameter values have been used that cause numerical problems.
+## 
+##  Maximum likelihood parameter estimates: b: 751.298215, mu_1: 751.000348, lambda_1: 0.004574, mu_2: 751.000348 
+##  Maximum loglikelihood: -111.629201 
+##  The expected duration of speciation for these parameters is: 0.386462 
+##  The median duration of speciation for these parameters is: 0.310353 
+## Simulated data set 4 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -107.9402 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.271860, mu_1: 0.000000, lambda_1: 0.126555, mu_2: 0.000000 
+##  Maximum loglikelihood: -106.870092 
+##  The expected duration of speciation for these parameters is: 4.218409 
+##  The median duration of speciation for these parameters is: 3.570808 
+## Simulated data set 5 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -47.84195 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.709877, mu_1: 0.574456, lambda_1: 0.225125, mu_2: 0.574456 
+##  Maximum loglikelihood: -46.601652 
+##  The expected duration of speciation for these parameters is: 1.643556 
+##  The median duration of speciation for these parameters is: 1.279479 
+## Simulated data set 6 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -187.144 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 13.979806, mu_1: 13.679004, lambda_1: 0.020678, mu_2: 13.679004 
+##  Maximum loglikelihood: -183.432908 
+##  The expected duration of speciation for these parameters is: 1.413933 
+##  The median duration of speciation for these parameters is: 1.171087 
+## Simulated data set 7 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -41.38109 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.492110, mu_1: 0.309936, lambda_1: 0.059444, mu_2: 0.309936 
+##  Maximum loglikelihood: -40.448749 
+##  The expected duration of speciation for these parameters is: 4.546741 
+##  The median duration of speciation for these parameters is: 3.828187 
+## Simulated data set 8 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -87.55681 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.300024, mu_1: 0.000001, lambda_1: 0.153513, mu_2: 0.000001 
+##  Maximum loglikelihood: -86.151794 
+##  The expected duration of speciation for these parameters is: 3.610683 
+##  The median duration of speciation for these parameters is: 3.031341 
+## Simulated data set 9 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -100.522 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.209810, mu_1: 0.000000, lambda_1: 0.393479, mu_2: 0.000000 
+##  Maximum loglikelihood: -99.916686 
+##  The expected duration of speciation for these parameters is: 2.036930 
+##  The median duration of speciation for these parameters is: 1.540704 
+## Simulated data set 10 out of 10 
+## You are optimizing b mu_1 lambda_1 
+## You are fixing nothing 
+## Extinction rate of incipient species is exactly the same as for good species.
+## The likelihood for the initial parameter values is -61.11511 
+## Optimizing the likelihood - this may take a while. 
+## 
+##  Maximum likelihood parameter estimates: b: 0.173103, mu_1: 0.000000, lambda_1: 0.890545, mu_2: 0.000000 
+##  Maximum loglikelihood: -60.368468 
+##  The expected duration of speciation for these parameters is: 1.026129 
+##  The median duration of speciation for these parameters is: 0.738873</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(b[[<span class="dv">3</span>]])</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ntips</th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+<th align="right">exp_durspec</th>
+<th align="right">median_durspec</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.3757529</td>
+<td align="right">0.3119773</td>
+<td align="right">0.2306781</td>
+<td align="right">0.3119773</td>
+<td align="right">-21.59608</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.0309277</td>
+<td align="right">1.5432035</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="right">0.3121229</td>
+<td align="right">0.0810590</td>
+<td align="right">0.1904194</td>
+<td align="right">0.0810590</td>
+<td align="right">-57.72045</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.9433681</td>
+<td align="right">2.3652530</td>
+</tr>
+<tr class="odd">
+<td align="right">40</td>
+<td align="right">751.2982150</td>
+<td align="right">751.0003476</td>
+<td align="right">0.0045737</td>
+<td align="right">751.0003476</td>
+<td align="right">-111.62920</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0.3864617</td>
+<td align="right">0.3103533</td>
+</tr>
+<tr class="even">
+<td align="right">41</td>
+<td align="right">0.2718601</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1265550</td>
+<td align="right">0.0000000</td>
+<td align="right">-106.87009</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">4.2184093</td>
+<td align="right">3.5708078</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0.7098773</td>
+<td align="right">0.5744562</td>
+<td align="right">0.2251248</td>
+<td align="right">0.5744562</td>
+<td align="right">-46.60165</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.6435563</td>
+<td align="right">1.2794793</td>
+</tr>
+<tr class="even">
+<td align="right">69</td>
+<td align="right">13.9798056</td>
+<td align="right">13.6790037</td>
+<td align="right">0.0206780</td>
+<td align="right">13.6790037</td>
+<td align="right">-183.43291</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.4139334</td>
+<td align="right">1.1710870</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">0.4921098</td>
+<td align="right">0.3099361</td>
+<td align="right">0.0594435</td>
+<td align="right">0.3099361</td>
+<td align="right">-40.44875</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">4.5467409</td>
+<td align="right">3.8281874</td>
+</tr>
+<tr class="even">
+<td align="right">35</td>
+<td align="right">0.3000241</td>
+<td align="right">0.0000011</td>
+<td align="right">0.1535128</td>
+<td align="right">0.0000011</td>
+<td align="right">-86.15179</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">3.6106829</td>
+<td align="right">3.0313409</td>
+</tr>
+<tr class="odd">
+<td align="right">38</td>
+<td align="right">0.2098101</td>
+<td align="right">0.0000000</td>
+<td align="right">0.3934793</td>
+<td align="right">0.0000000</td>
+<td align="right">-99.91669</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2.0369305</td>
+<td align="right">1.5407041</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="right">0.1731033</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8905452</td>
+<td align="right">0.0000000</td>
+<td align="right">-60.36847</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1.0261295</td>
+<td align="right">0.7388728</td>
+</tr>
+</tbody>
+</table>
+<p>From the bootstrap analysis, we get</p>
+<ul>
+<li>Again the ML estimate</li>
+<li>The ML estimates for simulations run with those estimates</li>
+</ul>
+<p>Putting this in a table:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dg &lt;-<span class="st"> </span><span class="kw">rbind</span>(df, 
+  <span class="kw">list</span>(
+    <span class="dt">b =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>b, 
+    <span class="dt">mu_1 =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>mu_<span class="dv">1</span>, 
+    <span class="dt">lambda_1 =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>lambda_<span class="dv">1</span>, 
+    <span class="dt">mu_2 =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>mu_<span class="dv">2</span>,
+    <span class="dt">loglik =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>loglik,
+    <span class="dt">df =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>df,
+    <span class="dt">conv =</span> b[[<span class="dv">1</span>]]<span class="op">$</span>conv
+  ),
+  <span class="kw">list</span>(
+    <span class="dt">b =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>b, 
+    <span class="dt">mu_1 =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>mu_<span class="dv">1</span>, 
+    <span class="dt">lambda_1 =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>lambda_<span class="dv">1</span>, 
+    <span class="dt">mu_2 =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>mu_<span class="dv">2</span>,
+    <span class="dt">loglik =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>loglik,
+    <span class="dt">df =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>df,
+    <span class="dt">conv =</span> b[[<span class="dv">3</span>]]<span class="op">$</span>conv
+  )
+)
+dg</code></pre></div>
+<pre><code>##                b         mu_1    lambda_1         mu_2     loglik df conv
+## ML     0.2817166 1.003351e-01 0.206350020 1.003351e-01  -37.12210  3    0
+## true   0.3000000 1.000000e-01 0.200000000 1.000000e-01  -37.32468 NA   NA
+## 3      0.2817148 1.003351e-01 0.206351748 1.003351e-01  -37.12210  3    0
+## 4      0.3757529 3.119773e-01 0.230678073 3.119773e-01  -21.59608  3    0
+## 5      0.3121229 8.105904e-02 0.190419381 8.105904e-02  -57.72045  3    0
+## 6    751.2982150 7.510003e+02 0.004573677 7.510003e+02 -111.62920  3    0
+## 7      0.2718601 3.331886e-08 0.126555041 3.331886e-08 -106.87009  3    0
+## 8      0.7098773 5.744562e-01 0.225124828 5.744562e-01  -46.60165  3    0
+## 9     13.9798056 1.367900e+01 0.020678046 1.367900e+01 -183.43291  3    0
+## 10     0.4921098 3.099361e-01 0.059443526 3.099361e-01  -40.44875  3    0
+## 11     0.3000241 1.094309e-06 0.153512850 1.094309e-06  -86.15179  3    0
+## 12     0.2098101 4.833861e-08 0.393479254 4.833861e-08  -99.91669  3    0
+## 13     0.1731033 9.079251e-10 0.890545200 9.079251e-10  -60.36847  3    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">row.names</span>(dg) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ML&quot;</span>, <span class="st">&quot;true&quot;</span>, <span class="st">&quot;ML2&quot;</span>, <span class="kw">paste</span>(<span class="st">&quot;BS&quot;</span>, <span class="dv">1</span><span class="op">:</span>endmc, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))
+knitr<span class="op">::</span><span class="kw">kable</span>(dg)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">b</th>
+<th align="right">mu_1</th>
+<th align="right">lambda_1</th>
+<th align="right">mu_2</th>
+<th align="right">loglik</th>
+<th align="right">df</th>
+<th align="right">conv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ML</td>
+<td align="right">0.2817166</td>
+<td align="right">0.1003351</td>
+<td align="right">0.2063500</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.12210</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>true</td>
+<td align="right">0.3000000</td>
+<td align="right">0.1000000</td>
+<td align="right">0.2000000</td>
+<td align="right">0.1000000</td>
+<td align="right">-37.32468</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>ML2</td>
+<td align="right">0.2817148</td>
+<td align="right">0.1003351</td>
+<td align="right">0.2063517</td>
+<td align="right">0.1003351</td>
+<td align="right">-37.12210</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS1</td>
+<td align="right">0.3757529</td>
+<td align="right">0.3119773</td>
+<td align="right">0.2306781</td>
+<td align="right">0.3119773</td>
+<td align="right">-21.59608</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS2</td>
+<td align="right">0.3121229</td>
+<td align="right">0.0810590</td>
+<td align="right">0.1904194</td>
+<td align="right">0.0810590</td>
+<td align="right">-57.72045</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS3</td>
+<td align="right">751.2982150</td>
+<td align="right">751.0003476</td>
+<td align="right">0.0045737</td>
+<td align="right">751.0003476</td>
+<td align="right">-111.62920</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS4</td>
+<td align="right">0.2718601</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1265550</td>
+<td align="right">0.0000000</td>
+<td align="right">-106.87009</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS5</td>
+<td align="right">0.7098773</td>
+<td align="right">0.5744562</td>
+<td align="right">0.2251248</td>
+<td align="right">0.5744562</td>
+<td align="right">-46.60165</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS6</td>
+<td align="right">13.9798056</td>
+<td align="right">13.6790037</td>
+<td align="right">0.0206780</td>
+<td align="right">13.6790037</td>
+<td align="right">-183.43291</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS7</td>
+<td align="right">0.4921098</td>
+<td align="right">0.3099361</td>
+<td align="right">0.0594435</td>
+<td align="right">0.3099361</td>
+<td align="right">-40.44875</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS8</td>
+<td align="right">0.3000241</td>
+<td align="right">0.0000011</td>
+<td align="right">0.1535128</td>
+<td align="right">0.0000011</td>
+<td align="right">-86.15179</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>BS9</td>
+<td align="right">0.2098101</td>
+<td align="right">0.0000000</td>
+<td align="right">0.3934793</td>
+<td align="right">0.0000000</td>
+<td align="right">-99.91669</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>BS10</td>
+<td align="right">0.1731033</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8905452</td>
+<td align="right">0.0000000</td>
+<td align="right">-60.36847</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>We expect rows ML and ML2 to be identical. Their values are indeed very similar.</p>
+<p>We can calculate the loglikelihood for</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ml_b &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]<span class="op">$</span>b
+ml_mu_<span class="dv">1</span> &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]<span class="op">$</span>mu_<span class="dv">1</span>
+ml_la_<span class="dv">1</span> &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]<span class="op">$</span>lambda_<span class="dv">1</span>
+ml_mu_<span class="dv">2</span> &lt;-<span class="st"> </span>b[[<span class="dv">1</span>]]<span class="op">$</span>mu_<span class="dv">2</span>
+ml_pars1 &lt;-<span class="st"> </span><span class="kw">c</span>(ml_b, ml_mu_<span class="dv">1</span>, ml_la_<span class="dv">1</span>, ml_mu_<span class="dv">2</span>)
+ml_pars2 &lt;-<span class="st"> </span><span class="kw">c</span>(cond, btorph, soc, <span class="dv">0</span>, <span class="st">&quot;lsoda&quot;</span>)
+
+l &lt;-<span class="st"> </span><span class="kw">pbd_loglik</span>(
+  <span class="dt">pars1 =</span> ml_pars1,
+  <span class="dt">pars2 =</span> ml_pars2,
+  <span class="dt">brts =</span> brts
+)
+<span class="kw">print</span>(l)</code></pre></div>
+<pre><code>## [1] -37.1221</code></pre>
+<pre><code># Create .md, .html, and .pdf files
+setwd(paste(getwd(), &quot;vignettes&quot;, sep = &quot;/&quot;))
+knit(&quot;PBD_ML_demo.Rmd&quot;)
+markdown::markdownToHTML('PBD_ML_demo.md', 'PBD_ML_demo.html', options=c(&quot;use_xhml&quot;))
+system(&quot;pandoc -s PBD_ML_demo.html -o PBD_ML_demo.pdf&quot;)</code></pre>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
