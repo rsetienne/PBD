@@ -55,143 +55,148 @@
 #' @examples
 #'  pbd_sim(c(0.2,1,0.2,0.1,0.1),15)
 #' @export pbd_sim
-pbd_sim = function(pars,age,soc = 2,plotit = FALSE, limitsize = Inf, add_shortest_and_longest = FALSE)
+pbd_sim <- function(pars,
+                   age,
+                   soc = 2,
+                   plotit = FALSE,
+                   limitsize = Inf,
+                   add_shortest_and_longest = FALSE)
 {
-la1 = pars[1]
-la2 = pars[2]
-la3 = pars[3]
-mu1 = pars[4]
-mu2 = pars[5]
+la1 <- pars[1]
+la2 <- pars[2]
+la3 <- pars[3]
+mu1 <- pars[4]
+mu2 <- pars[5]
 
-i = 1
+i <- 1
 while(i <= soc)
 {
-   t = 0
+   t <- 0
    if(i == 1)
    {
-      id1 = 0
-      id = id1 + 1
-      Sid1 = 0
-      Sid = 1
-      sg = id
-      si = NULL
-      L = t(as.matrix(c(id,0,-1e-10,t,-1,1)))
+      id1 <- 0
+      id <- id1 + 1
+      Sid1 <- 0
+      Sid <- 1
+      sg <- id
+      si <- NULL
+      L <- t(as.matrix(c(id,0,-1e-10,t,-1,1)))
    }
    if(i == 2)
    {
-      id = id1 + 1
-      Sid = Sid1
-      sg = NULL
-      si = -id
-      L = t(as.matrix(c(id,1,t,-1,-1,1)))
+      id <- id1 + 1
+      Sid <- Sid1
+      sg <- NULL
+      si <- -id
+      L <- t(as.matrix(c(id,1,t,-1,-1,1)))
    }
 
-   Ng = length(sg)
-   Ni = length(si)
-   probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
-   denom = sum(probs)
-   probs = probs/denom
-   t = t - log(stats::runif(1))/denom
+   Ng <- length(sg)
+   Ni <- length(si)
+   rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
+   delta_t <- rexp(n = 1, rate = sum(rates))
+   if(is.nan(delta_t)) t <- age
+   else t <- t + delta_t
 
-   while(t <= age)
+   while(t < age)
    {
-      event = DDD::sample2(1:5,size = 1,prob = probs)
+      event <- DDD::sample2(1:5,size = 1,prob = rates)
       if(event == 1)
       {
-          parent = as.numeric(DDD::sample2(sg,1))
-          id = id + 1
-          L = rbind(L,c(id,parent,t,-1,-1,L[abs(parent) - id1,6]))
-          si = c(si,-id)
-          Ni = Ni + 1
+          parent <- as.numeric(DDD::sample2(sg,1))
+          id <- id + 1
+          L <- rbind(L,c(id,parent,t,-1,-1,L[abs(parent) - id1,6]))
+          si <- c(si,-id)
+          Ni <- Ni + 1
       }
       if(event == 2)
       {
-          todie = as.numeric(DDD::sample2(sg,1))
-          L[todie - id1,5] = t
-          sg = sg[-which(sg == todie)]
-          Ng = Ng - 1
+          todie <- as.numeric(DDD::sample2(sg,1))
+          L[todie - id1,5] <- t
+          sg <- sg[-which(sg == todie)]
+          Ng <- Ng - 1
       }
       if(event == 3)
       {
-          tocomplete = abs(as.numeric(DDD::sample2(si,1)))
-          L[tocomplete - id1,4] = t
-          Sid = Sid + 1
-          L[tocomplete - id1,6] = Sid
-          sg = c(sg,tocomplete)
-          si = si[-which(abs(si) == tocomplete)]
-          Ng = Ng + 1
-          Ni = Ni - 1
+          tocomplete <- abs(as.numeric(DDD::sample2(si,1)))
+          L[tocomplete - id1,4] <- t
+          Sid <- Sid + 1
+          L[tocomplete - id1,6] <- Sid
+          sg <- c(sg,tocomplete)
+          si <- si[-which(abs(si) == tocomplete)]
+          Ng <- Ng + 1
+          Ni <- Ni - 1
       }
       if(event == 4)
       {
-          parent = as.numeric(DDD::sample2(si,1))
-          id = id + 1
-          L = rbind(L,c(id,parent,t,-1,-1,L[abs(parent) - id1,6]))
-          si = c(si,-id)
-          Ni = Ni + 1
+          parent <- as.numeric(DDD::sample2(si,1))
+          id <- id + 1
+          L <- rbind(L,c(id,parent,t,-1,-1,L[abs(parent) - id1,6]))
+          si <- c(si,-id)
+          Ni <- Ni + 1
       }
       if(event == 5)
       {
-          todie = abs(as.numeric(DDD::sample2(si,1)))
-          L[todie - id1,5] = t
-          si = si[-which(abs(si) == todie)]
-          Ni = Ni - 1
+          todie <- abs(as.numeric(DDD::sample2(si,1)))
+          L[todie - id1,5] <- t
+          si <- si[-which(abs(si) == todie)]
+          Ni <- Ni - 1
       }
       if(Ng + Ni > limitsize)
       {
-        Ni = 0
-        Ng = 0
+        Ni <- 0
+        Ng <- 0
       }
-      probs = c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
-      denom = sum(probs)
-      probs = probs/denom
-      t = t - log(stats::runif(1))/denom
+      rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
+      delta_t <- rexp(n = 1, rate = sum(rates))
+      if(is.nan(delta_t)) t <- age
+      else t <- t + delta_t
    }
    if(i == 1)
    {
        if((Ng + Ni) > 0)
        {
-           i = i + 1
-           L1 = L
-           id1 = id
-           Sid1 = Sid
-           si1 = si
-           sg1 = sg
+           i <- i + 1
+           L1 <- L
+           id1 <- id
+           Sid1 <- Sid
+           si1 <- si
+           sg1 <- sg
        }
    } else {
    if(i == 2)
    {
        if(checkgood(L,si,sg) == 1)
        {
-           i = i + 1
-           L2 = L
-           si2 = si
-           sg2 = sg
+           i <- i + 1
+           L2 <- L
+           si2 <- si
+           sg2 <- sg
        }
    }}
 }
-L = L1
+L <- L1
 if(soc == 2)
 {
-    L = rbind(L1,L2)
+    L <- rbind(L1,L2)
 }
-L0 = L
-absL = L
-absL[,2] = abs(L[,2])
-trans = NULL
-igtree.extinct = phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = F))
-igtree.extant = phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = T))
-tree = ape::as.phylo(ape::read.tree(text = detphy(absL,age)))
+L0 <- L
+absL <- L
+absL[,2] <- abs(L[,2])
+trans <- NULL
+igtree.extinct <- phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = F))
+igtree.extant <- phytools::read.simmap(text = detphy(absL,age,ig = T,dropextinct = T))
+tree <- ape::as.phylo(ape::read.tree(text = detphy(absL,age)))
 
 # Random sampling
-sL_random = sampletree(absL, age, samplemethod = "random")
-stree_random = ape::as.phylo(ape::read.tree(text = detphy(sL_random, age)))
+sL_random <- sampletree(absL, age, samplemethod = "random")
+stree_random <- ape::as.phylo(ape::read.tree(text = detphy(sL_random, age)))
 # Sampling the oldest
-sL_oldest = sampletree(absL, age, samplemethod = "oldest")
-stree_oldest = ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
+sL_oldest <- sampletree(absL, age, samplemethod = "oldest")
+stree_oldest <- ape::as.phylo(ape::read.tree(text = detphy(sL_oldest, age)))
 # Sampling the youngest
-sL_youngest = sampletree(absL, age, samplemethod = "youngest")
-stree_youngest = ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
+sL_youngest <- sampletree(absL, age, samplemethod = "youngest")
+stree_youngest <- ape::as.phylo(ape::read.tree(text = detphy(sL_youngest, age)))
 # Sampling the shortest
 sL_shortest <- sampletree(absL, age, samplemethod = "shortest")
 stree_shortest <- ape::as.phylo(ape::read.tree(text = detphy(sL_shortest, age)))
@@ -199,21 +204,21 @@ stree_shortest <- ape::as.phylo(ape::read.tree(text = detphy(sL_shortest, age)))
 sL_longest <- sampletree(absL, age, samplemethod = "longest")
 stree_longest <- ape::as.phylo(ape::read.tree(text = detphy(sL_longest, age)))
 
-sL_random[, 3:5][which(sL_random[, 3:5] == -1)] = age + 1
-sL_random[, 3:5] = age - sL_random[, 3:5]
-sL_random = sL_random[order(sL_random[, 1]), ]
-sL_oldest[, 3:5][which(sL_oldest[, 3:5] == -1)] = age + 1
-sL_oldest[, 3:5] = age - sL_oldest[, 3:5]
-sL_oldest = sL_oldest[order(sL_oldest[, 1]), ]
-sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] = age + 1
-sL_youngest[, 3:5] = age - sL_youngest[, 3:5]
-sL_youngest = sL_youngest[order(sL_youngest[, 1]), ]
-sL_shortest[, 3:5][which(sL_shortest[, 3:5] == -1)] = age + 1
-sL_shortest[, 3:5] = age - sL_shortest[, 3:5]
-sL_shortest = sL_shortest[order(sL_shortest[, 1]), ]
-sL_longest[, 3:5][which(sL_longest[, 3:5] == -1)] = age + 1
-sL_longest[, 3:5] = age - sL_longest[, 3:5]
-sL_longest = sL_longest[order(sL_longest[, 1]), ]
+sL_random[, 3:5][which(sL_random[, 3:5] == -1)] <- age + 1
+sL_random[, 3:5] <- age - sL_random[, 3:5]
+sL_random <- sL_random[order(sL_random[, 1]), ]
+sL_oldest[, 3:5][which(sL_oldest[, 3:5] == -1)] <- age + 1
+sL_oldest[, 3:5] <- age - sL_oldest[, 3:5]
+sL_oldest <- sL_oldest[order(sL_oldest[, 1]), ]
+sL_youngest[, 3:5][which(sL_youngest[, 3:5] == -1)] <- age + 1
+sL_youngest[, 3:5] <- age - sL_youngest[, 3:5]
+sL_youngest <- sL_youngest[order(sL_youngest[, 1]), ]
+sL_shortest[, 3:5][which(sL_shortest[, 3:5] == -1)] <- age + 1
+sL_shortest[, 3:5] <- age - sL_shortest[, 3:5]
+sL_shortest <- sL_shortest[order(sL_shortest[, 1]), ]
+sL_longest[, 3:5][which(sL_longest[, 3:5] == -1)] <- age + 1
+sL_longest[, 3:5] <- age - sL_longest[, 3:5]
+sL_longest <- sL_longest[order(sL_longest[, 1]), ]
 
 #sL = sampletree(absL,age)
 #stree = as.phylo(read.tree(text = detphy(sL,age)))
@@ -222,21 +227,21 @@ sL_longest = sL_longest[order(sL_longest[, 1]), ]
 #sL = sL[order(sL[,1]),]
 
 #rbrts = sort(age - pbd_sim_step2a(L)[[1]])
-reconL = pbd_reconstruct(L0)
-recontree = ape::as.phylo(ape::read.tree(text = detphy(reconL,age)))
-L[,3:5][which(L[,3:5] == -1)] = age + 1
-L[,3:5] = age - L[,3:5]
-L = L[order(L[,1]),]
+reconL <- pbd_reconstruct(L0)
+recontree <- ape::as.phylo(ape::read.tree(text = detphy(reconL,age)))
+L[,3:5][which(L[,3:5] == -1)] <- age + 1
+L[,3:5] <- age - L[,3:5]
+L <- L[order(L[,1]),]
 #reducL = cbind(L[,3],abs(L[,2:1]),L[,5],L[,4],L[,6])
 #fulltree = L2phylo2(reducL,dropextinct = F)
-reconL[,3:5][which(reconL[,3:5] == -1)] = age + 1
-reconL[,3:5] = age - reconL[,3:5]
-reconL = reconL[order(reconL[,1]),]
+reconL[,3:5][which(reconL[,3:5] == -1)] <- age + 1
+reconL[,3:5] <- age - reconL[,3:5]
+reconL <- reconL[order(reconL[,1]),]
 
 if(plotit == TRUE)
 {
    graphics::par(mfrow = c(3,3))
-   cols = stats::setNames(c("gray","black"),c("i","g"))
+   cols <- stats::setNames(c("gray","black"),c("i","g"))
    phytools::plotSimmap(igtree.extinct,colors = cols)
    phytools::plotSimmap(igtree.extant,colors = cols)
    graphics::plot(tree, edge.width = 2, font = 1, label.offset = 0.1, cex = 1.0)
@@ -247,7 +252,7 @@ if(plotit == TRUE)
    graphics::par(mfrow = c(1,1))
 }
 
-Ltreeslist = list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
+Ltreeslist <- list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0)
 if (add_shortest_and_longest == TRUE) {
   Ltreeslist <- list(tree = tree,stree_random = stree_random,stree_oldest = stree_oldest,stree_youngest = stree_youngest,L = L,sL_random = sL_random,sL_oldest = sL_oldest,sL_youngest = sL_youngest,igtree.extinct = igtree.extinct,igtree.extant = igtree.extant,recontree = recontree,reconL = reconL,L0 = L0, stree_shortest = stree_shortest, stree_longest = stree_longest, sL_shortest = sL_shortest, sL_longest = sL_longest)
 }
