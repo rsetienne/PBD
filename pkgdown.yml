@@ -1,0 +1,6 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  PBD_ML_demo: PBD_ML_demo.html
+last_built: 2025-02-10T13:45Z
