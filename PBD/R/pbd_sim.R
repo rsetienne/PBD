@@ -94,8 +94,13 @@ while(i <= soc)
    Ng <- length(sg)
    Ni <- length(si)
    rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
-   delta_t <- rexp(n = 1, rate = sum(rates))
-   if(is.nan(delta_t)) t <- age
+   if(sum(rates) != 0) {
+     delta_t <- rexp(n = 1, rate = sum(rates))
+     t <- t + delta_t
+   } else
+   {
+     t <- age
+   }
    else t <- t + delta_t
 
    while(t < age)
@@ -148,9 +153,13 @@ while(i <= soc)
         Ng <- 0
       }
       rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
-      delta_t <- rexp(n = 1, rate = sum(rates))
-      if(is.nan(delta_t)) t <- age
-      else t <- t + delta_t
+      if(sum(rates) != 0) {
+        delta_t <- rexp(n = 1, rate = sum(rates))
+        t <- t + delta_t
+      } else
+      {
+        t <- age
+      }
    }
    if(i == 1)
    {
