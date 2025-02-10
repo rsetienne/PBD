@@ -97,8 +97,7 @@ while(i <= soc)
    if(sum(rates) != 0) {
      delta_t <- rexp(n = 1, rate = sum(rates))
      t <- t + delta_t
-   } else
-   {
+   } else {
      t <- age
    }
    else t <- t + delta_t
@@ -156,8 +155,7 @@ while(i <= soc)
       if(sum(rates) != 0) {
         delta_t <- rexp(n = 1, rate = sum(rates))
         t <- t + delta_t
-      } else
-      {
+      } else {
         t <- age
       }
    }
