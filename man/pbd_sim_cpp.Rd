@@ -6,8 +6,16 @@
 \usage{
 pbd_sim_cpp(
   pars,
-  parsf = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
-    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  parsf = c(function(t, pars) {
+     pars[1]
+ }, function(t, pars) {
+     pars[2]
+ },
+    function(t, pars) {
+     pars[3]
+ }, function(t, pars) {
+     pars[4]
+ }),
   age,
   ntips = NULL,
   soc = 2,

@@ -15,8 +15,16 @@ pbd_LR(
   endmc = 1000,
   alpha = 0.05,
   plotit = TRUE,
-  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
-    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  parsfunc = c(function(t, pars) {
+     pars[1]
+ }, function(t, pars) {
+     pars[2]
+ },
+    function(t, pars) {
+     pars[3]
+ }, function(t, pars) {
+     pars[4]
+ }),
   cond = 1,
   btorph = 1,
   soc = 2,

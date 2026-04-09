@@ -18,7 +18,7 @@
 #' species.
 #' @details The result follows from a simple 2D system of differential equations
 #' for G and I.
-#' @return The expected number of representative species
+#' @return The expected number of good and incipient species
 #' @author Rampal S. Etienne
 #' @seealso
 #' \code{\link{pbd_numspec_mean}}\cr

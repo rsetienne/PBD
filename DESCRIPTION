@@ -1,8 +1,8 @@
 Package: PBD
 Type: Package
 Title: Protracted Birth-Death Model of Diversification
-Version: 1.5
-Date: 2017-5-10
+Version: 1.6
+Date: 2026-04-09
 Depends:
     R (>= 3.0)
 Imports:
@@ -16,6 +16,10 @@ Imports:
     stats,
     testit,
     utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat
 Author: Rampal S. Etienne
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
 Description: Conducts maximum likelihood analysis and simulation of the
@@ -24,9 +28,6 @@ Description: Conducts maximum likelihood analysis and simulation of the
     Lambert, A., H. Morlon & R.S. Etienne 2014, <doi:10.1007/s00285-014-0767-x>;
     Etienne, R.S., H. Morlon & A. Lambert 2014, <doi:10.1111/evo.12433>.
 License: GPL-2
-Suggests:
-    knitr,
-    rmarkdown,
-    testthat
+Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.3.3

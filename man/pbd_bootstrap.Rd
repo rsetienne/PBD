@@ -11,8 +11,16 @@ pbd_bootstrap(
   idparsfix = NULL,
   parsfix = NULL,
   exteq = (length(initparsopt) < 4),
-  parsfunc = c(function(t, pars) {     pars[1] }, function(t, pars) {     pars[2] },
-    function(t, pars) {     pars[3] }, function(t, pars) {     pars[4] }),
+  parsfunc = c(function(t, pars) {
+     pars[1]
+ }, function(t, pars) {
+     pars[2]
+ },
+    function(t, pars) {
+     pars[3]
+ }, function(t, pars) {
+     pars[4]
+ }),
   missnumspec = 0,
   cond = 1,
   btorph = 0,
