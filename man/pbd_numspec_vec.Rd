@@ -12,9 +12,9 @@ pbd_numspec_vec(pars, age, initvec = c(1, 0))
 \code{pars[1]} corresponds to b_G (=
 la_1 in Etienne & Rosindell R2012) = speciation initiation rate of good
 species\cr
-\code{pars[2]} corresponds to b_G (=
-la_1 in Etienne & Rosindell R2012) = speciation initiation rate of incipient
-pecies\cr
+\code{pars[2]} corresponds to b_I (=
+la_3 in Etienne & Rosindell R2012) = speciation initiation rate of incipient
+species\cr
 \code{pars[3]} corresponds to mu_G = extinction rate of good species \cr
 \code{pars[4]} corresponds to mu_I = extinction rate of incipient species \cr
 \code{pars[5]} corresponds to la (= la_2 in Etienne & Rosindell 2012) =
