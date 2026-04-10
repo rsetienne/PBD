@@ -17,6 +17,9 @@
 #' @param age the stem age
 #' @param initvec initial vector. Default is 1 good species with 0 incipient
 #' species.
+#' @param abstolint absolute tolerance in integration
+#' @param reltolint relative tolerance in integration
+#' @param methode integration method, one of the odeint solvers
 #' @return The expected number of good species with n incipient specis and the number of
 #' caes with n orphaned incipient siblings
 #' @author Rampal S. Etienne
@@ -32,15 +35,15 @@
 pbd_numspec_vec2 <- function(pars = c(0.3,0.3,0.1,0.1,100),
                              age = 10,
                              initvec = c(1,rep(0,20)),
-                             abstol = 1E-10,
-                             reltol = 1E-10,
+                             abstolint = 1E-10,
+                             reltolint = 1E-10,
                              methode = 'odeint::runge_kutta_cash_karp54') {
   if(length(initvec) %% 2 == 0) stop('The length of the initial vector should be odd')
   distr <- pbd_integrate_odeint(initvec,
                                 c(-age,0),
                                 pars,
-                                abstol,
-                                reltol,
+                                abstolint,
+                                reltolint,
                                 methode)
   lx <- length(distr)
   good <- distr[1:((lx + 1)/2)]

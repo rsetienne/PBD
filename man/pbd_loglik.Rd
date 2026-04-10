@@ -22,10 +22,12 @@ pbd_loglik(
 )
 }
 \arguments{
-\item{pars1}{Vector of parameters: \cr \cr \code{pars1[1]} corresponds to b
+\item{pars1}{Vector of parameters: \cr \cr
+\code{pars1[1]} corresponds to b
 (= la_1 in Etienne & Rosindell R2012) = speciation initiation rate \cr
 \code{pars1[2]} corresponds to mu_1 (= mu_g in Etienne & Rosindell 2012) =
-extinction rate of good species \cr \code{pars1[3]} corresponds to la_1 (=
+extinction rate of good species \cr
+\code{pars1[3]} corresponds to la_1 (=
 la_2 in Etienne & Rosindell 2012) = speciation completion rate \cr
 \code{pars1[4]} corresponds to mu_2 (= mu_i in ER2012) = extinction rate of
 incipient species \cr When rates depend on time this time dependence should
@@ -35,25 +37,31 @@ be specified in pars1f and pars1 then becomes the parameters used in pars1f
 \item{pars1f}{Vector of functions how the rates depend on time, default
 functions are constant functions of the parameters in pars1: \cr \cr
 \code{pars1f[1]} corresponds to time-dependence of b (= la_1 in Etienne &
-Rosindell R2012) = speciation initiation rate \cr \code{pars1f[2]}
+Rosindell R2012) = speciation initiation rate \cr
+\code{pars1f[2]}
 corresponds to time-dependence of mu_1 (= mu_g in Etienne & Rosindell 2012)
-= extinction rate of good species \cr \code{pars1f[3]} corresponds to
+= extinction rate of good species \cr
+\code{pars1f[3]} corresponds to
 tiem-dependence of la_1 (= la_2 in Etienne & Rosindell 2012) = speciation
-completion rate \cr \code{pars1f[4]} corresponds to time-dependence of mu_2
+completion rate \cr
+\code{pars1f[4]} corresponds to time-dependence of mu_2
 (= mu_i in ER2012) = extinction rate of incipient species \cr \cr}
 
-\item{pars2}{Vector of model settings: \cr \cr \code{pars2[1]} set the
+\item{pars2}{Vector of model settings: \cr \cr
+\code{pars2[1]} set the
 conditioning on non-extinction of the clade (1) or not (0) \cr \cr
 \code{pars2[2]} sets whether the likelihood is for the branching times (0)
-or the phylogeny (1) \cr \cr \code{pars2[3]} sets whether the first element
+or the phylogeny (1) \cr \cr
+\code{pars2[3]} sets whether the first element
 of the branching times is the stem (1) or the crown (2) age \cr \cr
 \code{pars2[4]} sets whether the parameters and likelihood should be shown
-on screen (1) or not (0) \cr \cr \code{pars2[5]} sets which method should be
-used in the ode-solver. Default is 'lsoda'. See package deSolve for details.
-\cr \cr \code{pars2[6]}Sets the lower bound of the number of species on
-which conditioning should be done when cond = 2. Set this to 0 when
-conditioning should be done on precisely the number of species (default)\cr
-\cr \code{pars2[7]}Sets the upper bound of the number of species on which
+on screen (1) or not (0) \cr \cr
+\code{pars2[5]} sets which method should be used in the ode-solver. Default
+is 'lsoda'. See package deSolve for details.\cr \cr
+\code{pars2[6]}Sets the lower bound of the number of species on which
+conditioning should be done when cond = 2. Set this to 0 when
+conditioning should be done on precisely the number of species (default)\cr \cr
+\code{pars2[7]}Sets the upper bound of the number of species on which
 conditioning should be done when cond = 2. Set this to 0 when conditioning
 should be done on precisely the number of species (default)\cr \cr}
 

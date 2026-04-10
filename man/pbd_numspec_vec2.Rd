@@ -9,8 +9,8 @@ pbd_numspec_vec2(
   pars = c(0.3, 0.3, 0.1, 0.1, 100),
   age = 10,
   initvec = c(1, rep(0, 20)),
-  abstol = 1e-10,
-  reltol = 1e-10,
+  abstolint = 1e-10,
+  reltolint = 1e-10,
   methode = "odeint::runge_kutta_cash_karp54"
 )
 }
@@ -31,6 +31,12 @@ speciation completion rate \cr}
 
 \item{initvec}{initial vector. Default is 1 good species with 0 incipient
 species.}
+
+\item{abstolint}{absolute tolerance in integration}
+
+\item{reltolint}{relative tolerance in integration}
+
+\item{methode}{integration method, one of the odeint solvers}
 }
 \value{
 The expected number of good species with n incipient specis and the number of
