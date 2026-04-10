@@ -95,7 +95,7 @@ while(i <= soc)
    Ni <- length(si)
    rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
    if(sum(rates) != 0) {
-     t <- t + rexp(n = 1, rate = sum(rates))
+     t <- t + stats::rexp(n = 1, rate = sum(rates))
    } else {
      t <- age
    }
@@ -151,7 +151,7 @@ while(i <= soc)
       }
       rates <- c(la1*Ng,mu1*Ng,la2*Ni,la3*Ni,mu2*Ni)
       if(sum(rates) != 0) {
-        t <- t + rexp(n = 1, rate = sum(rates))
+        t <- t + stats::rexp(n = 1, rate = sum(rates))
       } else {
         t <- age
       }
