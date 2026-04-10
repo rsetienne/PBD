@@ -6,9 +6,9 @@
 incipient species under protracted birth-death model of diversification}
 \usage{
 pbd_numspec_vec2(
-  pars = c(0.5, 0.5, 0.1, 0.1, 100),
+  pars = c(0.3, 0.3, 0.1, 0.1, 100),
   age = 10,
-  initvec = c(1, rep(0, 10)),
+  initvec = c(1, rep(0, 20)),
   abstol = 1e-10,
   reltol = 1e-10,
   methode = "odeint::runge_kutta_cash_karp54"
