@@ -24,8 +24,31 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Author: Rampal S. Etienne
-Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
+Authors@R: c(
+    person(given = "Rampal S.",
+           family = "Etienne",
+           email = "r.s.etienne@rug.nl",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-2142-7612")),
+    person(given = "Bart",
+           family = "Haegeman",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0003-2325-4727")),
+    person(given = "Richèl J.C.",
+           family = "Bilderbeek",
+           email = "richel@richelbilderbeek.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0003-1107-7049")),
+    person(given = "Thijs",
+           family = "Janzen",
+           email = "t.janzen@rug.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-4162-1140")),
+    person(given = "Raphael",
+           family = "Scherrer",
+           email = "r.scherrer@rug.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-1447-7630")))
 Description: Conducts maximum likelihood analysis and simulation of the
     protracted birth-death model of diversification. See
     Etienne, R.S. & J. Rosindell 2012 <doi:10.1093/sysbio/syr091>;
@@ -34,4 +57,7 @@ Description: Conducts maximum likelihood analysis and simulation of the
 License: GPL-2
 Encoding: UTF-8
 VignetteBuilder: knitr
+URL: https://github.com/rsetienne/PBD,
+    https://rsetienne.github.io/PBD/
+BugReports: https://github.com/rsetienne/PBD/issues
 RoxygenNote: 7.3.3
