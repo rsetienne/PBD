@@ -4,7 +4,7 @@ Title: Protracted Birth-Death Model of Diversification
 Version: 1.6
 Date: 2026-09-04
 Depends:
-    R (>= 3.0)
+    R (>= 3.0.2)
 Imports:
     deSolve,
     ade4,

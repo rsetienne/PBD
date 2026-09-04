@@ -6,9 +6,9 @@ master|[![Build Status](https://travis-ci.org/rsetienne/PBD.svg?branch=master)](
 master|[![Build Status](https://travis-ci.org/richelbilderbeek/PBD.svg?branch=master)](https://travis-ci.org/richelbilderbeek/PBD) | [![codecov.io](https://codecov.io/github/richelbilderbeek/PBD/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/PBD?branch=master)
 develop|[![Build Status](https://travis-ci.org/richelbilderbeek/PBD.svg?branch=develop)](https://travis-ci.org/richelbilderbeek/PBD) | [![codecov.io](https://codecov.io/github/richelbilderbeek/PBD/coverage.svg?branch=develop)](https://codecov.io/github/richelbilderbeek/PBD?branch=develop)
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PBD)](https://cran.r-project.org/package=PBD)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/PBD)]( https://CRAN.R-project.org/package=PBD)
-[![](http://cranlogs.r-pkg.org/badges/PBD)](https://CRAN.R-project.org/package=PBD)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/PBD)](https://cran.r-project.org/package=PBD)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/PBD)]( https://CRAN.R-project.org/package=PBD)
+[![](https://cranlogs.r-pkg.org/badges/PBD)](https://CRAN.R-project.org/package=PBD)
 
 Protracted Birth-Death model in R
 
