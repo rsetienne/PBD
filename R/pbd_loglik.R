@@ -42,7 +42,7 @@ logcondfun = function(nn,socsoc,yy)
 #' \code{pars1f[4]} corresponds to time-dependence of mu_2
 #' (= mu_i in ER2012) = extinction rate of incipient species \cr \cr
 #' @param pars2 Vector of model settings: \cr \cr
-#' \code{pars2[1]} set the
+#' \code{pars2[1]} sets the
 #' conditioning on non-extinction of the clade (1) or not (0) \cr \cr
 #' \code{pars2[2]} sets whether the likelihood is for the branching times (0)
 #' or the phylogeny (1) \cr \cr
