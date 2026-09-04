@@ -57,7 +57,6 @@ Description: Conducts maximum likelihood analysis and simulation of the
 License: GPL-2
 Encoding: UTF-8
 VignetteBuilder: knitr
-URL: https://github.com/rsetienne/PBD,
-    https://rsetienne.github.io/PBD/
+URL: https://github.com/rsetienne/PBD
 BugReports: https://github.com/rsetienne/PBD/issues
 RoxygenNote: 7.3.3
